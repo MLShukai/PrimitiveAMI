@@ -1,3 +1,9 @@
+# Our project
+/data/
+/logs/
+.env
+poetry.lock
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
