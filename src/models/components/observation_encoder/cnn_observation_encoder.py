@@ -14,7 +14,7 @@ class CNNObservationEncoder(ObservationEncoder):
         self.conv2d2 = nn.Conv2d(8, 16, 5)
         self.relu = nn.ReLU()
         self.pool = nn.MaxPool2d(2, stride=2)
-        self.fc = nn.Linear((((height - 4) // 2) - 4) // 2 * (((width - 4) // 2) - 4) // 2 * 16, dim_embed)
+        self.fc = nn.Linear(((((height - 4) // 2) - 4) // 2) * ((((width - 4) // 2) - 4) // 2) * 16, dim_embed)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.conv2d1(x)
