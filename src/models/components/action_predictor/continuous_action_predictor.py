@@ -11,10 +11,11 @@ class ContinuousActionPredictor(ActionPredictor):
         self.relu = nn.ReLU()
         self.mse_loss = nn.MSELoss()
 
-    def forward(self, embed: Tensor, next_embed: Tensor) -> Tensor:
+    def forward(self, embed: Tensor, next_embed: Tensor, action: Tensor) -> Tensor:
         x = torch.concat([embed, next_embed], dim=-1)
         x = self.linear_1(x)
         x = self.relu(x)
         action_hat = self.linear_2(x)
-        return action_hat
+        loss = self.mse_loss(action_hat, action)
+        return loss, action_hat
 
