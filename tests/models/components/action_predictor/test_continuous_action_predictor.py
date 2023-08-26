@@ -1,7 +1,9 @@
 import pytest
 import torch
 
-from src.models.components.action_predictor.continuous_action_predictor import ContinuousActionPredictor
+from src.models.components.action_predictor.continuous_action_predictor import (
+    ContinuousActionPredictor,
+)
 
 
 @pytest.mark.parametrize(
@@ -11,9 +13,9 @@ from src.models.components.action_predictor.continuous_action_predictor import C
     dim_action,
     """,
     [
-        (4,8,16),
-        (32,64,128),
-    ]
+        (4, 8, 16),
+        (32, 64, 128),
+    ],
 )
 def test_continuous_action_predictor(batch, dim_embed, dim_action):
     continuous_action_predictor = ContinuousActionPredictor(dim_embed, dim_action)
