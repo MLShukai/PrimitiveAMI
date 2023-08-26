@@ -10,8 +10,6 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 torch = {version = "^2.0.1+cu118", source = "torch_cu118"}
-torchvision = {version = "^0.15.2+cu118", source = "torch_cu118"}
-torchaudio = {version = "^2.0.2+cu118", source = "torch_cu118"}
 
 
 [tool.poetry.group.dev.dependencies]
