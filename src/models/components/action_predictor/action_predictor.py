@@ -6,5 +6,5 @@ from torch import Tensor
 
 class ActionPredictor(nn.Module, metaclass=ABCMeta):
     @abstractmethod
-    def forward(self, embed: Tensor, next_embed: Tensor) -> Tensor:  # action_hat
+    def forward(self, embed: Tensor, next_embed: Tensor) -> (Tensor, Tensor):  # (prev_action_hat, action_hat)
         pass
