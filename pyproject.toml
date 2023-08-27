@@ -9,7 +9,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-
+torch = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
@@ -17,6 +17,7 @@ pre-commit = "^3.3.3"
 pytest-slow = "^0.0.3"
 pytest-cov = "^4.1.0"
 pytest-mock = "^3.11.1"
+
 
 [build-system]
 requires = ["poetry-core"]
