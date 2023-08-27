@@ -14,8 +14,8 @@ from src.models.components.observation_encoder.cnn_observation_encoder import (
     width,
     """,
     [
-        (4, 8, 16, 32),
-        (32, 64, 125, 53),
+        (4, 8, 623, 278),
+        (32, 64, 125, 531),
         (17, 234, 137, 349),
     ],
 )

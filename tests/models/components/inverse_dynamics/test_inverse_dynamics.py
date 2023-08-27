@@ -19,9 +19,9 @@ from src.models.components.observation_encoder.cnn_observation_encoder import (
     width,
     """,
     [
-        (4, 8, 16, 32, 64),
-        (32, 64, 125, 53, 47),
-        (17, 234, 137, 349, 26),
+        (4, 8, 16, 132, 264),
+        (32, 64, 125, 353, 247),
+        (17, 234, 137, 349, 126),
     ],
 )
 def test_inverse_dynamics(batch, dim_embed, dim_action, height, width):
