@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-from src.models.components.action_predictor.action_predictor import ActionPredictor
+from .action_predictor import ActionPredictor
 
 
 class ContinuousActionPredictor(ActionPredictor):

@@ -2,10 +2,8 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-from src.models.components.action_predictor.action_predictor import ActionPredictor
-from src.models.components.observation_encoder.observation_encoder import (
-    ObservationEncoder,
-)
+from ..action_predictor.action_predictor import ActionPredictor
+from ..observation_encoder.observation_encoder import ObservationEncoder
 
 
 class InverseDynamics(nn.Module):

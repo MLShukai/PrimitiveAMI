@@ -1,9 +1,7 @@
 import torch.nn as nn
 from torch import Tensor
 
-from src.models.components.observation_encoder.observation_encoder import (
-    ObservationEncoder,
-)
+from .observation_encoder import ObservationEncoder
 
 
 class CNNObservationEncoder(ObservationEncoder):
