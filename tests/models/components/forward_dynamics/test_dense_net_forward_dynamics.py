@@ -1,7 +1,9 @@
 import pytest
 import torch
 
-from src.models.components.forward_dynamics.dense_net_forward_dynamics import DenseNetForwardDynamics
+from src.models.components.forward_dynamics.dense_net_forward_dynamics import (
+    DenseNetForwardDynamics,
+)
 
 
 @pytest.mark.parametrize(

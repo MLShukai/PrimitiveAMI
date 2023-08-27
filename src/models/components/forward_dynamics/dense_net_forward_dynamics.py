@@ -1,7 +1,9 @@
 import torch
 import torch.nn as nn
 from torch import Tensor
+
 from .forward_dynamics import ForwardDynamics
+
 
 class DenseNetForwardDynamics(ForwardDynamics):
     def __init__(self, dim_action: int, dim_embed: int):
