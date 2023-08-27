@@ -18,8 +18,8 @@ class InverseDynamics(nn.Module):
         self.action_predictor = action_predictor
         self.observation_encoder = observation_encoder
 
-    def forward(self, obs: Tensor, next_obs: Tensor, action: Tensor):
+    def forward(self, obs: Tensor, next_obs: Tensor):
         embed = self.observation_encoder(obs)
         next_embed = self.observation_encoder(next_obs)
-        loss, action_hat = self.action_predictor(embed, next_embed, action)
-        return loss, action_hat
+        action_hat = self.action_predictor(embed, next_embed)
+        return action_hat
