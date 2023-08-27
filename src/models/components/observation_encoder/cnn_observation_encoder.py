@@ -14,7 +14,12 @@ class CNNObservationEncoder(ObservationEncoder):
         self.conv2d2 = nn.Conv2d(32, 64, 4, stride=2)
         self.conv2d3 = nn.Conv2d(64, 64, 3, stride=1)
         self.leakyrelu = nn.LeakyReLU()
-        self.fc = nn.Linear(((((height-(8-4))//4-(4-2))//2-(3-1))//1) * ((((width-(8-4))//4-(4-2))//2-(3-1))//1) * 64, dim_embed)
+        self.fc = nn.Linear(
+            ((((height - (8 - 4)) // 4 - (4 - 2)) // 2 - (3 - 1)) // 1)
+            * ((((width - (8 - 4)) // 4 - (4 - 2)) // 2 - (3 - 1)) // 1)
+            * 64,
+            dim_embed,
+        )
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.conv2d1(x)
