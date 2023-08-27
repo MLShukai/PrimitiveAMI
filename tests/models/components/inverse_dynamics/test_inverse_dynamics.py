@@ -30,5 +30,6 @@ def test_inverse_dynamics(batch, dim_embed, dim_action, height, width):
     inverse_dynamics = InverseDynamics(action_precictor, observation_encoder)
     obs = torch.randn(batch, 3, height, width)
     next_obs = torch.randn(batch, 3, height, width)
-    action_hat = inverse_dynamics(obs, next_obs)
+    prev_action_hat, action_hat = inverse_dynamics(obs, next_obs)
+    assert prev_action_hat.size() == (batch, dim_action)
     assert action_hat.size() == (batch, dim_action)

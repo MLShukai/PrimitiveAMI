@@ -21,5 +21,5 @@ class InverseDynamics(nn.Module):
     def forward(self, obs: Tensor, next_obs: Tensor):
         embed = self.observation_encoder(obs)
         next_embed = self.observation_encoder(next_obs)
-        action_hat = self.action_predictor(embed, next_embed)
-        return action_hat
+        prev_action_hat, action_hat = self.action_predictor(embed, next_embed)
+        return prev_action_hat, action_hat
