@@ -1,5 +1,6 @@
 import pytest
 import torch
+from torch.distributions.distribution import Distribution
 
 from src.models.components.policy_value_common_net.policy_value_common_net import (
     PolicyValueCommonNet,
@@ -31,4 +32,5 @@ def test_policy_value_common_net(batch, height, width, dim_hidden, dim_dist):
     input = torch.randn(batch, 3, height, width)
     dist, value = pvc(input)
     assert dist.rsample().size() == (batch, dim_dist)
+    assert isinstance(dist, Distribution)
     assert value.size() == (batch, 1)

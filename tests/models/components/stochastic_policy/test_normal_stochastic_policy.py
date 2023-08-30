@@ -1,5 +1,6 @@
 import pytest
 import torch
+from torch.distributions.distribution import Distribution
 
 from src.models.components.stochastic_policy.normal_stochastic_policy import (
     NormalStochasticPolicy,
@@ -22,4 +23,5 @@ def test_normal_stochastic_policy(batch, dim_input, dim_out):
     nsp = NormalStochasticPolicy(dim_input, dim_out)
     input = torch.randn(batch, dim_input)
     dist = nsp(input)
+    assert isinstance(dist, Distribution)
     assert dist.rsample().size() == (batch, dim_out)
