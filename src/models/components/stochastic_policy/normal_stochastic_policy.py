@@ -12,10 +12,10 @@ class NormalStochasticPolicy(StochasticPolicy):
         super().__init__()
         self.fc_mean = nn.Linear(dim_input, dim_out)
         self.fc_std = nn.Linear(dim_input, dim_out)
-        self.relu = nn.ReLU()
+        self.softplus = nn.Softplus()
 
     def forward(self, input: Tensor) -> Distribution:
         mean = self.fc_mean(input)
-        std = self.relu(self.fc_std(input)) + 1e-7  # 0だとエラーなる
+        std = self.softplus(self.fc_std(input)) + 1e-7  # std 0 causes error
         norm_dist = distributions.normal.Normal(mean, std)
         return norm_dist
