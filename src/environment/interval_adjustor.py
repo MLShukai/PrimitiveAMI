@@ -1,10 +1,11 @@
-from abc import ABCMeta, abstractmethod
-from time import perf_counter
-
-
 import math
+from abc import ABCMeta, abstractmethod
+from time import perf_counter, sleep
+
+
 class IntervalAdjustor(metaclass=ABCMeta):
     _start_time: float = -math.inf
+
     def __init__(self, interval: float) -> None:
         self.reset()
         self.interval = interval
@@ -21,3 +22,21 @@ class IntervalAdjustor(metaclass=ABCMeta):
     @abstractmethod
     def adjust(self) -> float:
         raise NotImplementedError
+
+
+class SleepIntervalAdjustor(IntervalAdjustor):
+    def __init__(self, interval: float) -> None:
+        super().__init__(interval)
+
+    def adjust(self, offset: float = 0.0) -> float:
+        """Adjust time by time.sleep.
+
+        Args:
+            offset (float, optional): Offset value not to delay processing. Defaults to 0.0.
+
+        Returns:
+            float: Ideal value of time waited.
+        """
+        time_to_sleep = self.interval - offset
+        sleep(time_to_sleep)
+        return time_to_sleep
