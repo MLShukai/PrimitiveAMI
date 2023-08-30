@@ -2,9 +2,7 @@ import pytest
 import torch
 from torch.distributions.distribution import Distribution
 
-from src.models.components.stochastic_policy.normal_stochastic_policy import (
-    NormalStochasticPolicy,
-)
+from src.models.components.policy.normal_stochastic_policy import NormalStochasticPolicy
 
 
 @pytest.mark.parametrize(

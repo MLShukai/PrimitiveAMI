@@ -3,7 +3,7 @@ import torch.distributions as distributions
 import torch.nn as nn
 from torch import Tensor
 
-from ..stochastic_policy.stochastic_policy import StochasticPolicy
+from ..policy.stochastic_policy import StochasticPolicy
 from ..value.value import Value
 
 
