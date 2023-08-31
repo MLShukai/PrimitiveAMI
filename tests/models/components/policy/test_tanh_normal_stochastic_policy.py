@@ -20,8 +20,8 @@ from src.models.components.policy.tahh_normal_stochastic_policy import (
     ],
 )
 def test_tanh_normal_stochastic_policy(batch, dim_input, dim_out):
-    nsp = TanhNormalStochasticPolicy(dim_input, dim_out)
+    tnsp = TanhNormalStochasticPolicy(dim_input, dim_out)
     input = torch.randn(batch, dim_input)
-    dist = nsp(input)
+    dist = tnsp(input)
     assert isinstance(dist, Distribution)
     assert dist.rsample().size() == (batch, dim_out)
