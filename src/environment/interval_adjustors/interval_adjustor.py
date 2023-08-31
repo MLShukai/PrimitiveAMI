@@ -1,6 +1,6 @@
 import math
 from abc import ABCMeta, abstractmethod
-from time import perf_counter, sleep
+import time
 
 
 class IntervalAdjustor(metaclass=ABCMeta):
@@ -17,7 +17,7 @@ class IntervalAdjustor(metaclass=ABCMeta):
         Returns:
             float: Start time after resetting timer.
         """
-        self._start_time = perf_counter()
+        self._start_time = time.perf_counter()
         return self._start_time
 
     @abstractmethod
