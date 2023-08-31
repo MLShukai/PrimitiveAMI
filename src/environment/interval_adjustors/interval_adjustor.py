@@ -6,7 +6,7 @@ from time import perf_counter, sleep
 class IntervalAdjustor(metaclass=ABCMeta):
     _start_time: float = -math.inf
 
-    def __init__(self, interval: float, offset=0.0) -> None:
+    def __init__(self, interval: float, offset: float) -> None:
         self.reset()
         self.interval = interval
         self.offset = offset
