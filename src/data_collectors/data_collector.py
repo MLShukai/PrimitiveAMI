@@ -13,3 +13,12 @@ class DataCollector(ABC):
             step_record (dict[str, Any]): A dictionary containing the data sucha as observations, actions, rewards, etc.
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def get_data(self) -> Any:
+        """Get collected data.
+
+        Returns:
+            Any: Collected data.
+        """
+        raise NotImplementedError
