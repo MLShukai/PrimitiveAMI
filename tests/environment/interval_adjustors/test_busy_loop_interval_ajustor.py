@@ -36,5 +36,7 @@ class TestBusyLoopIntervalAdjustor:
         s = mod.reset()
         time_passed = mod.adjust()
         e = time.perf_counter()
+        e_passed = mod._start_time
         assert e - s == pytest.approx(time_passed, abs=eps)  # 経過時間 == モデルが想定する経過時間
         assert e - s == pytest.approx(interval - offset, abs=eps)  # 経過時間 == 経過時間の理想値
+        assert e_passed - s == pytest.approx(interval - offset, abs=eps)
