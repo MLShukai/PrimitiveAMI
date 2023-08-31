@@ -1,6 +1,6 @@
 import math
-from abc import ABCMeta, abstractmethod
 import time
+from abc import ABCMeta, abstractmethod
 
 
 class IntervalAdjustor(metaclass=ABCMeta):
