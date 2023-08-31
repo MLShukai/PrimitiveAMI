@@ -11,4 +11,4 @@ class TestStepRecord:
     def test_copy(self, step_record: StepRecord):
         other = step_record.copy()
         assert other == step_record
-        assert not other is step_record
+        assert other is not step_record
