@@ -9,9 +9,6 @@ eps = 1e-3  # 待機時間の許容絶対誤差
 
 
 class IntervalAdjustorImple(IntervalAdjustor):
-    def __init__(self, interval, offset):
-        super().__init__(interval, offset)
-
     def adjust():
         return
 
@@ -25,6 +22,7 @@ class TestIntervalAdjustor:
         mod = cls(interval, offset)
         assert mod.interval == interval
         assert mod.offset == offset
+        assert mod._time_to_sleep == interval - offset
 
     def test_reset(self, mocker):
         interval, offset = 1 / 10, 0.0
