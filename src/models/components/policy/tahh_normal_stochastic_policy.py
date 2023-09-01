@@ -4,8 +4,14 @@ import torch.nn as nn
 import torchrl
 from torch import Tensor
 from torch.distributions.distribution import Distribution
+from torchrl.modules import TanhNormal as _TanhNormal
 
 from .stochastic_policy import StochasticPolicy
+
+
+class TanhNormal(_TanhNormal):
+    def entropy(self):
+        return self.base_dist.base_dist.entropy()
 
 
 class TanhNormalStochasticPolicy(StochasticPolicy):
@@ -18,5 +24,5 @@ class TanhNormalStochasticPolicy(StochasticPolicy):
     def forward(self, input: Tensor) -> Distribution:
         mean = self.fc_mean(input)
         std = self.softplus(self.fc_std(input)) + 1e-7  # std 0 causes error
-        tanh_norm_dist = torchrl.modules.TanhNormal(mean, std)
+        tanh_norm_dist = TanhNormal(mean, std)
         return tanh_norm_dist

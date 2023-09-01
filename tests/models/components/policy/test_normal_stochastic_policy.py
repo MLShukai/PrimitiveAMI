@@ -23,3 +23,4 @@ def test_normal_stochastic_policy(batch, dim_input, dim_out):
     dist = nsp(input)
     assert isinstance(dist, Distribution)
     assert dist.rsample().size() == (batch, dim_out)
+    assert dist.entropy().size() == (batch, dim_out)
