@@ -1,7 +1,7 @@
 import torch.nn as nn
 from torch import Tensor
 
-from ..utils import SmallConvNet
+from ..small_conv_net import SmallConvNet
 from .observation_encoder import ObservationEncoder
 
 

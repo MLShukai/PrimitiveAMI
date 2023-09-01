@@ -4,7 +4,7 @@ from torch.distributions.distribution import Distribution
 
 from src.models.components.policy.normal_stochastic_policy import NormalStochasticPolicy
 from src.models.components.policy_value_common_net import PolicyValueCommonNet
-from src.models.components.utils import SmallConvNet
+from src.models.components.small_conv_net import SmallConvNet
 from src.models.components.value.fully_connect_value import FullyConnectValue
 
 

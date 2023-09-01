@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from src.models.components.utils import SmallConvNet
+from src.models.components.small_conv_net import SmallConvNet
 
 
 @pytest.mark.parametrize(
