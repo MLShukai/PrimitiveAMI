@@ -6,7 +6,7 @@ from abc import ABCMeta, abstractmethod
 class IntervalAdjustor(metaclass=ABCMeta):
     _start_time: float = -math.inf
 
-    def __init__(self, interval: float, offset: float) -> None:
+    def __init__(self, interval: float, offset: float = 0.0) -> None:
         self.reset()
         self.interval = interval
         self.offset = offset
