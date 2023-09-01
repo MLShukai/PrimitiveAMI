@@ -10,6 +10,7 @@ class IntervalAdjustor(metaclass=ABCMeta):
         self.reset()
         self.interval = interval
         self.offset = offset
+        self._time_to_sleep = interval - offset
 
     def reset(self) -> float:
         """Reset start time of this adjustor.
