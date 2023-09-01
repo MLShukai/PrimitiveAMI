@@ -24,5 +24,5 @@ class TanhNormalStochasticPolicy(StochasticPolicy):
     def forward(self, input: Tensor) -> TanhNormal:
         mean = self.fc_mean(input)
         std = self.softplus(self.fc_std(input)) + 1e-7  # std 0 causes error
-        tanh_norm_dist = TanhNormal(mean, std)
+        tanh_norm_dist = TanhNormal(mean, std, upscale=1.0)
         return tanh_norm_dist
