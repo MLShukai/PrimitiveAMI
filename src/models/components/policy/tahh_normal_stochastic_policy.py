@@ -21,7 +21,7 @@ class TanhNormalStochasticPolicy(StochasticPolicy):
         self.fc_std = nn.Linear(dim_input, dim_out)
         self.softplus = nn.Softplus()
 
-    def forward(self, input: Tensor) -> Distribution:
+    def forward(self, input: Tensor) -> TanhNormal:
         mean = self.fc_mean(input)
         std = self.softplus(self.fc_std(input)) + 1e-7  # std 0 causes error
         tanh_norm_dist = TanhNormal(mean, std)
