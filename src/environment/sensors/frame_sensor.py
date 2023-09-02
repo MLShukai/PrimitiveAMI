@@ -9,4 +9,9 @@ class FrameSensor(Sensor):
         self.camera = camera
 
     def read(self) -> torch.Tensor:
-        return torch.from_numpy(self.camera.read()).clone()
+        """Receive observed data and convert dtype and shape of array.
+
+        Returns:
+            torch.Tensor: Tensor formatted for torch DL models.
+        """
+        return torch.from_numpy(self.camera.read()).clone().permute(2, 0, 1) / 256.0
