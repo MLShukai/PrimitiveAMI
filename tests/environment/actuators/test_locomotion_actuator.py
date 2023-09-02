@@ -12,6 +12,10 @@ class TestLocomotionWrapper:
         mock_actuator = mocker.Mock(spec=AxesLocomotionWrapper)
         return mock_actuator
 
+    def test__init__(self, axes_actuator):
+        mod = LocomotionActuator(axes_actuator)
+        assert mod.actuator is axes_actuator
+
     @pytest.mark.parametrize(
         "action",
         (
