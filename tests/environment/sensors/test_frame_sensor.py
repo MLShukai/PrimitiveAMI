@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import pytest
-import torch
 from pytest_mock import MockerFixture
 from vrchat_io.vision import OpenCVVideoCapture
 

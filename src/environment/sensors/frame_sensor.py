@@ -1,10 +1,5 @@
-from typing import Optional
-
-import cv2
 import torch
 from vrchat_io.abc.video_capture import VideoCapture
-from vrchat_io.vision import OpenCVVideoCapture
-from vrchat_io.vision.wrappers import RatioCropWrapper, ResizeWrapper
 
 from .sensor import Sensor
 
