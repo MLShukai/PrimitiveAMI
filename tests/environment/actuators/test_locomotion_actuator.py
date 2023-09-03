@@ -16,15 +16,17 @@ class TestLocomotionWrapper:
         mod = LocomotionActuator(axes_actuator)
         assert mod.actuator is axes_actuator
 
-    @pytest.mark.parametrize(
-        "action",
-        (
-            torch.tensor([0.0, 0.0, 0.0], dtype=torch.float64),
-            torch.tensor([0.0, 0.0, 0.0], dtype=torch.float64, device="cuda"),
-        ),
-    )
-    def test_operate(self, axes_actuator, action):
+    def _test_operate(self, axes_actuator, action):
         action_numpy = action.detach().cpu().numpy()
         mod = LocomotionActuator(axes_actuator)
         mod.operate(action)
         mod.actuator.command.assert_called_with(*action_numpy)
+
+    def test_operate_cpu(self, axes_actuator):
+        action = torch.tensor([0.0, 0.0, 0.0])
+        self._test_operate(axes_actuator, action)
+
+    @pytest.mark.skipif(torch.cuda.is_available(), reason="No cuda device")
+    def test_operate_cuda(self, axes_actuator):
+        action = torch.tensor([0.0, 0.0, 0.0], device="cuda")
+        self._test_operate(axes_actuator, action)
