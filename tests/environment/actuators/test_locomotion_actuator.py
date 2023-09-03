@@ -26,7 +26,7 @@ class TestLocomotionWrapper:
         action = torch.tensor([0.0, 0.0, 0.0])
         self._test_operate(axes_actuator, action)
 
-    @pytest.mark.skipif(torch.cuda.is_available(), reason="No cuda device")
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="No cuda device")
     def test_operate_cuda(self, axes_actuator):
         action = torch.tensor([0.0, 0.0, 0.0], device="cuda")
         self._test_operate(axes_actuator, action)
