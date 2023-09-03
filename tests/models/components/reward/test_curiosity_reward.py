@@ -1,6 +1,5 @@
 import pytest
 import torch
-from torch.distributions.distribution import Distribution
 
 from src.models.components.reward.curiosity_reward import CuriosityReward
 
@@ -16,7 +15,7 @@ from src.models.components.reward.curiosity_reward import CuriosityReward
         (17, 234),
     ],
 )
-def test_tanh_normal_stochastic_policy(batch, dim):
+def test_curiosity_reward(batch, dim):
     obs_hat = torch.randn(batch, dim)
     obs = torch.randn(batch, dim)
     curiosity_reward = CuriosityReward()
