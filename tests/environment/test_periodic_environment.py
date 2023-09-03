@@ -1,5 +1,3 @@
-import time
-
 import pytest
 import torch
 
@@ -9,8 +7,6 @@ from src.environment.interval_adjustors.sleep_interval_adjustor import (
 )
 from src.environment.periodic_environment import PeriodicEnvironment as cls
 from src.environment.sensors.frame_sensor import FrameSensor
-
-adjustor_params = {"interval": 0.1, "offset": 0.0}
 
 
 class TestPeriodicEnvironment:
