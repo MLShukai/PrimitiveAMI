@@ -8,6 +8,6 @@ class LocomotionActuator(Actuator):
     def __init__(self, actuator: AxesLocomotionWrapper):
         self.actuator = actuator
 
-    def operate(self, action: torch.tensor) -> None:
+    def operate(self, action: torch.Tensor) -> None:
         _action = action.detach().cpu().numpy()
-        self.actuator.command(*_action)
+        self.actuator.command(_action[0], _action[1], _action[2])
