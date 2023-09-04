@@ -117,6 +117,8 @@ class CuriosityPPOAgent(Agent):
             predicted_next_embed_obs=pred_next_embed_obs,
         )
 
+        return action
+
     def sleep(self, observation: Tensor) -> Tensor:
         """Return sleep action."""
         return self.sleep_action.clone()
@@ -198,7 +200,7 @@ class CuriosityPPOAgent(Agent):
         Returns:
             reward (Tensor): Reward tensor.
         """
-        return self.reward(predicted_next_embed_obs, next_embed_obs)
+        return self.reward.reward(predicted_next_embed_obs, next_embed_obs)
 
     def _clear_step_record(self):
         """Re-create step record object."""
