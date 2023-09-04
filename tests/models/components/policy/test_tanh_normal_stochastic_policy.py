@@ -2,7 +2,7 @@ import pytest
 import torch
 from torch.distributions.distribution import Distribution
 
-from src.models.components.policy.tahh_normal_stochastic_policy import (
+from src.models.components.policy.tanh_normal_stochastic_policy import (
     TanhNormalStochasticPolicy,
 )
 
