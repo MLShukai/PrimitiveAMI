@@ -1,6 +1,7 @@
 """This demo shows the activities of un-learned agent."""
 
 import logging
+import pprint
 import time
 from argparse import ArgumentParser, Namespace
 
@@ -35,6 +36,7 @@ def main():
 
     setup_root_logger(args)
     logger.info("Configured Logger.")
+    logger.info(f"\nArgs: {pprint.pformat(args.__dict__)}")
 
     environment = create_environment(args)
     logger.info("Created Environment.")
@@ -45,11 +47,18 @@ def main():
     interaction = FixedStepInteraction(agent, environment, args.num_steps)
     logger.info("Create Interaction")
 
-    logger.info(f"Interact {args.num_steps} steps.")
-    start_time = time.perf_counter()
-    interaction.interact()
-    elapsed_time = time.perf_counter() - start_time
-    logger.info(f"Interaction end, {1/elapsed_time:.2f} fps.")
+    try:
+        logger.info(f"Interact {args.num_steps} steps.")
+        start_time = time.perf_counter()
+        interaction.interact()
+        elapsed_time = time.perf_counter() - start_time
+        logger.info(f"Interaction end, {args.num_steps/elapsed_time:.2f} fps.")
+    except KeyboardInterrupt:
+        logger.error("Interrupted.")
+    except Exception as e:
+        logger.exception(e)
+    finally:
+        environment.actuator.operate(agent._postprocess_action(agent.sleep_action))
 
     logger.info("End agent interaction demo.")
 
@@ -86,7 +95,7 @@ def get_parser() -> ArgumentParser:
     parser.add_argument("--precision", type=str, default="float32")
 
     # Interaction
-    parser.add_argument("--num-steps", type=int, default=10 * 60)
+    parser.add_argument("--num-steps", type=int, default=60)
 
     return parser
 
