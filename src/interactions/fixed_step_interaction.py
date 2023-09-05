@@ -30,7 +30,7 @@ class FixedStepInteraction(Interaction):
         final_action = self.agent.sleep(self.environment.observe())
         if final_action is not None:
             self.environment.affect(final_action)
-        self.environment.teardown(self)
+        self.environment.teardown()
 
     def mainloop(self):
         """Interact with environment for num_steps."""
