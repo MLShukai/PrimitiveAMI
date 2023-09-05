@@ -20,7 +20,7 @@ class PeriodicEnvironment(Environment):
 
     def affect(self, action: torch.Tensor) -> None:
         self.actuator.operate(action)
-        self.adjustor.adjust()
+        self.adjust_interval()
 
     def reset_interval_start_time(self) -> float:
         return self.adjustor.reset()
