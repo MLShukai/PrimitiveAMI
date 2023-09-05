@@ -6,9 +6,9 @@ from .observation_encoder import ObservationEncoder
 
 
 class CNNObservationEncoder(ObservationEncoder):
-    def __init__(self, dim_embed: int, height: int, width: int):
+    def __init__(self, dim_embed: int, height: int, width: int, channels: int = 3):
         super().__init__()
-        self.conv_net = SmallConvNet(height, width, 3, dim_embed)
+        self.conv_net = SmallConvNet(height, width, channels, dim_embed)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.conv_net(x)
