@@ -14,6 +14,6 @@ class PolicyValueCommonNet(nn.Module):
         self.value = value
         self.base_model = base_model
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> tuple[distributions.Distribution, Tensor]:
         x = self.base_model(x)
         return self.policy(x), self.value(x)
