@@ -52,6 +52,7 @@ class TestPeriodicEnvironment:
 
     def test_reset_interval_start_time(self, mod):
         assert mod.reset_interval_start_time() == 0.0
+        mod.adjustor.reset.assert_called_once()
 
     def test_adjust_interval(self, mod):
         mod.adjust_interval()
