@@ -9,5 +9,5 @@ class LocomotionActuator(Actuator):
         self.actuator = actuator
 
     def operate(self, action: torch.Tensor) -> None:
-        _action = action.detach().cpu().numpy()
+        _action = action.detach().cpu().numpy().tolist()
         self.actuator.command(_action[0], _action[1], _action[2])
