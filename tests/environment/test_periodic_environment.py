@@ -43,7 +43,7 @@ class TestPeriodicEnvironment:
         assert mod.setup.call_count == 1
 
     def test_observe(self, mod):
-        assert (mod.observe() == torch.zeros((3, 640, 480))).all()
+        torch.testing.assert_close(mod.observe(), torch.zeros((3, 640, 480)))
 
     def test_affect(self, mod):
         action = torch.tensor([0.0, 0.0, 0.0], dtype=torch.float64)
