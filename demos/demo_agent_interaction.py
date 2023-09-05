@@ -7,6 +7,7 @@ from argparse import ArgumentParser, Namespace
 import colorlog
 import torch
 
+from src.agents.curiosity_ppo_agent import CuriosityPPOAgent
 from src.data_collectors.empty_data_collector import EmptyDataCollector
 from src.environment.interval_adjustors.sleep_interval_adjustor import (
     SleepIntervalAdjustor,
@@ -155,6 +156,19 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
     data_collector = EmptyDataCollector()
     # Sleep Action
     sleep_action = torch.zeros(action_size)
+
+    # Agemt
+    agent = CuriosityPPOAgent(
+        obs_encoder,
+        dynamics,
+        policy_value,
+        reward,
+        data_collector,
+        sleep_action,
+        device,
+        dtype,
+    )
+    return agent
 
 
 if __name__ == "__main__":
