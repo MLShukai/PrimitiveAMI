@@ -25,7 +25,7 @@ from src.models.components.value.fully_connect_value import FullyConnectValue
 def test_policy_value_common_net(batch, height, width, dim_hidden, dim_dist):
     policy = NormalStochasticPolicy(dim_hidden, dim_dist)
     value = FullyConnectValue(dim_hidden)
-    base_model = SmallConvNet(height, width, dim_hidden)
+    base_model = SmallConvNet(height, width, 3, dim_hidden)
     pvc = PolicyValueCommonNet(base_model, policy, value)
     input = torch.randn(batch, 3, height, width)
     dist, value = pvc(input)
