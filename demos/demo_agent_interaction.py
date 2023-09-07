@@ -26,6 +26,7 @@ from src.models.components.reward.curiosity_reward import CuriosityReward
 from src.models.components.small_conv_net import SmallConvNet
 from src.models.components.value.fully_connect_value import FullyConnectValue
 from src.utils.environment import create_frame_sensor, create_locomotion_actuator
+from src.utils.random import seed_everything
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,9 @@ def main():
     setup_root_logger(args)
     logger.info("Configured Logger.")
     logger.info(f"\nArgs: {pprint.pformat(args.__dict__)}")
+
+    seed_everything(args.random_seed)
+    logger.info(f"Set random seed: {args.random_seed}")
 
     environment = create_environment(args)
     logger.info("Created Environment.")
@@ -96,6 +100,9 @@ def get_parser() -> ArgumentParser:
 
     # Interaction
     parser.add_argument("--num-steps", type=int, default=60)
+
+    # Reproducing
+    parser.add_argument("--random-seed", type=int, default=9)
 
     return parser
 
