@@ -21,6 +21,10 @@ pytest-cov = "^4.1.0"
 pytest-mock = "^3.11.1"
 
 
+
+[tool.poetry.group.demo.dependencies]
+colorlog = "^6.7.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

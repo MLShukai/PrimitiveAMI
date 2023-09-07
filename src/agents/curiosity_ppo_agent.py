@@ -62,7 +62,7 @@ class CuriosityPPOAgent(Agent):
         # t = 0
         self._setup_models_and_buffers()
 
-        observation = self._to_device_dtype(observation)
+        observation = self._preprocess_observation(observation)
         embed_obs = self._embed_observation(observation)
         action, action_log_prob, value = self._take_actions_and_value(observation)
         pred_next_embed_obs = self._predict_next_embed_observation(self.sleep_action, embed_obs, action)
@@ -79,13 +79,13 @@ class CuriosityPPOAgent(Agent):
             predicted_next_embed_obs=pred_next_embed_obs,
         )
 
-        return action
+        return self._postprocess_action(action)
 
     def step(self, observation: Tensor) -> Tensor:
         """Step interaction process of agent."""
         # t = 1, 2, 3, ...
         # ----------- Observation is `NEXT` now. ----------- #
-        observation = self._to_device_dtype(observation)
+        observation = self._preprocess_observation(observation)
 
         # Compute reward
         pred_next_embed_obs = self.step_record[RK.PREDICTED_NEXT_EMBED_OBSERVATION]
@@ -117,11 +117,11 @@ class CuriosityPPOAgent(Agent):
             predicted_next_embed_obs=pred_next_embed_obs,
         )
 
-        return action
+        return self._postprocess_action(action)
 
     def sleep(self, observation: Tensor) -> Tensor:
         """Return sleep action."""
-        return self.sleep_action.clone()
+        return self._postprocess_action(self.sleep_action)
 
     def _to_device_dtype(self, tensor_or_module: _tensor_or_module_t) -> _tensor_or_module_t:
         """Send models and tensors to specified device, and cast dtype."""
@@ -134,11 +134,22 @@ class CuriosityPPOAgent(Agent):
         self._to_device_dtype(self.policy)
         self._to_device_dtype(self.reward)
         self.sleep_action = self._to_device_dtype(self.sleep_action)
+        # Adding batch axis.
+        if self.sleep_action.ndim == 1:
+            self.sleep_action = self.sleep_action.unsqueeze(0)
 
         self.embedding.eval()
         self.dynamics.eval()
         self.policy.eval()
         self.reward.eval()
+
+    def _preprocess_observation(self, observation: Tensor) -> Tensor:
+        """Apply pre-process to observation."""
+        return self._to_device_dtype(observation).unsqueeze(0)  # (1, channels, height, width)
+
+    def _postprocess_action(self, action: Tensor) -> Tensor:
+        """Apply post-process to action."""
+        return action.flatten().detach().cpu()
 
     @torch.no_grad()
     def _embed_observation(self, observation: Tensor) -> Tensor:
