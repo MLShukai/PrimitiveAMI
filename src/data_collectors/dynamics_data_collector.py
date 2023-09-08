@@ -38,11 +38,7 @@ class DynamicsDataCollector(DataCollector):
 
     def get_data(self) -> (Tensor, Tensor, Tensor, Tensor):
         prev_actions = torch.stack(self.prev_actions)
-        self.prev_actions = []
         observations = torch.stack(self.observations)
-        self.observations = []
         actions = torch.stack(self.actions)
-        self.actions = []
         next_observations = torch.stack(self.next_observations)
-        self.next_observations = []
         return prev_actions, observations, actions, next_observations
