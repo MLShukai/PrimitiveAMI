@@ -14,7 +14,7 @@ class DummyDynamicsDataCollector(DataCollector):
         self.observation_shape = observation_shape
         self.get_size = get_size
 
-    def collect(self, step_record: dict[str, Any]):
+    def collect(self, step_record: dict[str, Tensor]):
         pass
 
     def get_data(self) -> TensorDataset:
