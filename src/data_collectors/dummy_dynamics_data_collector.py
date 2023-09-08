@@ -8,18 +8,17 @@ from .data_collector import DataCollector
 
 
 class DummyDynamicsDataCollector(DataCollector):
-    def __init__(self, action_dim, observation_dim):
-        self.batch = 0
+    def __init__(self, action_dim: int, observation_dim: int, get_size: int):
         self.action_dim = action_dim
         self.observation_dim = observation_dim
+        self.get_size = get_size
 
     def collect(self, step_record: dict[str, Any]):
-        self.batch += 1
+        pass
 
     def get_data(self) -> (Tensor, Tensor, Tensor, Tensor):
-        prev_actions = torch.randn(self.batch, self.action_dim)
-        observations = torch.randn(self.batch, self.observation_dim)
-        actions = torch.randn(self.batch, self.action_dim)
-        next_observations = torch.randn(self.batch, self.observation_dim)
-        self.batch = 0
+        prev_actions = torch.randn(self.get_size, self.action_dim)
+        observations = torch.randn(self.get_size, self.observation_dim)
+        actions = torch.randn(self.get_size, self.action_dim)
+        next_observations = torch.randn(self.get_size, self.observation_dim)
         return prev_actions, observations, actions, next_observations
