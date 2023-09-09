@@ -54,7 +54,16 @@ class PPOLitModule(pl.LightningModule):
         return self.net(obs)
 
     def model_step(self, batch: tuple[Tensor, ...]) -> dict[str, Any]:
-        """Perform a single model step on a batch of data."""
+        """Perform a single model step on a batch of data.
+        
+        Shape:
+            obses: (batch, channels, height, width)
+            actions: (batch, action_size)
+            logprobs: (batch, action_size)
+            advantages: (batch,)
+            returns: (batch,)
+            values: (batch,)
+        """
         # Setup
         obses, actions, logprobs, advantanges, returns, values = batch
 
@@ -72,6 +81,9 @@ class PPOLitModule(pl.LightningModule):
 
         if self.hparams.norm_advantage:
             advantanges = (advantanges - advantanges.mean()) / (advantanges.std() + 1e-8)
+
+        if advantanges.ndim == 1:
+            advantanges = advantanges.unsqueeze(1)
 
         # Policy loss
         pg_loss1 = -advantanges * ratio
