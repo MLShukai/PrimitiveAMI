@@ -55,7 +55,7 @@ class PPOLitModule(pl.LightningModule):
 
     def model_step(self, batch: tuple[Tensor, ...]) -> dict[str, Any]:
         """Perform a single model step on a batch of data.
-        
+
         Shape:
             obses: (batch, channels, height, width)
             actions: (batch, action_size)
