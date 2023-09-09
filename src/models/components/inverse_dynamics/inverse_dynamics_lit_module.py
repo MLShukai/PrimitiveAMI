@@ -17,9 +17,7 @@ class InverseDynamicsLitModule(LightningModule):
         )  # https://lightning.ai/docs/pytorch/1.6.2/common/hyperparameters.html#save-hyperparameters
 
     def configure_optimizers(self) -> Optimizer:
-
-        optimizer = Adam(self.hparams.inverse_dynamics_net.parameters(), lr=1e-4)
-        return optimizer
+        return self.hparams.optimizer
 
     def training_step(self, batch: Tensor, batch_idx: int):
         prev_action, obs, action, next_obs = batch
