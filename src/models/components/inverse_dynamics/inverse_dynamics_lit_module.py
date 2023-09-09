@@ -1,5 +1,3 @@
-from typing import Any
-
 from lightning import LightningModule
 from torch import Tensor
 from torch.nn.functional import mse_loss
