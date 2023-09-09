@@ -8,9 +8,7 @@ from src.models.components.inverse_dynamics.inverse_dynamics_lit_module import (
     InverseDynamicsLitModule as cls,
 )
 
-from ..dummy.inverse_dynamics.dummy_inverse_dynamics import (
-    DummyInverseDynamics,
-)
+from ..dummy.inverse_dynamics.dummy_inverse_dynamics import DummyInverseDynamics
 
 in_dim = 64
 out_dim = 3
