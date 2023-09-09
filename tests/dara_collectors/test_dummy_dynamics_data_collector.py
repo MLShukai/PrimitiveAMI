@@ -20,7 +20,7 @@ from src.utils.step_record import RecordKeys as RK
 def test_dummy_dynamics_data_collector(action_shape, observation_shape, get_size):
     dummy_dynamics_data_collector = DummyDynamicsDataCollector(action_shape, observation_shape, get_size)
 
-    prev_actions, observations, actions, next_observations = dummy_dynamics_data_collector.get_data()[0:get_size]
+    prev_actions, observations, actions, next_observations = dummy_dynamics_data_collector.get_data()[:]
     assert prev_actions.size() == (get_size, *action_shape)
     assert observations.size() == (get_size, *observation_shape)
     assert actions.size() == (get_size, *action_shape)
