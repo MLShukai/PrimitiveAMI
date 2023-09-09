@@ -1,7 +1,6 @@
 from typing import Any
 
 from lightning import LightningModule
-from lightning.pytorch.utilities.types import STEP_OUTPUT
 from torch import Tensor
 from torch.nn.functional import mse_loss
 from torch.optim import Adam, Optimizer
