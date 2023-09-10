@@ -24,7 +24,7 @@ class DynamicsDataCollector(DataCollector):
             self.actions.append(step_record[RK.ACTION].clone().cpu())
             self.next_observations.append(step_record[RK.NEXT_OBSERVATION].clone().cpu())
         else:
-            rand_ind = numpy.random.randomint(0, self.max_size)
+            rand_ind = numpy.random.randint(0, self.max_size)
             self.prev_actions[rand_ind] = step_record[RK.PREVIOUS_ACTION].clone().cpu()
             self.observations[rand_ind] = step_record[RK.OBSERVATION].clone().cpu()
             self.actions[rand_ind] = step_record[RK.ACTION].clone().cpu()
