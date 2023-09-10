@@ -16,6 +16,10 @@ from src.utils.step_record import RecordKeys as RK
         (400, (62, 5), (33,)),
         (320, (64, 45), (43, 5)),
         (176, (134,), (51,)),
+        (32, (68,), (73, 4)),
+        (40, (62, 5), (33,)),
+        (30, (64, 45), (43, 5)),
+        (16, (134,), (51,)),
     ],
 )
 def test_dynamics_data_collector(max_size, observation_shape, action_shape):
