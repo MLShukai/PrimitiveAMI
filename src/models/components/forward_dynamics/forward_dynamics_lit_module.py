@@ -15,7 +15,7 @@ class ForwardDynamicsLitModule(LightningModule):
         self.forward_dynamics_net = forward_dynamics_net
         self.optimizer = optimizer
 
-    def configure_optimizer(self) -> Optimizer:
+    def configure_optimizers(self) -> Optimizer:
         return self.optimizer
 
     def training_step(self, batch, batch_idx):
