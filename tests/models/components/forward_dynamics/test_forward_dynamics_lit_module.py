@@ -1,3 +1,5 @@
+from functools import partial
+
 import pytest
 import torch
 from pytest_mock import MockerFixture
@@ -37,8 +39,8 @@ def mock_forward_dynamics_net() -> ForwardDynamics:
 
 
 @pytest.fixture
-def mock_optimizer(mock_forward_dynamics_net):
-    return Adam(mock_forward_dynamics_net.parameters())
+def mock_optimizer(mock_forward_dynamics_net) -> partial[Optimizer]:
+    return partial(Adam)
 
 
 @pytest.fixture
