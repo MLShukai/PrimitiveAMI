@@ -14,7 +14,6 @@ class ForwardDynamicsLitModule(LightningModule):
         self, obs_encoder: ObservationEncoder, forward_dynamics_net: ForwardDynamics, optimizer: partial[Optimizer]
     ):
         super().__init__()
-        self.save_hyperparameters(logger=False)
         self.obs_encoder = obs_encoder
         self.forward_dynamics_net = forward_dynamics_net
         self.optimizer = optimizer
