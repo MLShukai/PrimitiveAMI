@@ -82,7 +82,7 @@ def mock_dataloader() -> partial[DataLoader]:
 @pytest.fixture
 def mock_pl_trainer() -> pl.Trainer:
     return pl.Trainer(
-        max_epochs=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
+        max_steps=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
     )
 
 
