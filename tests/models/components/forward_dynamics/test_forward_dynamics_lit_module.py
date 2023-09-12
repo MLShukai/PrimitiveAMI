@@ -5,9 +5,6 @@ import torch
 from pytest_mock import MockerFixture
 from torch.optim import Adam, Optimizer
 
-from src.models.components.forward_dynamics.dense_net_forward_dynamics import (
-    DenseNetForwardDynamics,
-)
 from src.models.components.forward_dynamics.forward_dynamics import ForwardDynamics
 from src.models.components.forward_dynamics.forward_dynamics_lit_module import (
     ForwardDynamicsLitModule,
@@ -34,12 +31,13 @@ def mock_observation_encoder(mocker: MockerFixture) -> ObservationEncoder:
 
 
 @pytest.fixture
-def mock_forward_dynamics_net() -> ForwardDynamics:
-    return DenseNetForwardDynamics(action_dim, obs_emb_dim)
+def mock_forward_dynamics_net(mocker: MockerFixture) -> ForwardDynamics:
+    mock = mocker.Mock(spec=ForwardDynamics, return_value=torch.randn(num_batch, obs_emb_dim))
+    return mock
 
 
 @pytest.fixture
-def mock_optimizer(mock_forward_dynamics_net) -> partial[Optimizer]:
+def optimizer() -> partial[Optimizer]:
     return partial(Adam)
 
 
@@ -47,9 +45,9 @@ def mock_optimizer(mock_forward_dynamics_net) -> partial[Optimizer]:
 def forward_dynamics_lit_module(
     mock_observation_encoder: ObservationEncoder,
     mock_forward_dynamics_net: ForwardDynamics,
-    mock_optimizer: Optimizer,
+    optimizer: Optimizer,
 ) -> ForwardDynamicsLitModule:
-    return ForwardDynamicsLitModule(mock_observation_encoder, mock_forward_dynamics_net, mock_optimizer)
+    return ForwardDynamicsLitModule(mock_observation_encoder, mock_forward_dynamics_net, optimizer)
 
 
 def test_forward_dynamics_lit_module(forward_dynamics_lit_module: ForwardDynamicsLitModule):
