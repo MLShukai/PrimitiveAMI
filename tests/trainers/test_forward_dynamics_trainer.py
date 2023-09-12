@@ -40,27 +40,27 @@ batch = (
 
 
 @pytest.fixture
-def mock_observation_encoder() -> ObservationEncoder:
+def observation_encoder() -> ObservationEncoder:
     return CNNObservationEncoder(obs_emb_dim, height, width, channels)
 
 
 @pytest.fixture
-def mock_forward_dynamics_net() -> ForwardDynamics:
+def forward_dynamics_net() -> ForwardDynamics:
     return DenseNetForwardDynamics(action_dim, obs_emb_dim)
 
 
 @pytest.fixture
-def mock_optimizer(mock_forward_dynamics_net) -> partial[Optimizer]:
+def optimizer(forward_dynamics_net) -> partial[Optimizer]:
     return partial(Adam)
 
 
 @pytest.fixture
 def mock_forward_dynamics_lit_module(
-    mock_observation_encoder: ObservationEncoder,
-    mock_forward_dynamics_net: ForwardDynamics,
-    mock_optimizer: Optimizer,
+    observation_encoder: ObservationEncoder,
+    forward_dynamics_net: ForwardDynamics,
+    optimizer: Optimizer,
 ) -> ForwardDynamicsLitModule:
-    return ForwardDynamicsLitModule(mock_observation_encoder, mock_forward_dynamics_net, mock_optimizer)
+    return ForwardDynamicsLitModule(observation_encoder, forward_dynamics_net, optimizer)
 
 
 @pytest.fixture
