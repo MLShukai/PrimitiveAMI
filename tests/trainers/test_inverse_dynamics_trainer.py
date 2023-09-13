@@ -74,7 +74,7 @@ class TestInverseDynamicsTrainer:
     def get_pl_trainer(self, accelerator):
         trainer = pl.Trainer(
             accelerator=accelerator,
-            max_epochs=1,
+            max_steps=1,
             logger=False,
             enable_checkpointing=False,
             enable_progress_bar=False,
