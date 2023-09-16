@@ -4,9 +4,7 @@ import lightning.pytorch as pl
 from torch.utils.data import DataLoader, TensorDataset
 
 from ..data_collectors.dynamics_data_collector import DynamicsDataCollector
-from ..models.components.forward_dynamics.forward_dynamics_lit_module import (
-    ForwardDynamicsLitModule,
-)
+from ..models.forward_dynamics_lit_module import ForwardDynamicsLitModule
 from .trainer import Trainer
 
 
