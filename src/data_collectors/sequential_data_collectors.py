@@ -1,7 +1,5 @@
 from typing import Any
 
-from torch.utils.data import TensorDataset
-
 from .data_collector import DataCollector
 
 
@@ -13,6 +11,6 @@ class SequentialDataCollectors:
         for collector in self.data_collectors:
             collector.collect(step_record)
 
-    def get_data(self) -> list[TensorDataset]:
+    def get_data(self) -> list[Any]:
         data = [collector.get_data() for collector in self.data_collectors]
         return data
