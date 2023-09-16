@@ -5,8 +5,8 @@ from torch.utils.data import TensorDataset
 from .data_collector import DataCollector
 
 
-class SequentialDataCollector:
-    def __init__(self, data_collectors: list[DataCollector]) -> None:
+class SequentialDataCollectors:
+    def __init__(self, *data_collectors: DataCollector) -> None:
         self.data_collectors = data_collectors
 
     def collect(self, step_record: dict[str, Any]) -> None:
