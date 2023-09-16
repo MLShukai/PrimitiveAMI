@@ -6,9 +6,7 @@ import torch
 from torch.optim import Adam
 
 from src.models.components.inverse_dynamics.inverse_dynamics import InverseDynamics
-from src.models.components.inverse_dynamics.inverse_dynamics_lit_module import (
-    InverseDynamicsLitModule as cls,
-)
+from src.models.inverse_dynamics_lit_module import InverseDynamicsLitModule as cls
 
 
 class TestInverseDynamicsLitModule:

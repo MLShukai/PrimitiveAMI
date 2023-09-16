@@ -12,12 +12,10 @@ from src.models.components.action_predictor.continuous_action_predictor import (
     ContinuousActionPredictor,
 )
 from src.models.components.inverse_dynamics.inverse_dynamics import InverseDynamics
-from src.models.components.inverse_dynamics.inverse_dynamics_lit_module import (
-    InverseDynamicsLitModule,
-)
 from src.models.components.observation_encoder.cnn_observation_encoder import (
     CNNObservationEncoder,
 )
+from src.models.inverse_dynamics_lit_module import InverseDynamicsLitModule
 from src.trainers.inverse_dynamics_trainer import InverseDynamicsTrainer as cls
 
 num_batch = 32
