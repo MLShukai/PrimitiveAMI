@@ -5,9 +5,7 @@ import torch
 from torch.utils.data import DataLoader, TensorDataset
 
 from ..data_collectors.dynamics_data_collector import DynamicsDataCollector
-from ..models.components.inverse_dynamics.inverse_dynamics_lit_module import (
-    InverseDynamicsLitModule,
-)
+from ..models.inverse_dynamics_lit_module import InverseDynamicsLitModule
 from .trainer import Trainer
 
 

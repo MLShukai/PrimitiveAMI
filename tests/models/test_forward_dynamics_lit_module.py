@@ -6,12 +6,10 @@ from pytest_mock import MockerFixture
 from torch.optim import Adam, Optimizer
 
 from src.models.components.forward_dynamics.forward_dynamics import ForwardDynamics
-from src.models.components.forward_dynamics.forward_dynamics_lit_module import (
-    ForwardDynamicsLitModule,
-)
 from src.models.components.observation_encoder.observation_encoder import (
     ObservationEncoder,
 )
+from src.models.forward_dynamics_lit_module import ForwardDynamicsLitModule
 
 
 class TestForwardDynamicsLitModule:

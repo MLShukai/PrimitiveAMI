@@ -5,8 +5,8 @@ from lightning import LightningModule
 from torch.nn.functional import mse_loss
 from torch.optim import Optimizer
 
-from ..observation_encoder.observation_encoder import ObservationEncoder
-from .forward_dynamics import ForwardDynamics
+from .components.forward_dynamics.forward_dynamics import ForwardDynamics
+from .components.observation_encoder.observation_encoder import ObservationEncoder
 
 
 class ForwardDynamicsLitModule(LightningModule):

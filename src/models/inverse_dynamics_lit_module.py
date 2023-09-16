@@ -5,7 +5,7 @@ from torch import Tensor
 from torch.nn.functional import mse_loss
 from torch.optim import Optimizer
 
-from .inverse_dynamics import InverseDynamics
+from .components.inverse_dynamics.inverse_dynamics import InverseDynamics
 
 
 class InverseDynamicsLitModule(LightningModule):
