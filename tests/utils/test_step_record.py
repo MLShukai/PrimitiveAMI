@@ -31,3 +31,4 @@ class TestRecordKeys:
         assert RecordKeys.NEXT_OBSERVATION == "next_observation"
         assert RecordKeys.NEXT_EMBED_OBSERVATION == "next_embed_observation"
         assert RecordKeys.REWARD == "reward"
+        assert RecordKeys.NEXT_VALUE == "next_value"
