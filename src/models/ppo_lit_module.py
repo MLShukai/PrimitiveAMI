@@ -132,9 +132,9 @@ class PPOLitModule(pl.LightningModule):
             self.log(prefix + name, value)
 
         self.log(prefix + "mean_loss", self.loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log(prefix + "value_loss", self.value_loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log(prefix + "policy_loss", self.policy_loss, on_step=False, on_epoch=True, prog_bar=True)
-        self.log(prefix + "clipfrac", self.clipflac, on_step=False, on_epoch=True, prog_bar=True)
+        self.log(prefix + "mean_value_loss", self.value_loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log(prefix + "mean_policy_loss", self.policy_loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log(prefix + "mean_clipfrac", self.clipflac, on_step=False, on_epoch=True, prog_bar=True)
 
         return output
 
