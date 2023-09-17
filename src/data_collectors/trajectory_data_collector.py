@@ -70,6 +70,14 @@ class TrajectoryDataCollector(DataCollector):
 
         return dataset
 
+    def clear(self):
+        self.observations.clear()
+        self.actions.clear()
+        self.logprobs.clear()
+        self.rewards.clear()
+        self.values.clear()
+        self.final_next_value = torch.tensor([0.0])
+
 
 def compute_advantage(
     rewards: Tensor, values: Tensor, final_next_value: Tensor, gamma: float, gae_lambda: float

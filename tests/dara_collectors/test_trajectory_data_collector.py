@@ -45,3 +45,5 @@ def test_trajectory_data_collector(max_size, gamma, gae_lambda, observation_shap
     assert advantages.size() == (length, 1)
     assert returns.size() == (length, 1)
     assert values.size() == (length, 1)
+
+    trajectory_data_collector.clear()
