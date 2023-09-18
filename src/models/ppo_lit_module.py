@@ -22,10 +22,10 @@ class PPOLitModule(pl.LightningModule):
         net: PolicyValueCommonNet,
         optimizer: partial[torch.optim.Optimizer],
         norm_advantage: bool = True,
-        clip_coef: float = 0.2,
+        clip_coef: float = 0.1,  # https://github.com/openai/large-scale-curiosity/blob/e0a698676d19307a095cd4ac1991c4e4e70e56fb/run.py#L84
         clip_vloss: bool = True,
-        entropy_coef: float = 0.01,
-        vfunc_coef: float = 0.5,
+        entropy_coef: float = 0.001,  # https://github.com/openai/large-scale-curiosity/blob/e0a698676d19307a095cd4ac1991c4e4e70e56fb/run.py#L179
+        vfunc_coef: float = 0.5,  # https://github.com/openai/large-scale-curiosity/blob/e0a698676d19307a095cd4ac1991c4e4e70e56fb/cppo_agent.py#L58
     ) -> None:
         """Initialize a PPOLitModule.
 
