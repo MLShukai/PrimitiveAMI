@@ -8,7 +8,7 @@ from ..ppo_lit_module import PPOLitModule
 from .neural_networks import NeuralNetworks
 
 
-class InverseFowardPPO(NeuralNetworks):
+class InverseForwardPPO(NeuralNetworks):
     """Neural network aggregation class for curiosity ppo agent."""
 
     def __init__(
