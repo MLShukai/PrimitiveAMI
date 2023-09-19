@@ -19,3 +19,4 @@ class TrainersBuilder(ABC):
         Returns:
             Trainer: Built single trainer class. (Aggregated other trainers.)
         """
+        raise NotImplementedError
