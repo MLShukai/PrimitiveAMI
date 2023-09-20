@@ -1,7 +1,8 @@
-from typing import Optional
+from typing import Optional, Callable
 
 import torch
 import torch.nn as nn
+from torch import Tensor
 
 
 class SmallConvNet(nn.Module):
@@ -13,7 +14,7 @@ class SmallConvNet(nn.Module):
         dim_out: int,
         do_batchnorm: bool = False,
         do_layernorm: bool = False,
-        nl: Optional[nn.Module] = nn.LeakyReLU(negative_slope=0.2),  #
+        nl: Callable[[Tensor], Tensor] = nn.LeakyReLU(negative_slope=0.2),
         last_nl: Optional[nn.Module] = None,
     ) -> None:
         """Construct small conv net.
