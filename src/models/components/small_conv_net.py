@@ -31,11 +31,11 @@ class SmallConvNet(nn.Module):
         """
         super().__init__()
         self.conv2d1 = nn.Conv2d(channels, 32, 8, stride=4)
-        self.bn1 = nn.BatchNorm2d(32)
+        self.bn1 = nn.BatchNorm2d(32) if do_batchnorm else lambda x: x
         self.conv2d2 = nn.Conv2d(32, 64, 4, stride=2)
-        self.bn2 = nn.BatchNorm2d(64)
+        self.bn2 = nn.BatchNorm2d(64) if do_batchnorm else lambda x: x
         self.conv2d3 = nn.Conv2d(64, 64, 3, stride=1)
-        self.bn3 = nn.BatchNorm2d(64)
+        self.bn3 = nn.BatchNorm2d(64) if do_batchnorm else lambda x: x
         self.fc = nn.Linear(
             ((((height - (8 - 4)) // 4 - (4 - 2)) // 2 - (3 - 1)) // 1)
             * ((((width - (8 - 4)) // 4 - (4 - 2)) // 2 - (3 - 1)) // 1)
@@ -43,23 +43,19 @@ class SmallConvNet(nn.Module):
             dim_out,
         )
         self.nl = nl
-        self.last_nl = last_nl
+        self.last_nl = last_nl if last_nl is not None else lambda x: x
         self.do_batchnorm = do_batchnorm
-        self.do_layernorm = do_layernorm
+        self.layernorm = nn.LayerNorm(dim_out) if do_layernorm else lambda x: x
 
     def forward(self, x):
-        do_bn = self.do_batchnorm
-        x = self.bn1(self.conv2d1(x)) if do_bn else self.conv2d1(x)
+        x = self.bn1(self.conv2d1(x))
         x = self.nl(x)
-        x = self.bn2(self.conv2d2(x)) if do_bn else self.conv2d2(x)
+        x = self.bn2(self.conv2d2(x))
         x = self.nl(x)
-        x = self.bn3(self.conv2d3(x)) if do_bn else self.conv2d3(x)
+        x = self.bn3(self.conv2d3(x))
         x = self.nl(x)
         x = x.view(x.size()[0], -1)
         x = self.fc(x)
-        if self.last_nl is not None:
-            x = self.last_nl(x)
-        if self.do_layernorm:
-            layernorm = nn.LayerNorm(x.shape[-1])
-            x = layernorm(x)
+        x = self.last_nl(x)
+        x = self.layernorm(x)
         return x
