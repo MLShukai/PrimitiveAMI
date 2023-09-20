@@ -1,3 +1,5 @@
+from typing import Optional
+
 import torch
 import torch.nn as nn
 from torch import Tensor
@@ -6,13 +8,13 @@ from .action_predictor import ActionPredictor
 
 
 class ContinuousActionPredictor(ActionPredictor):
-    def __init__(self, dim_embed: int, dim_action: int, dim_hidden: int = None):
+    def __init__(self, dim_embed: int, dim_action: int, dim_hidden: Optional[int] = None):
         """
 
         Args:
-            dim_embed (int): _description_
-            dim_action (int): _description_
-            dim_hidden (int, optional): _description_. Defaults to None.
+            dim_embed (int): Number of dimensions of embedded observation.
+            dim_action (int): Number of dimensions of action.
+            dim_hidden (int, optional): Number of dimensions of tensors in hidden layer. Defaults to None.
                                         See https://github.com/openai/large-scale-curiosity/blob/master/run.py#L51
                                         and https://github.com/openai/large-scale-curiosity/blob/master/auxiliary_tasks.py#L66
         """
