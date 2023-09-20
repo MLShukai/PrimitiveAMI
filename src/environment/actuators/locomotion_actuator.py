@@ -19,7 +19,7 @@ class LocomotionActuator(Actuator):
 def get_sleep_action() -> torch.Tensor:
     """Return sleep action for LocomotionActuator.
 
-    Retruns:
+    Returns:
         torch.Tensor: sleep action.
     """
     return torch.tensor(AXES_LOCOMOTION_RESET_VALUES, dtype=torch.float).clone()
