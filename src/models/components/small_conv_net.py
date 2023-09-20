@@ -13,7 +13,7 @@ class SmallConvNet(nn.Module):
         dim_out: int,
         do_batchnorm: bool = False,
         do_layernorm: bool = False,
-        nl: Optional[nn.Module] = nn.LeakyReLU(),
+        nl: Optional[nn.Module] = nn.LeakyReLU(negative_slope=0.2),  #
         last_nl: Optional[nn.Module] = None,
     ) -> None:
         """Construct small conv net.
@@ -26,6 +26,7 @@ class SmallConvNet(nn.Module):
             do_batchnorm(bool, optional): Whether to do batchnorm. Defaults to False. https://github.com/openai/large-scale-curiosity/blob/master/utils.py#L133
             do_layernorm (bool, optional): Whether to do layernorm. Defaults to False. https://github.com/openai/large-scale-curiosity/blob/master/auxiliary_tasks.py#L7
             nl (Optional[nn.Module], optional): NonLinear function for activation. Defaults to nn.LeakyReLU(). https://github.com/openai/large-scale-curiosity/blob/master/auxiliary_tasks.py#L39
+                                                                                    The value of "negative slope" follows to the default value of tf.nn.leaky_relu(https://www.tensorflow.org/api_docs/python/tf/nn/leaky_relu)
             last_nl (Optional[nn.Module], optional): NonLinearFunction for activation for the last layer. Defaults to None. https://github.com/openai/large-scale-curiosity/blob/master/auxiliary_tasks.py#L46
         """
         super().__init__()
