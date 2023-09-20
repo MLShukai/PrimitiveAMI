@@ -99,7 +99,7 @@ class CuriosityPPOAgent(Agent):
         self._store_next_step_data(observation, embed_obs, reward, next_value)
 
         # Data collection
-        self.data_collector.collect(self.step_record.copy())
+        self._collect_data()
 
         # ---- Observation is `CURRENT` now. (Move to next step) ---- #
         # Take action
@@ -251,4 +251,14 @@ class CuriosityPPOAgent(Agent):
         self.step_record[RK.NEXT_OBSERVATION] = next_observation  # o_{t+1}
         self.step_record[RK.NEXT_EMBED_OBSERVATION] = next_embed_obs  # z_{t+1}
         self.step_record[RK.REWARD] = reward  # r_{t+1}
-        self.step_record[RK.NEXT_VALUE] = next_value # v_{t+1}
+        self.step_record[RK.NEXT_VALUE] = next_value  # v_{t+1}
+
+    def _collect_data(self) -> None:
+        """Throw `step_record` to data collector.
+
+        Removing batch axis.
+        """
+        new_record = self.step_record.copy()
+        for key in self.step_record.keys():
+            new_record[key] = new_record[key].squeeze(0)
+        self.data_collector.collect(new_record)
