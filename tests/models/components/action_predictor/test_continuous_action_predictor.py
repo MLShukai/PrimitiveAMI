@@ -19,10 +19,7 @@ from src.models.components.action_predictor.continuous_action_predictor import (
     ],
 )
 def test_continuous_action_predictor(batch, dim_embed, dim_action, dim_hidden):
-    if dim_hidden is not None:
-        continuous_action_predictor = ContinuousActionPredictor(dim_embed, dim_action, dim_hidden)
-    else:
-        continuous_action_predictor = ContinuousActionPredictor(dim_embed, dim_action)
+    continuous_action_predictor = ContinuousActionPredictor(dim_embed, dim_action, dim_hidden)
     embed = torch.randn(batch, dim_embed)
     embed_next = torch.randn(batch, dim_embed)
     prev_action_hat, action_hat = continuous_action_predictor(embed, embed_next)
