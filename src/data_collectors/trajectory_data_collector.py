@@ -21,7 +21,12 @@ class TrajectoryDataCollector(DataCollector):
         - values
     """
 
-    def __init__(self, max_size: int, gamma: float, gae_lambda: float) -> None:
+    def __init__(
+        self,
+        max_size: int,
+        gamma: float = 0.99,  # https://github.com/openai/large-scale-curiosity/blob/e0a698676d19307a095cd4ac1991c4e4e70e56fb/run.py#L174
+        gae_lambda: float = 0.95,  # https://github.com/openai/large-scale-curiosity/blob/e0a698676d19307a095cd4ac1991c4e4e70e56fb/run.py#L173
+    ) -> None:
         """Construct this class.
 
         Args:
