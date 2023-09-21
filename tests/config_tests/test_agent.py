@@ -1,5 +1,5 @@
 import hydra
-from omegaconf import OmegaConf, open_dict
+from omegaconf import OmegaConf
 
 from src.utils.paths import PROJECT_ROOT
 
