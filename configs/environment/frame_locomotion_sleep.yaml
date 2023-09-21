@@ -14,7 +14,3 @@ actuator:
 adjustor:
   _target_: src.environment.interval_adjustors.sleep_interval_adjustor.SleepIntervalAdjustor
   interval: 0.1 # 10 fps
-
-
-
-
