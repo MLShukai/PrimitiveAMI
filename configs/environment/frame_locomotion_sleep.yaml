@@ -1,0 +1,20 @@
+_target_: src.environment.periodic_environment.PeriodicEnvironment
+
+sensor:
+  _target: src.utils.environment.create_frame_sensor
+  camera_index: 0
+  width: 256
+  height: 256
+  base_fps: 60
+
+actuator:
+  _target_: src.utils.environment.create_locomotion_actuator
+  osc_address: "127.0.0.1"
+
+adjustor:
+  _target_: src.environment.interval_adjustors.sleep_interval_adjustor.SleepIntervalAdjustor
+  interval: 0.1 # 10 fps
+
+
+
+
