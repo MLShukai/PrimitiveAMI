@@ -11,7 +11,10 @@ def test_inverse_forward_ppo(tmp_path: Path):
 
     with open_dict(cfg):
         cfg.inverse_dynamics.pl_trainer.default_root_dir = str(tmp_path / "inverse_dynamics")
+        cfg.inverse_dynamics.pl_trainer.accelerator = "cpu"
         cfg.forward_dynamics.pl_trainer.default_root_dir = str(tmp_path / "forward_dynamics")
+        cfg.forward_dynamics.pl_trainer.accelerator = "cpu"
         cfg.ppo.pl_trainer.default_root_dir = str(tmp_path / "ppo")
+        cfg.ppo.pl_trainer.accelerator = "cpu"
 
     hydra.utils.instantiate(cfg)
