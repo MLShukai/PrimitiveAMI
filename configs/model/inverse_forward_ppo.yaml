@@ -21,12 +21,47 @@ inverse_dynamics:
   optimizer:
     _target_: torch.optim.Adam
     _partial_: true
-    lr: 1e-4 # https://github.com/openai/large-scale-curiosity/blob/e0a698676d19307a095cd4ac1991c4e4e70e56fb/run.py#L178
+    lr: 1e-4 # from large-scale-curiosity
     betas: [0.9, 0.999]
 
 forward_dynamics:
-  _target_:
+  _target_: src.models.forward_dynamics_lit_module.ForwardDynamicsLitModule
   _partial_: true
+  forward_dynamics_net:
+    _target_: src.models.components.forward_dynamics.dense_net_forward_dynamics.DenseNetForwardDynamics
+    dim_action: ${...inverse_dynamics.inverse_dynamics_net.action_predictor.dim_action}
+    dim_embed: ${...inverse_dynamics.inverse_dynamics_net.observation_encoder.dim_out}
+
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 1e-4 # from large-scale-curiosity
+    betas: [0.9, 0.999]
 
 ppo:
-  _target_:
+  _target_: src.models.ppo_lit_module.PPOLitModule
+
+  net:
+    _target_: src.models.components.policy_value_common_net.PolicyValueCommonNet
+
+    base_model:
+      _target_: src.models.components.small_conv_net.SmallConvNet
+      height: 256 #${environment.sensor.height}
+      width: 256 #${environment.sensor.width}
+      channels: 3
+      dim_out: 1024
+
+    policy:
+      _target_: src.models.components.policy.tanh_normal_stochastic_policy.TanhNormalStochasticPolicy
+      dim_input: ${..base_model.dim_out}
+      dim_out: ${....inverse_dynamics.inverse_dynamics_net.action_predictor.dim_action}
+
+    value:
+      _target_: src.models.components.value.fully_connect_value.FullyConnectValue
+      dim_input: ${..base_model.dim_out}
+
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 1e-4 # from large-scale-curiosity
+    betas: [0.9, 0.999]
