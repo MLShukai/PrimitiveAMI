@@ -165,7 +165,7 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
     base_model = SmallConvNet(height, width, channels, embed_dim)
     policy = TanhNormalStochasticPolicy(embed_dim, action_size)
     value = FullyConnectValue(embed_dim)
-    policy_value = PolicyValueCommonNet(base_model, policy, value)
+    policy_value = PolicyValueCommonNet(base_model, policy, value, embed_dim, embed_dim)
     # RewardModel
     reward = CuriosityReward()
     # Data Collector
