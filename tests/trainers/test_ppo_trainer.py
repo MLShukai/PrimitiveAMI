@@ -39,7 +39,7 @@ class TestPPOTrainer:
 
     @pytest.fixture
     def policy_value_common_net(self, base_model, policy, value) -> PolicyValueCommonNet:
-        return PolicyValueCommonNet(base_model, policy, value, self.hidden_dim, self.hidden_dim)
+        return PolicyValueCommonNet(base_model, policy, value)
 
     @pytest.fixture
     def optimizer(self) -> partial[Optimizer]:
