@@ -8,8 +8,8 @@ inverse_dynamics:
 
     observation_encoder:
       _target_: src.models.components.small_conv_net.SmallConvNet
-      height: 256 #${environment.sensor.height}
-      width: 256 #${environment.sensor.width}
+      height: ${environment.sensor.height}
+      width: ${environment.sensor.width}
       channels: 3
       dim_out: 1024
 
@@ -46,8 +46,8 @@ ppo:
 
     base_model:
       _target_: src.models.components.small_conv_net.SmallConvNet
-      height: 256 #${environment.sensor.height}
-      width: 256 #${environment.sensor.width}
+      height: ${environment.sensor.height}
+      width: ${environment.sensor.width}
       channels: 3
       dim_out: 1024
 
