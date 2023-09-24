@@ -27,7 +27,7 @@ class ResNetForwardDynamics(ForwardDynamics):
             x = x_ + x
         next_embed = self.fc_out(self.add_action(prev_action, x, action))
         return next_embed
-    
+
     @staticmethod
     def add_action(prev_action, x, action):
         return torch.concat([prev_action, x, action], dim=-1)
