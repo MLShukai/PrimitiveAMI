@@ -14,15 +14,15 @@ class PPOTrainer(Trainer):
         module: PPOLitModule,
         data_collector: TrajectoryDataCollector,
         dataloader: partial[DataLoader],
-        trainer: pl.Trainer,
+        pl_trainer: pl.Trainer,
     ):
         self.module = module
         self.data_collector = data_collector
         self.dataloader = dataloader
-        self.trainer = trainer
+        self.pl_trainer = pl_trainer
 
     def train(self):
         dataset = self.data_collector.get_data()
         dataloader = self.dataloader(dataset=dataset)
-        self.trainer.fit(self.module, dataloader)
+        self.pl_trainer.fit(self.module, dataloader)
         self.data_collector.clear()
