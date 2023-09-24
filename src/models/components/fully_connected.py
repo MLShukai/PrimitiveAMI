@@ -1,9 +1,12 @@
+from typing import Callable
+
 import torch
 import torch.nn as nn
+from torch import Tensor
 
 
 class FullyConnected(nn.Module):
-    def __init__(self, dim_in: int, dim_out: int, activation: nn.Module = None):
+    def __init__(self, dim_in: int, dim_out: int, activation: Callable[[Tensor], Tensor] = torch.relu):
         super().__init__()
         self.fc = nn.Linear(dim_in, dim_out)
         self.activation = activation

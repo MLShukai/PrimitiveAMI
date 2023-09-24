@@ -166,8 +166,8 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
     # PolicyValueCommonNet
     base_model = nn.Sequential(
         SmallConvNet(height, width, channels, embed_dim),
-        FullyConnected(embed_dim, embed_dim, activation=nn.ReLU()),
-        FullyConnected(embed_dim, embed_dim, activation=nn.ReLU),
+        FullyConnected(embed_dim, embed_dim),
+        FullyConnected(embed_dim, embed_dim),
     )
     policy = TanhNormalStochasticPolicy(embed_dim, action_size)
     value = FullyConnectValue(embed_dim)
