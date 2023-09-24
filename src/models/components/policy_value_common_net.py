@@ -8,7 +8,12 @@ from .value.value import Value
 
 
 class PolicyValueCommonNet(nn.Module):
-    def __init__(self, base_model: nn.Module, policy: StochasticPolicy, value: Value):
+    def __init__(
+        self,
+        base_model: nn.Module,
+        policy: StochasticPolicy,
+        value: Value,
+    ):
         super().__init__()
         self.policy = policy
         self.value = value
