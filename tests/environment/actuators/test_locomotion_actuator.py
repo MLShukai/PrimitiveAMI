@@ -3,7 +3,10 @@ import torch
 from pytest_mock import MockerFixture
 from vrchat_io.controller.wrappers.osc import AxesLocomotionWrapper
 
-from src.environment.actuators.locomotion_actuator import LocomotionActuator
+from src.environment.actuators.locomotion_actuator import (
+    LocomotionActuator,
+    get_sleep_action,
+)
 
 
 class TestLocomotionWrapper:
@@ -30,3 +33,7 @@ class TestLocomotionWrapper:
     def test_operate_cuda(self, axes_actuator):
         action = torch.tensor([0.0, 0.0, 0.0], device="cuda")
         self._test_operate(axes_actuator, action)
+
+
+def test_sleep_action():
+    assert torch.equal(get_sleep_action(), torch.zeros(3))

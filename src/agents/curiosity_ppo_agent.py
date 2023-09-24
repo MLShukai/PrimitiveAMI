@@ -87,20 +87,23 @@ class CuriosityPPOAgent(Agent):
         # ----------- Observation is `NEXT` now. ----------- #
         observation = self._preprocess_observation(observation)
 
+        # Take `NEXT` value (but, also taking action for convenience...)
+        next_action, next_action_log_prob, next_value = self._take_actions_and_value(observation)
+
         # Compute reward
         pred_next_embed_obs = self.step_record[RK.PREDICTED_NEXT_EMBED_OBSERVATION]
         embed_obs = self._embed_observation(observation)
         reward = self._compute_reward(pred_next_embed_obs, embed_obs)
 
         # Store data into step record
-        self._store_next_step_data(observation, embed_obs, reward)
+        self._store_next_step_data(observation, embed_obs, reward, next_value)
 
         # Data collection
-        self.data_collector.collect(self.step_record.copy())
+        self._collect_data()
 
         # ---- Observation is `CURRENT` now. (Move to next step) ---- #
         # Take action
-        action, action_log_prob, value = self._take_actions_and_value(observation)
+        action, action_log_prob, value = next_action, next_action_log_prob, next_value
 
         # Predict next embedded observation
         prev_action = self.step_record[RK.ACTION]
@@ -242,8 +245,20 @@ class CuriosityPPOAgent(Agent):
         next_observation: Tensor,
         next_embed_obs: Tensor,
         reward: Tensor,
+        next_value: Tensor,
     ):
         """Store next step (t+1) data into step record."""
         self.step_record[RK.NEXT_OBSERVATION] = next_observation  # o_{t+1}
         self.step_record[RK.NEXT_EMBED_OBSERVATION] = next_embed_obs  # z_{t+1}
         self.step_record[RK.REWARD] = reward  # r_{t+1}
+        self.step_record[RK.NEXT_VALUE] = next_value  # v_{t+1}
+
+    def _collect_data(self) -> None:
+        """Throw `step_record` to data collector.
+
+        Removing batch axis.
+        """
+        new_record = self.step_record.copy()
+        for key in self.step_record.keys():
+            new_record[key] = new_record[key].squeeze(0)
+        self.data_collector.collect(new_record)
