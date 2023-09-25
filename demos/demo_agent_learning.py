@@ -10,6 +10,7 @@ from src.environment.environment import Environment
 from src.interactions.interaction import Interaction
 from src.models.aggregations.neural_networks import NeuralNetworks
 from src.trainers.builders.trainers_builder import TrainersBuilder
+from src.trainers.trainer import Trainer
 from src.utils.random import seed_everything
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
@@ -45,6 +46,29 @@ def main(cfg: DictConfig) -> None:
     logger.info(f"Instantiating interaction<{cfg.interaction._target_}>")
     interaction: Interaction = hydra.utils.instantiate(cfg.interaction)
     interaction = interaction(agent=agent, environment=environment)
+
+    loop(interaction, trainer)
+
+    logger.info("End demo.")
+
+
+def loop(interaction: Interaction, trainer: Trainer) -> None:
+    """main loop process."""
+    logger.info("Start main loop.")
+
+    try:
+        while True:
+            logger.info("Interacting...")
+            interaction.interact()
+            logger.info("End iteraction.")
+
+            logger.info("Training...")
+            trainer.train()
+            logger.info("End training.")
+    except KeyboardInterrupt:
+        logger.error("Keyboard interrupted.")
+    finally:
+        logger.info("End main loop.")
 
 
 if __name__ == "__main__":
