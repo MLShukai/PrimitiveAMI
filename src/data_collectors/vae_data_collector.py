@@ -1,9 +1,10 @@
-from .data_collector import DataCollector
-from torch import Tensor
-from ..utils.step_record import RecordKeys as RK
 import numpy as np
-from torch.utils.data import TensorDataset
 import torch
+from torch import Tensor
+from torch.utils.data import TensorDataset
+
+from ..utils.step_record import RecordKeys as RK
+from .data_collector import DataCollector
 
 
 class VAEDataCollector(DataCollector):
@@ -18,7 +19,7 @@ class VAEDataCollector(DataCollector):
         else:
             rand_ind = np.random.randint(0, self.max_size)
             self.observations[rand_ind] = obs
-    
+
     def get_data(self) -> TensorDataset:
         observations = torch.stack(self.observations)
         return TensorDataset(observations)
