@@ -27,7 +27,7 @@ class VAEEncoder(ObservationEncoder):
     def encode(self, x: Tensor):
         mu_sigma = self.conv_net(x)
         mu, sigma = torch.chunk(mu_sigma, chunks=2, dim=-1)
-        sigma = (torch.nn.functional.softplus(sigma) + self.min_stddev)
+        sigma = torch.nn.functional.softplus(sigma) + self.min_stddev
         distribution = Normal(mu, sigma)
         return distribution
 
