@@ -75,4 +75,4 @@ class TestVAE(TestVAEs):
         mod = VAE(encoder, decoder)
         x = torch.randn(8, self.CHANNELS, self.HEIGHT, self.WIDTH)
         rec_x, z = mod(x)
-        assert z.shape == torch.Size((8, self.DIM_EMBED))
+        assert z.sample().shape == torch.Size((8, self.DIM_EMBED))
