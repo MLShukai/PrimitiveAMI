@@ -6,7 +6,15 @@ from torch import Tensor
 
 
 class SmallDeconvNet(nn.Module):
-    def __init__(self, height: int, width: int, channels: int, dim_in: int, positional_bias: bool, nl: Callable):
+    def __init__(
+        self,
+        height: int,
+        width: int,
+        channels: int,
+        dim_in: int,
+        positional_bias: bool = True,
+        nl: Callable = nn.LeakyReLU(negative_slope=0.2),
+    ):
         """潜在変数から画像の再構成を行います。 (256,
         256)に合わせるため、2回目のConvTranspose2dにoutput_padding=1を追加しています。
 
