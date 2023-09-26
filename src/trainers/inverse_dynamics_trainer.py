@@ -26,3 +26,5 @@ class InverseDynamicsTrainer(Trainer):
         dataset = self.data_collector.get_data()
         dataloader = self.dataloader(dataset=dataset)
         self.pl_trainer.fit(self.module, dataloader)
+        if self.pl_trainer.fit_loop.max_epochs is not None:
+            self.pl_trainer.fit_loop.max_epochs += 1

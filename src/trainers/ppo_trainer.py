@@ -26,3 +26,5 @@ class PPOTrainer(Trainer):
         dataloader = self.dataloader(dataset=dataset)
         self.trainer.fit(self.module, dataloader)
         self.data_collector.clear()
+        if self.trainer.fit_loop.max_epochs is not None:
+            self.trainer.fit_loop.max_epochs += 1
