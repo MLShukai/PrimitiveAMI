@@ -1,7 +1,9 @@
-from src.data_collectors.vae_data_collector import VAEDataCollector as cls
 import pytest
-from src.utils.step_record import RecordKeys as RK
 import torch
+
+from src.data_collectors.vae_data_collector import VAEDataCollector as cls
+from src.utils.step_record import RecordKeys as RK
+
 
 class TestVAEDataCollector:
     max_size = 3
@@ -13,9 +15,7 @@ class TestVAEDataCollector:
 
     @pytest.fixture
     def dummy_record(self):
-        dummy_record = {
-            RK.OBSERVATION: torch.randn(256, 156)
-        }
+        dummy_record = {RK.OBSERVATION: torch.randn(256, 156)}
         return dummy_record
 
     def test_collect(self, dummy_record):
