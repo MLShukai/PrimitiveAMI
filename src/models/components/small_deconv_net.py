@@ -16,8 +16,9 @@ class SmallDeconvNet(nn.Module):
         nl: Callable = nn.LeakyReLU(negative_slope=0.2),
     ):
         """Reconstruct images from latent variables.
-        `output_padding = 1` is added to match tensor shape.
-
+        `strides` differs from original implementation.
+        For the original implementation, see https://github.com/openai/large-scale-curiosity/blob/master/utils.py#L147
+        
         Args:
             height (int): height of the reconstructed image.
             width (int): width of the reconstructed image.
@@ -31,7 +32,7 @@ class SmallDeconvNet(nn.Module):
         self.width = width
         self.channels = channels
         self.kernel_sizes = ((4, 4), (8, 8), (8, 8))
-        self.strides = ((2, 2), (2, 2), (3, 3))
+        self.strides = ((2, 2), (2, 2), (4, 4))
         self.paddings = ((1, 1), (3, 3), (2, 2))
 
         init_output_size = self.init_output_size
@@ -47,8 +48,7 @@ class SmallDeconvNet(nn.Module):
             kernel_size=self.kernel_sizes[1],
             stride=self.strides[1],
             padding=self.paddings[1],
-            output_padding=1,
-        )  # 追加部分
+        )
         self.deconv3 = nn.ConvTranspose2d(
             64, 3, kernel_size=self.kernel_sizes[2], stride=self.strides[2], padding=self.paddings[2]
         )
