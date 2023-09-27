@@ -23,15 +23,12 @@ class Encoder(ObservationEncoder):
         self.conv_net = base_model
         self.min_stddev = min_stddev
 
-    def encode(self, x: Tensor):
+    def forward(self, x: Tensor):
         mu_sigma = self.conv_net(x)
         mu, sigma = torch.chunk(mu_sigma, chunks=2, dim=-1)
         sigma = torch.nn.functional.softplus(sigma) + self.min_stddev
         distribution = Normal(mu, sigma)
         return distribution
-
-    def forward(self, x: Tensor):
-        return self.encode(x)
 
 
 class Decoder(nn.Module):
@@ -44,12 +41,9 @@ class Decoder(nn.Module):
         super().__init__()
         self.deconv_net = base_model
 
-    def decode(self, z: Tensor):
+    def forward(self, z: Tensor):
         rec_img = self.deconv_net(z)
         return rec_img
-
-    def forward(self, z: Tensor):
-        return self.decode(z)
 
 
 class VAE:

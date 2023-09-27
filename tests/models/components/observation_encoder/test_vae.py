@@ -25,12 +25,6 @@ class TestVAEEncoder(TestVAEs):
         mod = Encoder(small_conv_net)
         assert mod.conv_net is small_conv_net
 
-    def test_encode(self, small_conv_net):
-        mod = Encoder(small_conv_net)
-        x = torch.randn(8, self.CHANNELS, self.WIDTH, self.HEIGHT)
-        z_dist = mod.encode(x)
-        assert isinstance(z_dist, torch.distributions.Normal)
-
     def test_forward(self, small_conv_net):
         mod = Encoder(small_conv_net)
         x = torch.randn(8, self.CHANNELS, self.WIDTH, self.HEIGHT)
@@ -48,10 +42,10 @@ class TestVAEDecode(TestVAEs):
         mod = Decoder(small_deconv_net)
         assert mod.deconv_net is small_deconv_net
 
-    def test_decode(self, small_deconv_net):
+    def test_forward(self, small_deconv_net):
         mod = Decoder(small_deconv_net)
         z = torch.randn(8, self.DIM_EMBED)
-        rec_x = mod.decode(z)
+        rec_x = mod.forward(z)
         assert rec_x.shape == torch.Size((8, self.CHANNELS, self.HEIGHT, self.WIDTH))
 
 
