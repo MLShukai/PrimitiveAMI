@@ -11,7 +11,7 @@ from .observation_encoder import ObservationEncoder
 
 
 class Encoder(ObservationEncoder):
-    def __init__(self, small_conv_net: SmallConvNet, min_stddev=0.0):
+    def __init__(self, base_model: nn.Module, min_stddev=0.0):
         """VAEのエンコーダのコンストラクタです.
 
         Args:
@@ -21,7 +21,7 @@ class Encoder(ObservationEncoder):
             channels (int, optional): 入力画像のチャネル数。 Defaults to 3.
         """
         super().__init__()
-        self.conv_net = small_conv_net
+        self.conv_net = base_model
         self.min_stddev = min_stddev
 
     def encode(self, x: Tensor):
@@ -36,7 +36,7 @@ class Encoder(ObservationEncoder):
 
 
 class Decoder(nn.Module):
-    def __init__(self, small_deconv_net: SmallDeconvNet):
+    def __init__(self, base_model: nn.Module):
         """VAEのデコーダのコンストラクタです。
 
         Args:
@@ -46,7 +46,7 @@ class Decoder(nn.Module):
             channels (int, optional): 入力画像のチャネル数。 Defaults to 3.
         """
         super().__init__()
-        self.deconv_net = small_deconv_net
+        self.deconv_net = base_model
 
     def decode(self, z: Tensor):
         rec_img = self.deconv_net(z)
