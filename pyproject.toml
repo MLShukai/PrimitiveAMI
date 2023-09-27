@@ -13,6 +13,7 @@ torch = ">=2.0.0 !=2.0.1"
 torchrl = "^0.1.1"
 vrchat-io = {git = "https://github.com/Geson-anko/vrchat-io.git", rev = "main"}
 lightning = "^2.0.8"
+torchvision = "0.15.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
