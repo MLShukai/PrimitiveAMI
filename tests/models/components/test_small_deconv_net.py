@@ -6,19 +6,11 @@ from src.models.components.small_deconv_net import SmallDeconvNet as cls
 
 class TestSmallDeconvNet:
     def test__init__(self):
-        params = {
-            "height": 256,
-            "width": 256,
-            "channels": 3,
-            "dim_in": 256,
-            "positional_bias": True,
-            "nl": torch.nn.ReLU(),
-        }
-        mod = cls(**params)
-        assert mod.channels == params["channels"]
-        assert mod.fc_init.in_features == params["dim_in"]
-        assert mod.bias.shape == (params["channels"], params["height"], params["width"])
-        assert mod.nl == params["nl"]
+        mod = cls(256, 256, 3, 256, True, torch.nn.ReLU())
+        assert mod.channels == 3
+        assert mod.fc_init.in_features == 256
+        assert mod.bias.shape == (3, 256, 256)
+        assert mod.nl == torch.nn.ReLU()
 
     @pytest.mark.parametrize(
         """batch,
