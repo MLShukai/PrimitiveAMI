@@ -31,7 +31,7 @@ class TestSmallDeconvNet:
         [
             (8, 256, 256, 3, 256, False, torch.nn.LeakyReLU()),
             (1, 128, 256, 3, 128, True, torch.nn.LeakyReLU(negative_slope=0.2)),
-            (4, 512, 128, 3, 256, True, torch.nn.LeakyReLU())
+            (4, 512, 128, 3, 256, True, torch.nn.LeakyReLU()),
         ],
     )
     def test_forward(self, batch, height, width, channels, dim_in, positional_bias, nl):

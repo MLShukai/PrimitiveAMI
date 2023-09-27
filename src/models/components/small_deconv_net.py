@@ -15,10 +15,11 @@ class SmallDeconvNet(nn.Module):
         positional_bias: bool = True,
         nl: Callable = nn.LeakyReLU(negative_slope=0.2),
     ):
-        """Reconstruct images from latent variables.
-        `strides` differs from original implementation.
-        For the original implementation, see https://github.com/openai/large-scale-curiosity/blob/master/utils.py#L147
-        
+        """Reconstruct images from latent variables. `strides` differs from
+        original implementation. For the original implementation, see
+        https://github.com/openai/large-scale-
+        curiosity/blob/master/utils.py#L147.
+
         Args:
             height (int): height of the reconstructed image.
             width (int): width of the reconstructed image.
