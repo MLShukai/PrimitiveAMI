@@ -1,8 +1,10 @@
+import math
 from typing import Callable
 
 import torch
 import torch.nn as nn
 from torch import Tensor
+from torchvision.transforms import CenterCrop
 
 
 class SmallDeconvNet(nn.Module):
@@ -53,6 +55,9 @@ class SmallDeconvNet(nn.Module):
         self.deconv3 = nn.ConvTranspose2d(
             64, 3, kernel_size=self.kernel_sizes[2], stride=self.strides[2], padding=self.paddings[2]
         )
+
+        self.center_crop = CenterCrop((height, width))
+
         self.bias = nn.Parameter(torch.zeros(channels, height, width), requires_grad=True) if positional_bias else None
         self.nl = nl
 
@@ -83,6 +88,8 @@ class SmallDeconvNet(nn.Module):
 
         H_out = (H_in - 1) * stride - 2 * padding + dilation*(kernel_size - 1) + output_padding + 1
         See https://pytorch.org/docs/stable/generated/torch.nn.ConvTranspose2d.html
+        `math.ceil()` is used to make the output size larger than the required size.
+
         Args:
             edge_output_dim (int): Correspond to H_out in above equation.
             kernel_size (int): Size of the convolving kernel.
@@ -94,7 +101,9 @@ class SmallDeconvNet(nn.Module):
         Returns:
             int : Required input size. Correspond to H_in in above equation.
         """
-        return (edge_output_dim - 1 - out_pad - dilation * (kernel_size - 1) + 2 * edge_padding) // edge_stride + 1
+        return math.ceil(
+            (edge_output_dim - 1 - out_pad - dilation * (kernel_size - 1) + 2 * edge_padding) / edge_stride + 1
+        )
 
     def forward(self, x: Tensor):
         x = self.fc_init(x)
@@ -102,6 +111,7 @@ class SmallDeconvNet(nn.Module):
         x = self.nl(self.deconv1(x))
         x = self.nl(self.deconv2(x))
         x = self.deconv3(x)
+        x = self.center_crop(x)
         if self.bias is not None:
             x = x + self.bias
         return x
