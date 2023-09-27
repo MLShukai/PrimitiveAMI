@@ -15,16 +15,16 @@ class SmallDeconvNet(nn.Module):
         positional_bias: bool = True,
         nl: Callable = nn.LeakyReLU(negative_slope=0.2),
     ):
-        """潜在変数から画像の再構成を行います。 (256,
-        256)に合わせるため、2回目のConvTranspose2dにoutput_padding=1を追加しています。
+        """Reconstruct images from latent variables.
+        `output_padding = 1` is added to match tensor shape.
 
         Args:
-            height (int): 再構成画像の高さ
-            width (int): 再構成画像の横幅
-            channels (int): 再構成画像のチャネル数
-            dim_in (int): 潜在変数ベクトルの次元数
-            positional_bias (bool): 最後にバイアス項を足すかどうか
-            nl (Callable): 活性化関数
+            height (int): height of the reconstructed image.
+            width (int): width of the reconstructed image.
+            channels (int): Channels of the reconstructed image.
+            dim_in (int): The size of latent variable.
+            positional_bias (bool): Whether to add positional bias or not in last layer.
+            nl (Callable): NonLinear function for activation.
         """
         super().__init__()
         self.height = height
@@ -57,6 +57,12 @@ class SmallDeconvNet(nn.Module):
 
     @property
     def init_output_size(self):
+        """Execute `_compute_input_shape` for the same number of times as
+        convolution layers.
+
+        Returns:
+            tuple[int, int]: Required size for self.conv1.
+        """
         output_size = (self.height, self.width)
         for kernel_size, stride, padding in zip(self.kernel_sizes[::-1], self.strides[::-1], self.paddings[::-1]):
             output_size = tuple(map(self._compute_input_shape, output_size, kernel_size, stride, padding))
@@ -70,7 +76,23 @@ class SmallDeconvNet(nn.Module):
         edge_padding: int,
         dilation: int = 1,
         out_pad: int = 0,
-    ):
+    ) -> int:
+        """compute required input size by computing inverse function of the
+        following equation.
+
+        H_out = (H_in - 1) * stride - 2 * padding + dilation*(kernel_size - 1) + output_padding + 1
+        See https://pytorch.org/docs/stable/generated/torch.nn.ConvTranspose2d.html
+        Args:
+            edge_output_dim (int): Correspond to H_out in above equation.
+            kernel_size (int): Size of the convolving kernel.
+            edge_stride (int): Stride width of convolution.
+            edge_padding (int): Padding size of convolution.
+            dilation (int, optional): Spacing between kernel elements. Defaults to 1.
+            out_pad (int, optional): Additional size added to one side of each dimension in the output shape. Default: 0 Defaults to 0.
+
+        Returns:
+            int : Required input size. Correspond to H_in in above equation.
+        """
         return (edge_output_dim - 1 - out_pad - dilation * (kernel_size - 1) + 2 * edge_padding) // edge_stride + 1
 
     def forward(self, x: Tensor):
