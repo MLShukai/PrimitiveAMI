@@ -75,7 +75,7 @@ class TestPPOTrainer:
     @pytest.fixture
     def pl_trainer(self) -> pl.Trainer:
         return pl.Trainer(
-            max_steps=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
+            max_epochs=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
         )
 
     @pytest.fixture
@@ -90,3 +90,5 @@ class TestPPOTrainer:
 
     def test_ppo_trainer(self, ppo_trainer: PPOTrainer):
         ppo_trainer.train()
+        ppo_trainer.train()
+        assert ppo_trainer.pl_trainer.fit_loop.max_epochs == 3

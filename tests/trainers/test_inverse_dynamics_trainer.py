@@ -72,7 +72,7 @@ class TestInverseDynamicsTrainer:
     def get_pl_trainer(self, accelerator):
         trainer = pl.Trainer(
             accelerator=accelerator,
-            max_steps=1,
+            max_epochs=1,
             logger=False,
             enable_checkpointing=False,
             enable_progress_bar=False,
@@ -85,8 +85,12 @@ class TestInverseDynamicsTrainer:
         pl_trainer = self.get_pl_trainer("cuda")
         mod = cls(inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
         mod.train()
+        mod.train()
+        assert mod.pl_trainer.fit_loop.max_epochs == 3
 
     def test_cpu_train(self, inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader):
         pl_trainer = self.get_pl_trainer("cpu")
         mod = cls(inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
         mod.train()
+        mod.train()
+        assert mod.pl_trainer.fit_loop.max_epochs == 3

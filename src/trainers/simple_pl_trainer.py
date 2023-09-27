@@ -20,10 +20,11 @@ class SimplePLTrainer(Trainer):
         self.data_collector = data_collector
         self.dataloader = dataloader
         self.pl_trainer = pl_trainer
+        self.max_epochs = pl_trainer.max_epochs
 
     def train(self):
         dataset = self.data_collector.get_data()
         dataloader = self.dataloader(dataset=dataset)
         self.pl_trainer.fit(self.module, dataloader)
         if self.pl_trainer.fit_loop.max_epochs is not None:
-            self.pl_trainer.fit_loop.max_epochs += self.pl_trainer.fit_loop.max_epochs
+            self.pl_trainer.fit_loop.max_epochs += self.max_epochs
