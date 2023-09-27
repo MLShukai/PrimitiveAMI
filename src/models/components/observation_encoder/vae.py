@@ -11,14 +11,13 @@ from .observation_encoder import ObservationEncoder
 
 
 class Encoder(ObservationEncoder):
-    def __init__(self, base_model: nn.Module, min_stddev=0.0):
-        """VAEのエンコーダのコンストラクタです.
+    def __init__(self, base_model: nn.Module, min_stddev=1e-7) -> None:
+        """Construct encoder for VAE. output channel size of the `base_model`
+        is twice the size of the latent space.
 
         Args:
-            dim_embed (int): 潜在変数ベクトルの次元数
-            height (int): 入力画像の高さ
-            width (int): 入力画像の横幅
-            channels (int, optional): 入力画像のチャネル数。 Defaults to 3.
+            base_model (nn.Module): The base convolutional neural network model for encoding.
+            min_stddev (float, optional): Small value added to stddev for preventing stddev from being zero. Defaults to 1e-7.
         """
         super().__init__()
         self.conv_net = base_model
@@ -37,13 +36,10 @@ class Encoder(ObservationEncoder):
 
 class Decoder(nn.Module):
     def __init__(self, base_model: nn.Module):
-        """VAEのデコーダのコンストラクタです。
+        """Construct decoder for VAE.
 
         Args:
-            dim_embed (int): 潜在変数ベクトルの次元数
-            height (int): 入力画像の高さ
-            width (int): 入力画像の横幅
-            channels (int, optional): 入力画像のチャネル数。 Defaults to 3.
+            base_model (nn.Module): base_model (nn.Module): The base convolutional neural network model for decoding.
         """
         super().__init__()
         self.deconv_net = base_model
@@ -58,24 +54,16 @@ class Decoder(nn.Module):
 
 class VAE:
     def __init__(self, encoder: Encoder, decoder: Decoder):
-        """VAEのコンストラクタです。
+        """Construct VAE.
 
         Args:
-            encoder (VAEEncoder): VAEのエンコーダ
-            decoder (VAEDecoder): VAEのデコーダ
+            encoder (Encoder): The encoder for encoding input data.
+            decoder (Decoder): The decoder for decoding latent variable.
         """
         self.encoder = encoder
         self.decoder = decoder
 
     def forward(self, x: Tensor) -> tuple[Tensor, Tensor]:
-        """encodeとdecodeを行い、潜在変数と再構成画像を返します。
-
-        Args:
-            x (Tensor): 入力画像
-
-        Returns:
-            tuple[Tensor, Tensor]: 再構成画像と潜在変数の分布オブジェクトのタプル
-        """
         z_dist: Normal = self.encoder(x)
         z_sampled = z_dist.rsample()
         x_reconstructed = self.decoder(z_sampled)
