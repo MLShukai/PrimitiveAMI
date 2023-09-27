@@ -46,7 +46,7 @@ class Decoder(nn.Module):
         return rec_img
 
 
-class VAE:
+class VAE(nn.Module):
     def __init__(self, encoder: Encoder, decoder: Decoder):
         """Construct VAE.
 
@@ -54,6 +54,7 @@ class VAE:
             encoder (Encoder): The encoder for encoding input data.
             decoder (Decoder): The decoder for decoding latent variable.
         """
+        super().__init__()
         self.encoder = encoder
         self.decoder = decoder
 
@@ -62,6 +63,3 @@ class VAE:
         z_sampled = z_dist.rsample()
         x_reconstructed = self.decoder(z_sampled)
         return x_reconstructed, z_dist
-
-    def __call__(self, x: Tensor) -> tuple[Tensor, Tensor]:
-        return self.forward(x)
