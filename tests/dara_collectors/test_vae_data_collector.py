@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from src.data_collectors.vae_data_collector import VAEDataCollector as cls
+from src.data_collectors.obs_data_collector import ObsDataCollector as cls
 from src.utils.step_record import RecordKeys as RK
 
 
@@ -33,4 +33,4 @@ class TestVAEDataCollector:
     def test_get_data(self, dummy_record):
         mod = cls(self.max_size)
         mod.collect(dummy_record)
-        assert type(mod.get_data()) == torch.utils.data.TensorDataset
+        assert isinstance(mod.get_data(), torch.utils.data.TensorDataset)
