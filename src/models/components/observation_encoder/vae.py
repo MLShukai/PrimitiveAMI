@@ -10,7 +10,7 @@ from ..small_deconv_net import SmallDeconvNet
 from .observation_encoder import ObservationEncoder
 
 
-class VAEEncoder(ObservationEncoder):
+class Encoder(ObservationEncoder):
     def __init__(self, small_conv_net: SmallConvNet, min_stddev=0.0):
         """VAEのエンコーダのコンストラクタです.
 
@@ -35,7 +35,7 @@ class VAEEncoder(ObservationEncoder):
         return self.encode(x)
 
 
-class VAEDecoder(nn.Module):
+class Decoder(nn.Module):
     def __init__(self, small_deconv_net: SmallDeconvNet):
         """VAEのデコーダのコンストラクタです。
 
@@ -57,7 +57,7 @@ class VAEDecoder(nn.Module):
 
 
 class VAE:
-    def __init__(self, encoder: VAEEncoder, decoder: VAEDecoder):
+    def __init__(self, encoder: Encoder, decoder: Decoder):
         """VAEのコンストラクタです。
 
         Args:
