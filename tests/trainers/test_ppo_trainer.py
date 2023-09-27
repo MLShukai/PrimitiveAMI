@@ -75,7 +75,11 @@ class TestPPOTrainer:
     @pytest.fixture
     def pl_trainer(self) -> pl.Trainer:
         return pl.Trainer(
-            max_epochs=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
+            max_epochs=1,
+            logger=False,
+            enable_checkpointing=False,
+            enable_progress_bar=False,
+            enable_model_summary=False,
         )
 
     @pytest.fixture
