@@ -7,7 +7,7 @@ from ..utils.step_record import RecordKeys as RK
 from .data_collector import DataCollector
 
 
-class VAEDataCollector(DataCollector):
+class ObsDataCollector(DataCollector):
     def __init__(self, max_size: int):
         self.max_size = max_size
         self.observations = []
