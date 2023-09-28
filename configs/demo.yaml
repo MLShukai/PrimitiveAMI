@@ -1,0 +1,19 @@
+# @package _global_
+
+# specify here default configuration
+# order of defaults determines the order in which configs override each other
+defaults:
+  - _self_
+  - model: inverse_forward_ppo
+  - data_collector: dict_dynamics_trajectory
+  - trainers_builder: inverse_forward_ppo
+  - agent: curiosity_ppo_agent
+  - environment: frame_locomotion_sleep
+  - interaction: fixed_step
+
+  - paths: default
+  - hydra: default
+
+task_name: "demo"
+
+seed: null
