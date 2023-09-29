@@ -28,9 +28,11 @@ forward_dynamics:
   _target_: src.models.forward_dynamics_lit_module.ForwardDynamicsLitModule
   _partial_: true
   forward_dynamics_net:
-    _target_: src.models.components.forward_dynamics.dense_net_forward_dynamics.DenseNetForwardDynamics
+    _target_: src.models.components.forward_dynamics.resnet_forward_dynamics.ResNetForwardDynamics
     dim_action: ${...inverse_dynamics.inverse_dynamics_net.action_predictor.dim_action}
     dim_embed: ${...inverse_dynamics.inverse_dynamics_net.observation_encoder.dim_out}
+    dim_hidden: 512
+    depth: 4
 
   optimizer:
     _target_: torch.optim.Adam
