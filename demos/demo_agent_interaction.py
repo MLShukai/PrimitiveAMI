@@ -4,10 +4,12 @@ import logging
 import pprint
 import time
 from argparse import ArgumentParser, Namespace
+from datetime import datetime
 
 import colorlog
 import torch
 import torch.nn as nn
+from lightning.pytorch.loggers import TensorBoardLogger
 
 from src.agents.curiosity_ppo_agent import CuriosityPPOAgent
 from src.data_collectors.empty_data_collector import EmptyDataCollector
@@ -28,6 +30,7 @@ from src.models.components.reward.curiosity_reward import CuriosityReward
 from src.models.components.small_conv_net import SmallConvNet
 from src.models.components.value.fully_connect_value import FullyConnectValue
 from src.utils.environment import create_frame_sensor, create_locomotion_actuator
+from src.utils.paths import PROJECT_ROOT
 from src.utils.random import seed_everything
 
 logger = logging.getLogger(__name__)
@@ -178,6 +181,10 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
     data_collector = EmptyDataCollector()
     # Sleep Action
     sleep_action = torch.zeros(action_size)
+    # Logger
+    logger = TensorBoardLogger(
+        PROJECT_ROOT / "logs/demo_agent_interaction" / datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    )
 
     # Agemt
     agent = CuriosityPPOAgent(
@@ -187,6 +194,7 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
         reward,
         data_collector,
         sleep_action,
+        logger,
         device,
         dtype,
     )
