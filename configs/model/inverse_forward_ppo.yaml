@@ -11,7 +11,7 @@ inverse_dynamics:
       height: ${environment.sensor.height}
       width: ${environment.sensor.width}
       channels: 3
-      dim_out: 512
+      dim_out: 512 # from large-scale-curiosity
 
     action_predictor:
       _target_: src.models.components.action_predictor.continuous_action_predictor.ContinuousActionPredictor
@@ -31,8 +31,8 @@ forward_dynamics:
     _target_: src.models.components.forward_dynamics.resnet_forward_dynamics.ResNetForwardDynamics
     dim_action: ${...inverse_dynamics.inverse_dynamics_net.action_predictor.dim_action}
     dim_embed: ${...inverse_dynamics.inverse_dynamics_net.observation_encoder.dim_out}
-    dim_hidden: 512
-    depth: 4
+    dim_hidden: 512 # from large-scale-curiosity
+    depth: 4 # from large-scale-curiosity
 
   optimizer:
     _target_: torch.optim.Adam
