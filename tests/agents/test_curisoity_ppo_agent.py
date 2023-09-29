@@ -1,5 +1,8 @@
+from pathlib import Path
+
 import pytest
 import torch
+from lightning.pytorch.loggers import TensorBoardLogger
 from pytest_mock import MockerFixture
 from torch.distributions import Normal
 
@@ -48,6 +51,10 @@ class TestCuriosityPPOAgent:
         return mock
 
     @pytest.fixture
+    def logger(self, tmp_path: Path) -> TensorBoardLogger:
+        return TensorBoardLogger(tmp_path / "tensorboard")
+
+    @pytest.fixture
     def curiosity_ppo_agent(
         self,
         mock_embedding: ObservationEncoder,
@@ -55,9 +62,10 @@ class TestCuriosityPPOAgent:
         mock_policy: PolicyValueCommonNet,
         mock_reward: CuriosityReward,
         mock_data_collector: DataCollector,
+        logger: TensorBoardLogger,
     ) -> CuriosityPPOAgent:
         return CuriosityPPOAgent(
-            mock_embedding, mock_forward_dynamics, mock_policy, mock_reward, mock_data_collector, SLEEP_ACTION
+            mock_embedding, mock_forward_dynamics, mock_policy, mock_reward, mock_data_collector, SLEEP_ACTION, logger
         )
 
     @pytest.fixture
@@ -84,6 +92,7 @@ class TestCuriosityPPOAgent:
         mock_policy: PolicyValueCommonNet,
         mock_reward: CuriosityReward,
         mock_data_collector: DataCollector,
+        logger: TensorBoardLogger,
     ):
         assert curiosity_ppo_agent.embedding == mock_embedding
         assert curiosity_ppo_agent.dynamics == mock_forward_dynamics
@@ -94,6 +103,7 @@ class TestCuriosityPPOAgent:
         assert curiosity_ppo_agent.device == "cpu"
         assert curiosity_ppo_agent.dtype == torch.float32
         assert curiosity_ppo_agent.step_record == StepRecord()
+        assert curiosity_ppo_agent.logger == logger
 
     @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is not available")
     def test_to_device_dtype(self, curiosity_ppo_agent: CuriosityPPOAgent):
