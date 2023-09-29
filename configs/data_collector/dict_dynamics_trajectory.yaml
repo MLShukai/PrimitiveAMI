@@ -1,0 +1,11 @@
+_target_: src.data_collectors.aggregations.dict_data_collectors.DictDataCollectors
+
+dynamics:
+  _target_: src.data_collectors.dynamics_data_collector.DynamicsDataCollector
+  max_size: 2048
+
+trajectory:
+  _target_: src.data_collectors.trajectory_data_collector.TrajectoryDataCollector
+  max_size: ${interaction.num_steps}
+  gamma: 0.99 # from large-scale-curiosity
+  gae_lambda: 0.95 # from large-scale-curiosity
