@@ -45,20 +45,28 @@ ppo:
     _target_: src.models.components.policy_value_common_net.PolicyValueCommonNet
 
     base_model:
-      _target_: src.models.components.small_conv_net.SmallConvNet
-      height: ${environment.sensor.height}
-      width: ${environment.sensor.width}
-      channels: 3
-      dim_out: 1024
+      _target_: src.utils.model.SequentialModuleList
+      modules:
+        - _target_: src.models.components.small_conv_net.SmallConvNet
+          height: ${environment.sensor.height}
+          width: ${environment.sensor.width}
+          channels: 3
+          dim_out: 512 # from large-scale-curiosity run.py#L51-52
+        - _target_: src.models.components.fully_connected.FullyConnected
+          dim_in: ${..0.dim_out}
+          dim_out: ${..0.dim_out}
+        - _target_: src.models.components.fully_connected.FullyConnected
+          dim_in: ${..0.dim_out}
+          dim_out: ${..0.dim_out}
 
     policy:
       _target_: src.models.components.policy.tanh_normal_stochastic_policy.TanhNormalStochasticPolicy
-      dim_input: ${..base_model.dim_out}
+      dim_input: ${..base_model.modules.0.dim_out}
       dim_out: ${....inverse_dynamics.inverse_dynamics_net.action_predictor.dim_action}
 
     value:
       _target_: src.models.components.value.fully_connect_value.FullyConnectValue
-      dim_input: ${..base_model.dim_out}
+      dim_input: ${..base_model.modules.0.dim_out}
 
   optimizer:
     _target_: torch.optim.Adam
