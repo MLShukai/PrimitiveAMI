@@ -11,7 +11,7 @@ inverse_dynamics:
       height: ${environment.sensor.height}
       width: ${environment.sensor.width}
       channels: 3
-      dim_out: 1024
+      dim_out: 512
 
     action_predictor:
       _target_: src.models.components.action_predictor.continuous_action_predictor.ContinuousActionPredictor

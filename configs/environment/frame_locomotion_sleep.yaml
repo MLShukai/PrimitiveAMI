@@ -3,8 +3,8 @@ _target_: src.environment.periodic_environment.PeriodicEnvironment
 sensor:
   _target_: src.utils.environment.create_frame_sensor
   camera_index: 0
-  width: 256
-  height: 256
+  width: 128
+  height: 128
   base_fps: 60
 
 actuator:
