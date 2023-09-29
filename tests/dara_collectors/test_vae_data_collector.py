@@ -5,7 +5,7 @@ from src.data_collectors.obs_data_collector import ObsDataCollector as cls
 from src.utils.step_record import RecordKeys as RK
 
 
-class TestVAEDataCollector:
+class TestObsDataCollector:
     max_size = 3
 
     def test__init__(self):
