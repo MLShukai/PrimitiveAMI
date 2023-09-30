@@ -75,7 +75,12 @@ class TestForwardDynamicsTrainer:
     @pytest.fixture
     def pl_trainer(self, logger) -> pl.Trainer:
         return pl.Trainer(
-            max_steps=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
+            max_steps=10,
+            logger=logger,
+            log_every_n_steps=1,
+            enable_checkpointing=False,
+            enable_progress_bar=False,
+            enable_model_summary=False,
         )
 
     @pytest.fixture

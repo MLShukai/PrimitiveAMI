@@ -7,6 +7,11 @@ reward:
 sleep_action:
   _target_: src.environment.actuators.locomotion_actuator.get_sleep_action
 
+logger:
+  _target_: lightning.pytorch.loggers.TensorBoardLogger
+  save_dir: ${paths.output_dir}
+  name: agent
+
 device: "cuda:0"
 dtype:
   _target_: hydra.utils.get_object
