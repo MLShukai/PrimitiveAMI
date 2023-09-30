@@ -73,13 +73,9 @@ class TestForwardDynamicsTrainer:
         return partial(DataLoader)
 
     @pytest.fixture
-    def pl_trainer(self) -> pl.Trainer:
+    def pl_trainer(self, logger) -> pl.Trainer:
         return pl.Trainer(
-            max_epochs=1,
-            logger=False,
-            enable_checkpointing=False,
-            enable_progress_bar=False,
-            enable_model_summary=False,
+            max_steps=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
         )
 
     @pytest.fixture
@@ -91,6 +87,10 @@ class TestForwardDynamicsTrainer:
         pl_trainer: pl.Trainer,
     ):
         return ForwardDynamicsTrainer(forward_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
+
+    @pytest.fixture
+    def logger(self, tmp_path):
+        return pl.loggers.TensorBoardLogger(save_dir=tmp_path / "tensorboard", name=None, version="")
 
     def test_forward_dynamics_trainer(self, forward_dynamics_trainer):
         forward_dynamics_trainer.train()
