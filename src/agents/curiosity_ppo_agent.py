@@ -2,6 +2,7 @@ from typing import TypeVar, Union
 
 import torch
 import torch.nn as nn
+from lightning.pytorch.loggers import Logger
 from torch import Tensor
 
 from ..data_collectors.data_collector import DataCollector
@@ -29,6 +30,7 @@ class CuriosityPPOAgent(Agent):
         reward: CuriosityReward,
         data_collector: DataCollector,
         sleep_action: Tensor,
+        logger: Logger,
         device: Union[str, torch.device] = "cpu",
         dtype: torch.dtype = torch.float32,
     ) -> None:
@@ -52,10 +54,12 @@ class CuriosityPPOAgent(Agent):
         self.reward = reward
         self.data_collector = data_collector
         self.sleep_action = sleep_action
+        self.logger = logger
         self.device = device
         self.dtype = dtype
 
         self.step_record = StepRecord()
+        self.current_step_num = 0
 
     def wakeup(self, observation: Tensor) -> Tensor:
         """Wakeup process of agent."""
@@ -95,6 +99,9 @@ class CuriosityPPOAgent(Agent):
         embed_obs = self._embed_observation(observation)
         reward = self._compute_reward(pred_next_embed_obs, embed_obs)
 
+        # Log reward
+        self.logger.log_metrics({"reward": reward.item()}, step=self.current_step_num)
+
         # Store data into step record
         self._store_next_step_data(observation, embed_obs, reward, next_value)
 
@@ -119,7 +126,7 @@ class CuriosityPPOAgent(Agent):
             value=value,
             predicted_next_embed_obs=pred_next_embed_obs,
         )
-
+        self.current_step_num += 1
         return self._postprocess_action(action)
 
     def sleep(self, observation: Tensor) -> Tensor:

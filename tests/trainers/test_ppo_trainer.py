@@ -99,3 +99,5 @@ class TestPPOTrainer:
 
     def test_ppo_trainer(self, ppo_trainer: PPOTrainer):
         ppo_trainer.train()
+        ppo_trainer.train()
+        assert ppo_trainer.pl_trainer.fit_loop.max_epochs == 3

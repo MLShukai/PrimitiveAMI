@@ -99,3 +99,5 @@ class TestForwardDynamicsTrainer:
 
     def test_forward_dynamics_trainer(self, forward_dynamics_trainer):
         forward_dynamics_trainer.train()
+        forward_dynamics_trainer.train()
+        assert forward_dynamics_trainer.pl_trainer.fit_loop.max_epochs == 3

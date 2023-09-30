@@ -91,8 +91,12 @@ class TestInverseDynamicsTrainer:
         pl_trainer = self.get_pl_trainer("cuda", logger)
         mod = cls(inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
         mod.train()
+        mod.train()
+        assert mod.pl_trainer.fit_loop.max_epochs == 3
 
     def test_cpu_train(self, inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, logger):
         pl_trainer = self.get_pl_trainer("cpu", logger)
         mod = cls(inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
         mod.train()
+        mod.train()
+        assert mod.pl_trainer.fit_loop.max_epochs == 3
