@@ -10,7 +10,7 @@ class TestSmallDeconvNet:
         assert mod.channels == 3
         assert mod.fc_init.in_features == 256
         assert mod.bias.shape == (3, 256, 256)
-        assert mod.nl == torch.nn.ReLU()
+        assert isinstance(mod.nl, torch.nn.ReLU)
 
     @pytest.mark.parametrize(
         """batch,
