@@ -23,6 +23,9 @@ class InverseDynamicsLitModule(LightningModule):
         prev_action, obs, action, next_obs = batch
         prev_action_hat, action_hat = self.net(obs, next_obs)
         loss = mse_loss(prev_action_hat, prev_action) + mse_loss(action_hat, action)
+
+        self.log("loss", loss, logger=True, on_step=True)
+
         return loss
 
     def forward(self, obs: Tensor, next_obs: Tensor):

@@ -19,7 +19,6 @@ rootutils = "^1.0.7"
 hydra-colorlog = "^1.2.0"
 tensorboard = "^2.14.1"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
 pre-commit = "^3.3.3"

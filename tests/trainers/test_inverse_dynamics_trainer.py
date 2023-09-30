@@ -3,6 +3,7 @@ from functools import partial
 import lightning.pytorch as pl
 import pytest
 import torch
+from lightning.pytorch.loggers import TensorBoardLogger
 from pytest_mock import MockerFixture
 from torch.optim import Adam
 from torch.utils.data import DataLoader, TensorDataset
@@ -69,11 +70,17 @@ class TestInverseDynamicsTrainer:
     def dataloader(self):
         return partial(DataLoader)
 
-    def get_pl_trainer(self, accelerator):
+    @pytest.fixture
+    def logger(self, tmp_path):
+        return TensorBoardLogger(save_dir=tmp_path / "tensorboard", name=None, version="")
+
+    def get_pl_trainer(self, accelerator, logger):
         trainer = pl.Trainer(
             accelerator=accelerator,
+            max_steps=10,
             max_epochs=1,
-            logger=False,
+            logger=logger,
+            log_every_n_steps=1,
             enable_checkpointing=False,
             enable_progress_bar=False,
             enable_model_summary=False,
@@ -81,15 +88,15 @@ class TestInverseDynamicsTrainer:
         return trainer
 
     @pytest.mark.skipif(not torch.cuda.is_available(), reason="no available cuda")
-    def test_cuda_train(self, inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader):
-        pl_trainer = self.get_pl_trainer("cuda")
+    def test_cuda_train(self, inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, logger):
+        pl_trainer = self.get_pl_trainer("cuda", logger)
         mod = cls(inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
         mod.train()
         mod.train()
         assert mod.pl_trainer.fit_loop.max_epochs == 3
 
-    def test_cpu_train(self, inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader):
-        pl_trainer = self.get_pl_trainer("cpu")
+    def test_cpu_train(self, inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, logger):
+        pl_trainer = self.get_pl_trainer("cpu", logger)
         mod = cls(inv_dynamics_lit_module, mock_dynamics_data_collector, dataloader, pl_trainer)
         mod.train()
         mod.train()
