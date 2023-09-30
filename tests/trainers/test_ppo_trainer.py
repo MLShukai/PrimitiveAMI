@@ -73,9 +73,18 @@ class TestPPOTrainer:
         return partial(DataLoader)
 
     @pytest.fixture
-    def pl_trainer(self) -> pl.Trainer:
+    def logger(self, tmp_path):
+        return pl.loggers.TensorBoardLogger(tmp_path / "tensorboard", name=None, version="")
+
+    @pytest.fixture
+    def pl_trainer(self, logger) -> pl.Trainer:
         return pl.Trainer(
-            max_steps=1, logger=False, enable_checkpointing=False, enable_progress_bar=False, enable_model_summary=False
+            max_steps=10,
+            logger=logger,
+            log_every_n_steps=1,
+            enable_checkpointing=False,
+            enable_progress_bar=False,
+            enable_model_summary=False,
         )
 
     @pytest.fixture
