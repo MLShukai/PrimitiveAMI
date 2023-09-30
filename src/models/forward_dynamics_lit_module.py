@@ -2,6 +2,7 @@ from functools import partial
 
 import torch
 from lightning import LightningModule
+from lightning.pytorch.loggers import Logger
 from torch.nn.functional import mse_loss
 from torch.optim import Optimizer
 
@@ -28,4 +29,7 @@ class ForwardDynamicsLitModule(LightningModule):
             embed_next_obs = self.obs_encoder(next_obs)
         embed_next_obs_hat = self.forward_dynamics_net(prev_action, embed_obs, action)
         loss = mse_loss(embed_next_obs_hat, embed_next_obs)
+
+        self.log("loss", loss)
+
         return loss
