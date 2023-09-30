@@ -16,7 +16,12 @@ inverse_dynamics:
     max_epochs: 3 # from large-scale-curiosity run.py#L180
     accelerator: gpu
     devices: 1
-    deterministic: False
+    deterministic: false
+    logger:
+      _target_: lightning.pytorch.loggers.TensorBoardLogger
+      save_dir: ${..default_root_dir}/tensorboard
+      name: none
+      version: ""
 
 forward_dynamics:
   _target_: src.trainers.forward_dynamics_trainer.ForwardDynamicsTrainer
@@ -35,6 +40,11 @@ forward_dynamics:
     accelerator: gpu
     devices: 1
     deterministic: False
+    logger:
+      _target_: lightning.pytorch.loggers.TensorBoardLogger
+      save_dir: ${..default_root_dir}/tensorboard
+      name: none
+      version: ""
 
 ppo:
   _target_: src.trainers.ppo_trainer.PPOTrainer
@@ -53,3 +63,8 @@ ppo:
     accelerator: gpu
     devices: 1
     deterministic: False
+    logger:
+      _target_: lightning.pytorch.loggers.TensorBoardLogger
+      save_dir: ${..default_root_dir}/tensorboard
+      name: none
+      version: ""
