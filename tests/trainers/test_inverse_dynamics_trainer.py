@@ -78,6 +78,7 @@ class TestInverseDynamicsTrainer:
         trainer = pl.Trainer(
             accelerator=accelerator,
             max_steps=10,
+            max_epochs=1,
             logger=logger,
             log_every_n_steps=1,
             enable_checkpointing=False,
