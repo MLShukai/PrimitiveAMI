@@ -7,6 +7,7 @@ from argparse import ArgumentParser, Namespace
 
 import colorlog
 import torch
+import torch.nn as nn
 
 from src.agents.curiosity_ppo_agent import CuriosityPPOAgent
 from src.data_collectors.empty_data_collector import EmptyDataCollector
@@ -18,6 +19,7 @@ from src.interactions.fixed_step_interaction import FixedStepInteraction
 from src.models.components.forward_dynamics.dense_net_forward_dynamics import (
     DenseNetForwardDynamics,
 )
+from src.models.components.fully_connected import FullyConnected
 from src.models.components.policy.tanh_normal_stochastic_policy import (
     TanhNormalStochasticPolicy,
 )
@@ -162,7 +164,11 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
     # ForwardDynamics
     dynamics = DenseNetForwardDynamics(action_size, embed_dim)
     # PolicyValueCommonNet
-    base_model = SmallConvNet(height, width, channels, embed_dim)
+    base_model = nn.Sequential(
+        SmallConvNet(height, width, channels, embed_dim),
+        FullyConnected(embed_dim, embed_dim),
+        FullyConnected(embed_dim, embed_dim),
+    )
     policy = TanhNormalStochasticPolicy(embed_dim, action_size)
     value = FullyConnectValue(embed_dim)
     policy_value = PolicyValueCommonNet(base_model, policy, value)

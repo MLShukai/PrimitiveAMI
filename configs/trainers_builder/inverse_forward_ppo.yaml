@@ -1,0 +1,55 @@
+_target_: src.trainers.builders.inverse_forward_ppo.InverseForwardPPO
+
+inverse_dynamics:
+  _target_: src.trainers.inverse_dynamics_trainer.InverseDynamicsTrainer
+  _partial_: true
+
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    _partial_: true
+    batch_size: 8 # from large-scale-curiosity run.py#L175
+    shuffle: true
+
+  pl_trainer:
+    _target_: lightning.pytorch.Trainer
+    default_root_dir: ${paths.output_dir}/inverse_dynamics
+    max_epochs: 3 # from large-scale-curiosity run.py#L180
+    accelerator: gpu
+    devices: 1
+    deterministic: False
+
+forward_dynamics:
+  _target_: src.trainers.forward_dynamics_trainer.ForwardDynamicsTrainer
+  _partial_: true
+
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    _partial_: true
+    batch_size: 8 # from large-scale-curiosity run.py#L175
+    shuffle: true
+
+  pl_trainer:
+    _target_: lightning.pytorch.Trainer
+    default_root_dir: ${paths.output_dir}/forward_dynamics
+    max_epochs: 3 # from large-scale-curiosity run.py#L180
+    accelerator: gpu
+    devices: 1
+    deterministic: False
+
+ppo:
+  _target_: src.trainers.ppo_trainer.PPOTrainer
+  _partial_: true
+
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    _partial_: true
+    batch_size: 8 # from large-scale-curiosity run.py#L175
+    shuffle: true
+
+  pl_trainer:
+    _target_: lightning.pytorch.Trainer
+    default_root_dir: ${paths.output_dir}/ppo
+    max_epochs: 3 # from large-scale-curiosity run.py#L180
+    accelerator: gpu
+    devices: 1
+    deterministic: False

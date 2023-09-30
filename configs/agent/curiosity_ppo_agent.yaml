@@ -1,0 +1,13 @@
+_target_: src.agents.curiosity_ppo_agent.CuriosityPPOAgent
+_partial_: true
+
+reward:
+  _target_: src.models.components.reward.curiosity_reward.CuriosityReward
+
+sleep_action:
+  _target_: src.environment.actuators.locomotion_actuator.get_sleep_action
+
+device: "cuda:0"
+dtype:
+  _target_: hydra.utils.get_object
+  path: "torch.float32"

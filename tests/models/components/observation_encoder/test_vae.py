@@ -28,6 +28,7 @@ class TestVAEEncoder:
         x = torch.randn(8, CHANNELS, WIDTH, HEIGHT)
         z_dist = mod(x)
         assert isinstance(z_dist, torch.distributions.Normal)
+        assert z_dist.rsample().shape == (8, DIM_EMBED)
 
 
 class TestVAEDecoder:

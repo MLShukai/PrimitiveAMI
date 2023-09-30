@@ -185,12 +185,19 @@ class TestCuriosityPPOAgent:
         dummy_observation = torch.tensor(1.0)
         dummy_embed_obs = torch.tensor(2.0)
         dummy_reward = torch.tensor(3.0)
+        dummy_next_value = torch.tensor(4.0)
 
-        curiosity_ppo_agent._store_next_step_data(dummy_observation, dummy_embed_obs, dummy_reward)
+        curiosity_ppo_agent._store_next_step_data(dummy_observation, dummy_embed_obs, dummy_reward, dummy_next_value)
 
         assert curiosity_ppo_agent.step_record[RK.REWARD] == dummy_reward
         assert curiosity_ppo_agent.step_record[RK.NEXT_OBSERVATION] == dummy_observation
         assert curiosity_ppo_agent.step_record[RK.NEXT_EMBED_OBSERVATION] == dummy_embed_obs
+        assert curiosity_ppo_agent.step_record[RK.NEXT_VALUE] == dummy_next_value
+
+    def test_collect_data(self, curiosity_ppo_agent: CuriosityPPOAgent):
+        dummy_data = torch.zeros(1, 8)
+        curiosity_ppo_agent.step_record["dummy"] = dummy_data
+        curiosity_ppo_agent._collect_data()
 
     def test_wakeup(self, curiosity_ppo_agent_patch_method: CuriosityPPOAgent):
         dummy_observation = torch.tensor(5.0)
@@ -222,7 +229,7 @@ class TestCuriosityPPOAgent:
         curiosity_ppo_agent_patch_method._embed_observation.assert_called_with(dummy_observation)
         curiosity_ppo_agent_patch_method._compute_reward.assert_called_with(torch.tensor(4.0), torch.tensor(0.0))
         curiosity_ppo_agent_patch_method._store_next_step_data.assert_called_with(
-            dummy_observation, torch.tensor(0.0), torch.tensor(6.0)
+            dummy_observation, torch.tensor(0.0), torch.tensor(6.0), torch.tensor(3.0)
         )
         curiosity_ppo_agent_patch_method.data_collector.collect.assert_called_with(
             curiosity_ppo_agent_patch_method.step_record.copy()
