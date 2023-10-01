@@ -100,7 +100,7 @@ class CuriosityPPOAgent(Agent):
         reward = self._compute_reward(pred_next_embed_obs, embed_obs)
 
         # Log reward
-        self.logger.log_metrics({"reward": reward.item()}, step=self.current_step_num)
+        self.logger.log_metrics({"agent/reward": reward.item()}, step=self.current_step_num)
 
         # Store data into step record
         self._store_next_step_data(observation, embed_obs, reward, next_value)

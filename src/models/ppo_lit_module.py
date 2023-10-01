@@ -127,7 +127,7 @@ class PPOLitModule(pl.LightningModule):
         self.policy_loss(output["policy_loss"])
         self.clipflac(output["clipfrac"])
 
-        prefix = "train/"
+        prefix = "ppo/"
         for (name, value) in output.items():
             self.log(prefix + name, value)
 
