@@ -49,6 +49,8 @@ def main(cfg: DictConfig) -> None:
 
     loop(interaction, trainer)
 
+    environment.teardown()
+
     logger.info("End demo.")
 
 
