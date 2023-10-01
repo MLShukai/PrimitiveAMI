@@ -33,4 +33,3 @@ class PeriodicEnvironment(Environment):
     def teardown(self) -> None:
         self.sensor.teardown()
         self.actuator.teardown()
-        
