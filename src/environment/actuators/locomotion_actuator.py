@@ -15,6 +15,9 @@ class LocomotionActuator(Actuator):
         _action = action.detach().cpu().numpy().tolist()
         self.actuator.command(_action[0], _action[1], _action[2])
 
+    def teardown(self):
+        return self.operate(get_sleep_action())
+
 
 def get_sleep_action() -> torch.Tensor:
     """Return sleep action for LocomotionActuator.
