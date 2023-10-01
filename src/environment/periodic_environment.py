@@ -13,6 +13,8 @@ class PeriodicEnvironment(Environment):
         self.adjustor = adjustor
 
     def setup(self):
+        self.sensor.setup()
+        self.actuator.setup()
         self.reset_interval_start_time()
 
     def observe(self) -> torch.Tensor:
@@ -29,4 +31,6 @@ class PeriodicEnvironment(Environment):
         return self.adjustor.adjust()
 
     def teardown(self) -> None:
-        return
+        self.sensor.teardown()
+        self.actuator.teardown()
+        
