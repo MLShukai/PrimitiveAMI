@@ -7,8 +7,9 @@ from lightning.pytorch.callbacks import ModelCheckpoint
 
 class FixedFileNumModelCheckpoint(ModelCheckpoint):
     def __init__(self, max_file_num: int, *args, **kwargs):
-        """Constructor of FixedFileNumModelCheckpoint class.
-        For details see https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.ModelCheckpoint.html
+        """Constructor of FixedFileNumModelCheckpoint class. For details see ht
+        tps://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.
+        ModelCheckpoint.html.
 
         Args:
             max_file_num (int): Specify the maximum number of files that can be saved.
