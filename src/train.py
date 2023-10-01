@@ -18,9 +18,9 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 logger = logging.getLogger(__name__)
 
 
-@hydra.main("../configs", config_name="demo.yaml", version_base="1.3")
+@hydra.main("../configs", config_name="train.yaml", version_base="1.3")
 def main(cfg: DictConfig) -> None:
-    logger.info("Demo start!")
+    logger.info("training start!")
 
     if cfg.get("seed") is not None:
         seed_everything(cfg.seed)
@@ -51,7 +51,7 @@ def main(cfg: DictConfig) -> None:
 
     environment.teardown()
 
-    logger.info("End demo.")
+    logger.info("End training.")
 
 
 def loop(interaction: Interaction, trainer: Trainer) -> None:
@@ -69,6 +69,8 @@ def loop(interaction: Interaction, trainer: Trainer) -> None:
             logger.info("End training.")
     except KeyboardInterrupt:
         logger.error("Keyboard interrupted.")
+    except Exception as e:
+        logger.exception(e)
     finally:
         logger.info("End main loop.")
 
