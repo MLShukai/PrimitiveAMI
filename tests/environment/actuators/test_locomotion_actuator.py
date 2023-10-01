@@ -34,6 +34,10 @@ class TestLocomotionWrapper:
         action = torch.tensor([0.0, 0.0, 0.0], device="cuda")
         self._test_operate(axes_actuator, action)
 
+    def test_teardown(self, axes_actuator):
+        mod = LocomotionActuator(axes_actuator)
+        mod.teardown()
+
 
 def test_sleep_action():
     assert torch.equal(get_sleep_action(), torch.zeros(3))

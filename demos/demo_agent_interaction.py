@@ -67,7 +67,7 @@ def main():
     except Exception as e:
         logger.exception(e)
     finally:
-        environment.actuator.operate(agent._postprocess_action(agent.sleep_action))
+        environment.teardown()
 
     logger.info("End agent interaction demo.")
 
