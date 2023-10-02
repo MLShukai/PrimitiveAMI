@@ -30,6 +30,6 @@ class ForwardDynamicsLitModule(LightningModule):
         embed_next_obs_hat = self.forward_dynamics_net(prev_action, embed_obs, action)
         loss = mse_loss(embed_next_obs_hat, embed_next_obs)
 
-        self.log("loss", loss)
+        self.log("forward_dynamics/loss", loss)
 
         return loss
