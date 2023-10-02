@@ -22,6 +22,9 @@ inverse_dynamics:
       save_dir: ${..default_root_dir}/tensorboard
       name: none
       version: ""
+    callbacks:
+      - _target_: lightning.pytorch.callbacks.ModelCheckpoint
+        dirpath: ${...default_root_dir}/checkpoints
 
 forward_dynamics:
   _target_: src.trainers.forward_dynamics_trainer.ForwardDynamicsTrainer
@@ -45,6 +48,9 @@ forward_dynamics:
       save_dir: ${..default_root_dir}/tensorboard
       name: none
       version: ""
+    callbacks:
+      - _target_: lightning.pytorch.callbacks.ModelCheckpoint
+        dirpath: ${...default_root_dir}/checkpoints
 
 ppo:
   _target_: src.trainers.ppo_trainer.PPOTrainer
@@ -68,3 +74,6 @@ ppo:
       save_dir: ${..default_root_dir}/tensorboard
       name: none
       version: ""
+    callbacks:
+      - _target_: lightning.pytorch.callbacks.ModelCheckpoint
+        dirpath: ${...default_root_dir}/checkpoints
