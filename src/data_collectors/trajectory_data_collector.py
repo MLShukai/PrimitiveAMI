@@ -84,12 +84,23 @@ class TrajectoryDataCollector(DataCollector):
         self.final_next_value = torch.tensor([0.0])
 
     def state_dict(self) -> dict[str, Any]:
-        # NOTE: To Do. 2023/10/03
-        raise NotImplementedError
+        state = {
+            "observations": self.observations,
+            "actions": self.actions,
+            "logprobs": self.logprobs,
+            "rewards": self.rewards,
+            "values": self.values,
+            "final_next_value": self.final_next_value,
+        }
+        return state
 
     def load_state_dict(self, state_dict: dict[str, Any]) -> None:
-        # NOTE: To Do. 2023/10/03
-        raise NotImplementedError
+        self.observations = deque(state_dict["observations"], maxlen=self.max_size)
+        self.actions = deque(state_dict["actions"], maxlen=self.max_size)
+        self.logprobs = deque(state_dict["logprobs"], maxlen=self.max_size)
+        self.rewards = deque(state_dict["rewards"], maxlen=self.max_size)
+        self.values = deque(state_dict["values"], maxlen=self.max_size)
+        self.final_next_value = state_dict["final_next_value"]
 
 
 def compute_advantage(
