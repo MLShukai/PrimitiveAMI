@@ -43,3 +43,27 @@ def test_dynamics_data_collector(max_size, observation_shape, action_shape):
     assert actions.size()[1:] == (*action_shape,)
     assert next_observations.size(0) <= max_size
     assert next_observations.size()[1:] == (*observation_shape,)
+
+    # test state dict
+    state_dict = dynamics_data_collector.state_dict()
+    assert isinstance(state_dict, dict)
+    assert state_dict["max_size"] == max_size
+    assert state_dict["prev_actions"] == dynamics_data_collector.prev_actions
+    assert state_dict["observations"] == dynamics_data_collector.observations
+    assert state_dict["actions"] == dynamics_data_collector.actions
+    assert state_dict["next_observations"] == dynamics_data_collector.next_observations
+
+    # test load state dict
+    empty_states = {
+        "max_size": 0,
+        "prev_actions": [],
+        "observations": [],
+        "actions": [],
+        "next_observations": [],
+    }
+
+    dynamics_data_collector.load_state_dict(empty_states)
+    assert dynamics_data_collector.prev_actions == []
+    assert dynamics_data_collector.observations == []
+    assert dynamics_data_collector.actions == []
+    assert dynamics_data_collector.next_observations == []

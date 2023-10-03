@@ -38,9 +38,18 @@ class DynamicsDataCollector(DataCollector):
         return TensorDataset(prev_actions, observations, actions, next_observations)
 
     def state_dict(self) -> dict[str, Any]:
-        # NOTE: To Do. 2023/10/03
-        raise NotImplementedError
+        state = {
+            "max_size": self.max_size,
+            "prev_actions": self.prev_actions,
+            "observations": self.observations,
+            "actions": self.actions,
+            "next_observations": self.next_observations,
+        }
+        return state
 
     def load_state_dict(self, state_dict: dict[str, Any]) -> None:
-        # NOTE: To Do. 2023/10/03
-        raise NotImplementedError
+
+        self.prev_actions = state_dict["prev_actions"][: self.max_size]
+        self.observations = state_dict["observations"][: self.max_size]
+        self.actions = state_dict["actions"][: self.max_size]
+        self.next_observations = state_dict["next_observations"][: self.max_size]
