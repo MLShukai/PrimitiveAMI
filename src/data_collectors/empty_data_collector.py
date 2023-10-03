@@ -1,5 +1,8 @@
 from typing import Any
 
+import torch
+from torch.utils.data import TensorDataset
+
 from .data_collector import DataCollector
 
 
@@ -9,5 +12,11 @@ class EmptyDataCollector(DataCollector):
     def collect(self, step_record: dict[str, Any]) -> None:
         pass
 
-    def get_data(self) -> None:
-        return None
+    def get_data(self) -> TensorDataset:
+        return TensorDataset(torch.zeros(0))
+
+    def state_dict(self) -> dict[str, Any]:
+        return {}
+
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
+        pass

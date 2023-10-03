@@ -47,3 +47,22 @@ def test_trajectory_data_collector(max_size, gamma, gae_lambda, observation_shap
     assert values.size() == (length, 1)
 
     trajectory_data_collector.clear()
+
+    # test state dict
+    state_dict = trajectory_data_collector.state_dict()
+    assert state_dict["observations"] == trajectory_data_collector.observations
+    assert state_dict["actions"] == trajectory_data_collector.actions
+    assert state_dict["logprobs"] == trajectory_data_collector.logprobs
+    assert state_dict["rewards"] == trajectory_data_collector.rewards
+    assert state_dict["values"] == trajectory_data_collector.values
+    assert torch.equal(state_dict["final_next_value"], trajectory_data_collector.final_next_value)
+
+    # test load state dict
+    trajectory_data_collector = TrajectoryDataCollector(max_size, gamma, gae_lambda)
+    trajectory_data_collector.load_state_dict(state_dict)
+    assert state_dict["observations"] == trajectory_data_collector.observations
+    assert state_dict["actions"] == trajectory_data_collector.actions
+    assert state_dict["logprobs"] == trajectory_data_collector.logprobs
+    assert state_dict["rewards"] == trajectory_data_collector.rewards
+    assert state_dict["values"] == trajectory_data_collector.values
+    assert torch.equal(state_dict["final_next_value"], trajectory_data_collector.final_next_value)

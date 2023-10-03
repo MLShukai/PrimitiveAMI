@@ -23,3 +23,11 @@ class DummyDynamicsDataCollector(DataCollector):
         actions = torch.randn(self.get_size, *self.action_shape)
         next_observations = torch.randn(self.get_size, *self.observation_shape)
         return TensorDataset(prev_actions, observations, actions, next_observations)
+
+    def state_dict(self) -> dict[str, Any]:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError
+
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError

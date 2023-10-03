@@ -36,3 +36,19 @@ class DynamicsDataCollector(DataCollector):
         actions = torch.stack(self.actions)
         next_observations = torch.stack(self.next_observations)
         return TensorDataset(prev_actions, observations, actions, next_observations)
+
+    def state_dict(self) -> dict[str, Any]:
+        state = {
+            "prev_actions": self.prev_actions,
+            "observations": self.observations,
+            "actions": self.actions,
+            "next_observations": self.next_observations,
+        }
+        return state
+
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
+
+        self.prev_actions = state_dict["prev_actions"][: self.max_size]
+        self.observations = state_dict["observations"][: self.max_size]
+        self.actions = state_dict["actions"][: self.max_size]
+        self.next_observations = state_dict["next_observations"][: self.max_size]
