@@ -16,7 +16,7 @@ class EmptyDataCollector(DataCollector):
         return TensorDataset(torch.zeros(0))
 
     def state_dict(self) -> dict[str, Any]:
-        pass
+        return {}
 
     def load_state_dict(self, state_dict: dict[str, Any]) -> None:
         pass
