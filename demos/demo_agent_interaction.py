@@ -12,7 +12,7 @@ import torch.nn as nn
 from lightning.pytorch.loggers import TensorBoardLogger
 
 from src.agents.curiosity_ppo_agent import CuriosityPPOAgent
-from src.data_collectors.empty_data_collector import EmptyDataCollector
+from src.data_collectors.aggregations.dict_data_collectors import DictDataCollectors
 from src.environment.interval_adjustors.sleep_interval_adjustor import (
     SleepIntervalAdjustor,
 )
@@ -178,7 +178,7 @@ def create_agent(args: Namespace):  # -> CuriosityPPOAgent:
     # RewardModel
     reward = CuriosityReward()
     # Data Collector
-    data_collector = EmptyDataCollector()
+    data_collector = DictDataCollectors()
     # Sleep Action
     sleep_action = torch.zeros(action_size)
     # Logger
