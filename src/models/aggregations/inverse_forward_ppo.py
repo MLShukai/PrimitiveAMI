@@ -27,7 +27,7 @@ class InverseForwardPPO(NeuralNetworks):
         super().__init__()
 
         self.inverse_dynamics = inverse_dynamics
-        self.forward_dynamics = forward_dynamics(inverse_dynamics.net.observation_encoder)
+        self.forward_dynamics = forward_dynamics(obs_encoder=inverse_dynamics.net.observation_encoder)
         self.ppo = ppo
 
     def build_agent_models(self) -> dict[str, nn.Module]:
