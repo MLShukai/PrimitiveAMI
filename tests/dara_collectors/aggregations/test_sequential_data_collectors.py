@@ -3,11 +3,11 @@ import torch
 from pytest_mock import MockerFixture
 from torch.utils.data import TensorDataset
 
-from src.data_collectors.data_collector import DataCollector
-from src.data_collectors.dynamics_data_collector import DynamicsDataCollector
-from src.data_collectors.sequential_data_collectors import (
+from src.data_collectors.aggregations.sequential_data_collectors import (
     SequentialDataCollectors as cls,
 )
+from src.data_collectors.data_collector import DataCollector
+from src.data_collectors.dynamics_data_collector import DynamicsDataCollector
 from src.utils.step_record import RecordKeys as RK
 
 

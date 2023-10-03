@@ -1,6 +1,6 @@
 from typing import Any
 
-from .data_collector import DataCollector
+from ..data_collector import DataCollector
 
 
 class SequentialDataCollectors:
