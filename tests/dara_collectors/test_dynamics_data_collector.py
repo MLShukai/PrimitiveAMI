@@ -22,7 +22,7 @@ from src.utils.step_record import RecordKeys as RK
         (16, (134,), (51,)),
     ],
 )
-def test_dynamics_data_collector(max_size, observation_shape, action_shape):
+def test_dynamics_data_collector(max_size, observation_shape, action_shape, tmp_path):
     dynamics_data_collector = DynamicsDataCollector(max_size)
     data = {
         RK.PREVIOUS_ACTION: torch.randn(*action_shape),
@@ -67,3 +67,12 @@ def test_dynamics_data_collector(max_size, observation_shape, action_shape):
     assert dynamics_data_collector.observations == []
     assert dynamics_data_collector.actions == []
     assert dynamics_data_collector.next_observations == []
+
+    # test save to file
+    dynamics_data_collector.load_state_dict(state_dict)
+    dist_path = tmp_path / "dynamics.pkl"
+    dynamics_data_collector.save_to_file(dist_path)
+    assert dist_path.exists()
+
+    # test load from file
+    dynamics_data_collector = DynamicsDataCollector.load_from_file(dist_path, max_size=10)
