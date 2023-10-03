@@ -39,7 +39,6 @@ class DynamicsDataCollector(DataCollector):
 
     def state_dict(self) -> dict[str, Any]:
         state = {
-            "max_size": self.max_size,
             "prev_actions": self.prev_actions,
             "observations": self.observations,
             "actions": self.actions,

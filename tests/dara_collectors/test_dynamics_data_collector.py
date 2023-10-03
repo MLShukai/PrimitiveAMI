@@ -47,7 +47,6 @@ def test_dynamics_data_collector(max_size, observation_shape, action_shape, tmp_
     # test state dict
     state_dict = dynamics_data_collector.state_dict()
     assert isinstance(state_dict, dict)
-    assert state_dict["max_size"] == max_size
     assert state_dict["prev_actions"] == dynamics_data_collector.prev_actions
     assert state_dict["observations"] == dynamics_data_collector.observations
     assert state_dict["actions"] == dynamics_data_collector.actions
