@@ -25,7 +25,7 @@ class DictDataCollectors(UserDict, DataCollectorsAggregation):
             collector.collect(step_record)
 
     def get_data(self) -> dict[str, Any]:
-        warnings.warn("The `get_data` method ofAggregation class is deprecated!", DeprecationWarning)
+        warnings.warn("The `get_data` method of Aggregation class is deprecated!", DeprecationWarning)
         data = {}
         for key, value in self.items():
             data[key] = value.get_data()
