@@ -1,4 +1,5 @@
 import pytest
+from torch.utils.data import TensorDataset
 
 from src.data_collectors.empty_data_collector import EmptyDataCollector
 
@@ -12,4 +13,4 @@ class TestEmptyDataCollector:
         data_collector.collect({})
 
     def test_get_data(self, data_collector: EmptyDataCollector):
-        assert data_collector.get_data() is None
+        assert isinstance(data_collector.get_data(), TensorDataset)
