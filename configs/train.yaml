@@ -17,3 +17,5 @@ defaults:
 task_name: "train"
 
 seed: null
+
+save_data_collectors_state: true
