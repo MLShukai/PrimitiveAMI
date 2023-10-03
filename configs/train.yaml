@@ -11,6 +11,10 @@ defaults:
   - environment: frame_locomotion_sleep
   - interaction: fixed_step
 
+  # experiment configs allow for version control of specific hyperparameters
+  # e.g. best hyperparameters for given model and datamodule
+  - experiment: null
+
   - paths: default
   - hydra: default
 
