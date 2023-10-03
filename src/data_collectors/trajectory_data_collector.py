@@ -83,6 +83,14 @@ class TrajectoryDataCollector(DataCollector):
         self.values.clear()
         self.final_next_value = torch.tensor([0.0])
 
+    def state_dict(self) -> dict[str, Any]:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError
+
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError
+
 
 def compute_advantage(
     rewards: Tensor, values: Tensor, final_next_value: Tensor, gamma: float, gae_lambda: float

@@ -36,3 +36,11 @@ class DynamicsDataCollector(DataCollector):
         actions = torch.stack(self.actions)
         next_observations = torch.stack(self.next_observations)
         return TensorDataset(prev_actions, observations, actions, next_observations)
+
+    def state_dict(self) -> dict[str, Any]:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError
+
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError

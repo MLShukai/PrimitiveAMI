@@ -1,3 +1,5 @@
+from typing import Any
+
 import numpy as np
 import torch
 from torch import Tensor
@@ -23,3 +25,11 @@ class ObsDataCollector(DataCollector):
     def get_data(self) -> TensorDataset:
         observations = torch.stack(self.observations)
         return TensorDataset(observations)
+
+    def state_dict(self) -> dict[str, Any]:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError
+
+    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
+        # NOTE: To Do. 2023/10/03
+        raise NotImplementedError
