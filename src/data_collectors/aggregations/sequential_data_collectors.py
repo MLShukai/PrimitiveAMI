@@ -15,7 +15,7 @@ class SequentialDataCollectors(DataCollectorsAggregation):
             collector.collect(step_record)
 
     def get_data(self) -> list[Any]:
-        warnings.warn("The `get_data` method ofAggregation class is deprecated!", DeprecationWarning)
+        warnings.warn("The `get_data` method of Aggregation class is deprecated!", DeprecationWarning)
         data = [collector.get_data() for collector in self.data_collectors]
         return data
 
