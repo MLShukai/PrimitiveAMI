@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from torch.utils.data import Dataset
+
 
 class DataCollector(ABC):
     """Abstract class for data collection."""
@@ -15,10 +17,10 @@ class DataCollector(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_data(self) -> Any:
+    def get_data(self) -> Dataset:
         """Get collected data.
 
         Returns:
-            Any: Collected data.
+            Dataset: Collected data.
         """
         raise NotImplementedError
