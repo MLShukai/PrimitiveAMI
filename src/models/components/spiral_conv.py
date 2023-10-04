@@ -136,7 +136,7 @@ class Architecture(nn.Module):
         for block in self.block_list:
             block.set_is_refresh(is_refresh)
 
-    def get_hidden(self) -> [tuple[Tensor, Tensor]]:
+    def get_hidden(self) -> list[tuple[Tensor, Tensor]]:
         hidden_list = []
         for block in self.block_list:
             hidden_list.append(block.get_hidden())
