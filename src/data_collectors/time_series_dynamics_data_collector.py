@@ -30,11 +30,6 @@ class TimeSeriesDynamicsDataCollector(DataCollector):
         actions = torch.stack(list(self.actions))
         next_observations = torch.stack(list(self.next_observations))
 
-        self.prev_actions.clear()
-        self.observations.clear()
-        self.actions.clear()
-        self.next_observations.clear()
-
         return TensorDataset(prev_actions, observations, actions, next_observations)
 
     def state_dict(self) -> dict[str, Any]:

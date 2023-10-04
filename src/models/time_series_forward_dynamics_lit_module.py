@@ -43,10 +43,8 @@ class TimeSeriesForwardDynamicsLitModule(LightningModule):
         return loss
 
     def on_train_epoch_start(self):
-        if self.last_hidden is None:
-            self.last_hidden = self.forward_dynamics_net.get_hidden()
         self.current_hidden = self.forward_dynamics_net.get_hidden()
-        self.forward_dynamics_net.set_hidden(self.last_hidden)
+        self.forward_dynamics_net.reset_hidden()
 
     def on_train_epoch_end(self):
         self.forward_dynamics_net.set_hidden(self.current_hidden)

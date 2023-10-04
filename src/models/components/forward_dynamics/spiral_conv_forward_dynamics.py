@@ -25,3 +25,6 @@ class SpiralConvForwardDynamics(TimeSeriesForwardDynamics):
 
     def set_hidden(self, hidden_list):
         self.spiral_conv.set_hidden(hidden_list)
+
+    def reset_hidden(self):
+        self.spiral_conv.reset_hidden()

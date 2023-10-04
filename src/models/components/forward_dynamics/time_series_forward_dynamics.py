@@ -14,3 +14,6 @@ class TimeSeriesForwardDynamics(nn.Module, metaclass=ABCMeta):
 
     def set_hidden(self, Tensor):
         raise NotImplementedError
+
+    def reset_hidden(self):
+        raise NotImplementedError
