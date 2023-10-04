@@ -10,7 +10,7 @@ from ..utils.step_record import RecordKeys as RK
 from .data_collector import DataCollector
 
 
-class DynamicsDataCollector(DataCollector):
+class TimeSeriesDynamicsDataCollector(DataCollector):
     def __init__(self, max_size: int):
         self.max_size = max_size
         self.prev_actions = deque(maxlen=max_size)
@@ -25,10 +25,10 @@ class DynamicsDataCollector(DataCollector):
         self.next_observations.append(step_record[RK.NEXT_OBSERVATION].clone().cpu())
 
     def get_data(self) -> TensorDataset:
-        prev_actions = torch.stack(self.prev_actions)
-        observations = torch.stack(self.observations)
-        actions = torch.stack(self.actions)
-        next_observations = torch.stack(self.next_observations)
+        prev_actions = torch.stack(list(self.prev_actions))
+        observations = torch.stack(list(self.observations))
+        actions = torch.stack(list(self.actions))
+        next_observations = torch.stack(list(self.next_observations))
 
         self.prev_actions.clear()
         self.observations.clear()
