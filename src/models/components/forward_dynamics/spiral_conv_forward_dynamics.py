@@ -20,7 +20,7 @@ class SpiralConvForwardDynamics(TimeSeriesForwardDynamics):
         x = self.fc_out(x)
         return x.squeeze(0)
 
-    def get_hidden(self) -> [(Tensor, Tensor)]:
+    def get_hidden(self) -> [tuple[Tensor, Tensor]]:
         return self.spiral_conv.get_hidden()
 
     def set_hidden(self, hidden_list):

@@ -105,10 +105,10 @@ class ArchitectureBlock(nn.Module):
         self.spiral_conv_1.set_is_refresh(is_refresh)
         self.spiral_conv_2.set_is_refresh(is_refresh)
 
-    def get_hidden(self) -> (Tensor, Tensor):
+    def get_hidden(self) -> tuple[Tensor, Tensor]:
         return (self.spiral_conv_1.get_hidden(), self.spiral_conv_2.get_hidden())
 
-    def set_hidden(self, hidden: (Tensor, Tensor)):
+    def set_hidden(self, hidden: tuple[Tensor, Tensor]):
         hidden_1, hidden_2 = hidden
         self.spiral_conv_1.set_hidden(hidden_1)
         self.spiral_conv_2.set_hidden(hidden_2)
@@ -136,7 +136,7 @@ class Architecture(nn.Module):
         for block in self.block_list:
             block.set_is_refresh(is_refresh)
 
-    def get_hidden(self) -> [(Tensor, Tensor)]:
+    def get_hidden(self) -> [tuple[Tensor, Tensor]]:
         hidden_list = []
         for block in self.block_list:
             hidden_list.append(block.get_hidden())
