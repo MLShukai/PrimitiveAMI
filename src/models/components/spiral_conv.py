@@ -143,7 +143,5 @@ class Architecture(nn.Module):
         return hidden_list
 
     def set_hidden(self, hidden_list):
-        hidden_list = hidden_list.copy()
-        for block in self.block_list:
-            hidden = hidden_list.pop(0)
-            block.set_hidden(hidden)
+        for i, block in enumerate(self.block_list):
+            block.set_hidden(hidden_list[i])
