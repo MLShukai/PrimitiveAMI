@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Any
 
 import numpy
@@ -12,18 +13,12 @@ from .data_collector import DataCollector
 class DynamicsDataCollector(DataCollector):
     def __init__(self, max_size: int):
         self.max_size = max_size
-        self.prev_actions = []
-        self.observations = []
-        self.actions = []
-        self.next_observations = []
+        self.prev_actions = deque(maxlen=max_size)
+        self.observations = deque(maxlen=max_size)
+        self.actions = deque(maxlen=max_size)
+        self.next_observations = deque(maxlen=max_size)
 
     def collect(self, step_record: dict[str, Tensor]):
-        while len(self.prev_actions) >= self.max_size:
-            self.prev_actions.pop(0)
-            self.observations.pop(0)
-            self.actions.pop(0)
-            self.next_observations.pop(0)
-
         self.prev_actions.append(step_record[RK.PREVIOUS_ACTION].clone().cpu())
         self.observations.append(step_record[RK.OBSERVATION].clone().cpu())
         self.actions.append(step_record[RK.ACTION].clone().cpu())
@@ -35,10 +30,10 @@ class DynamicsDataCollector(DataCollector):
         actions = torch.stack(self.actions)
         next_observations = torch.stack(self.next_observations)
 
-        self.prev_actions = []
-        self.observations = []
-        self.actions = []
-        self.next_observations = []
+        self.prev_actions.clear()
+        self.observations.clear()
+        self.actions.clear()
+        self.next_observations.clear()
 
         return TensorDataset(prev_actions, observations, actions, next_observations)
 
