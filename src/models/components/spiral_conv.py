@@ -57,7 +57,7 @@ class SpiralConv(nn.Module):
     def randomize_init(self):
         self.last_conv_init.value = torch.randn(self.dim, dtype=torch.cfloat)
 
-    def set_is_refresh(self, is_refresh):
+    def set_is_refresh(self, is_refresh: bool):
         self.is_refresh = is_refresh
 
     def get_hidden(self) -> Tensor:
@@ -101,7 +101,7 @@ class ArchitectureBlock(nn.Module):
         self.spiral_conv_1.randomize_init()
         self.spiral_conv_2.randomize_init()
 
-    def set_is_refresh(self, is_refresh):
+    def set_is_refresh(self, is_refresh: bool):
         self.spiral_conv_1.set_is_refresh(is_refresh)
         self.spiral_conv_2.set_is_refresh(is_refresh)
 
@@ -132,7 +132,7 @@ class Architecture(nn.Module):
         for block in self.block_list:
             block.randomize_init()
 
-    def set_is_refresh(self, is_refresh):
+    def set_is_refresh(self, is_refresh: bool):
         for block in self.block_list:
             block.set_is_refresh(is_refresh)
 
