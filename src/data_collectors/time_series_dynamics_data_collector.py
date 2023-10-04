@@ -43,7 +43,7 @@ class TimeSeriesDynamicsDataCollector(DataCollector):
 
     def load_state_dict(self, state_dict: dict[str, Any]) -> None:
 
-        self.prev_actions = state_dict["prev_actions"][: self.max_size]
-        self.observations = state_dict["observations"][: self.max_size]
-        self.actions = state_dict["actions"][: self.max_size]
-        self.next_observations = state_dict["next_observations"][: self.max_size]
+        self.prev_actions = deque(state_dict["prev_actions"], maxlen=self.max_size)
+        self.observations = deque(state_dict["observations"], maxlen=self.max_size)
+        self.actions = deque(state_dict["actions"], maxlen=self.max_size)
+        self.next_observations = deque(state_dict["next_observations"], maxlen=self.max_size)
