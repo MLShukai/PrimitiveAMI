@@ -11,7 +11,7 @@ class FFN(nn.Module):
         self.act = nn.SiLU()
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:
         x = self.linear_1(x)
         x = self.act(x)
         x = self.linear_2(x)
@@ -30,7 +30,7 @@ class SpiralConv(nn.Module):
         self.is_refresh = True
 
     # (batch, len, dim) -> (batch, len, dim)
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:
         batch = x.shape[0]
         len = x.shape[1]
         if self.last_conv is None:
@@ -77,7 +77,7 @@ class ArchitectureBlock(nn.Module):
         self.silu = nn.SiLU()
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:
         x_ = x
         x = self.layer_norm(x)
         x = self.spiral_conv_1(x)
@@ -119,7 +119,7 @@ class Architecture(nn.Module):
         super().__init__()
         self.block_list = nn.ModuleList([ArchitectureBlock(dim, dim_ff_scale, dropout) for _ in range(depth)])
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:
         for block in self.block_list:
             x = block(x)
         return x
