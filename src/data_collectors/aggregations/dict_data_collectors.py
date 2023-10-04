@@ -34,5 +34,6 @@ class DictDataCollectors(UserDict, DataCollectorsAggregation):
 
     def save_state_dict_to_files(self, dir_path: Path) -> None:
         """Save child data state to files."""
+        dir_path.mkdir(exist_ok=True, parents=True)
         for key, value in self.items():
             value.save_to_file(dir_path / f"{key}.pkl")
