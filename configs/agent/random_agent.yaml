@@ -1,0 +1,3 @@
+_target_: src.agents.random_agent.RandomAgent
+
+action_size: 3
