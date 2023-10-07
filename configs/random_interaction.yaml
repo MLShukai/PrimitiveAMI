@@ -1,0 +1,18 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - agent: random_agent
+  - environment: frame_locomotion_sleep
+  - interaction: fixed_step
+
+  - paths: default
+  - hydra: default
+
+  # experiment configs allow for version control of specific hyperparameters
+  # e.g. best hyperparameters for given model and datamodule
+  - experiment: null
+
+task_name: random_interaction
+
+seed: null
