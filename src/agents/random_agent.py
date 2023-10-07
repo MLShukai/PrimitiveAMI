@@ -29,4 +29,4 @@ class RandomAgent(Agent):
 
     def step(self, observation: Any) -> torch.Tensor:
         """Return random action."""
-        return torch.randn(self.action_size, dtype=self.dtype) * self.std + self.mean
+        return torch.tanh(torch.randn(self.action_size, dtype=self.dtype) * self.std + self.mean)
