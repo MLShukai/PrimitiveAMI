@@ -10,7 +10,7 @@ from src.agents.curiosity_ppo_agent import (
     RK,
     CuriosityPPOAgent,
     CuriosityReward,
-    DataCollector,
+    DataCollectorsAggregation,
     ForwardDynamics,
     ObservationEncoder,
     PolicyValueCommonNet,
@@ -46,8 +46,8 @@ class TestCuriosityPPOAgent:
         return mock
 
     @pytest.fixture
-    def mock_data_collector(self, mocker: MockerFixture) -> DataCollector:
-        mock = mocker.Mock(spec=DataCollector)
+    def mock_data_collector(self, mocker: MockerFixture) -> DataCollectorsAggregation:
+        mock = mocker.Mock(spec=DataCollectorsAggregation)
         return mock
 
     @pytest.fixture
@@ -61,7 +61,7 @@ class TestCuriosityPPOAgent:
         mock_forward_dynamics: ForwardDynamics,
         mock_policy: PolicyValueCommonNet,
         mock_reward: CuriosityReward,
-        mock_data_collector: DataCollector,
+        mock_data_collector: DataCollectorsAggregation,
         logger: TensorBoardLogger,
     ) -> CuriosityPPOAgent:
         return CuriosityPPOAgent(
@@ -91,7 +91,7 @@ class TestCuriosityPPOAgent:
         mock_forward_dynamics: ForwardDynamics,
         mock_policy: PolicyValueCommonNet,
         mock_reward: CuriosityReward,
-        mock_data_collector: DataCollector,
+        mock_data_collector: DataCollectorsAggregation,
         logger: TensorBoardLogger,
     ):
         assert curiosity_ppo_agent.embedding == mock_embedding

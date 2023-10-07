@@ -1,11 +1,14 @@
 import logging
+from pathlib import Path
 
 import hydra
 import rootutils
 from omegaconf import DictConfig
 
 from src.agents.agent import Agent
-from src.data_collectors.data_collector import DataCollector
+from src.data_collectors.aggregations.data_collectors_aggregation import (
+    DataCollectorsAggregation,
+)
 from src.environment.environment import Environment
 from src.interactions.interaction import Interaction
 from src.models.aggregations.neural_networks import NeuralNetworks
@@ -30,15 +33,15 @@ def main(cfg: DictConfig) -> None:
     model: NeuralNetworks = hydra.utils.instantiate(cfg.model)
 
     logger.info(f"Instantiating data collector: <{cfg.data_collector._target_}>")
-    data_collector: DataCollector = hydra.utils.instantiate(cfg.data_collector)
+    data_collectors: DataCollectorsAggregation = hydra.utils.instantiate(cfg.data_collector)
 
     logger.info(f"Instantiating trainers builder: <{cfg.trainers_builder._target_}>")
     trainers_builder: TrainersBuilder = hydra.utils.instantiate(cfg.trainers_builder)
-    trainer = trainers_builder.build(model, data_collector)
+    trainer = trainers_builder.build(model, data_collectors)
 
     logger.info(f"Instantiating agent: <{cfg.agent._target_}>")
     agent: Agent = hydra.utils.instantiate(cfg.agent)
-    agent = agent(**model.build_agent_models(), data_collector=data_collector)
+    agent = agent(**model.build_agent_models(), data_collector=data_collectors)
 
     logger.info(f"Instantiating environment: <{cfg.environment._target_}>")
     environment: Environment = hydra.utils.instantiate(cfg.environment)
@@ -50,6 +53,10 @@ def main(cfg: DictConfig) -> None:
     loop(interaction, trainer)
 
     environment.teardown()
+
+    if cfg.save_data_collectors_state:
+        data_collectors.save_state_dict_to_files(Path(cfg.paths.data_collectors_dir))
+        logger.info("Saved data collector states.")
 
     logger.info("End training.")
 

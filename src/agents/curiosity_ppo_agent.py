@@ -5,7 +5,9 @@ import torch.nn as nn
 from lightning.pytorch.loggers import Logger
 from torch import Tensor
 
-from ..data_collectors.data_collector import DataCollector
+from ..data_collectors.aggregations.data_collectors_aggregation import (
+    DataCollectorsAggregation,
+)
 from ..models.components.forward_dynamics.forward_dynamics import ForwardDynamics
 from ..models.components.observation_encoder.observation_encoder import (
     ObservationEncoder,
@@ -28,7 +30,7 @@ class CuriosityPPOAgent(Agent):
         dynamics: ForwardDynamics,
         policy: PolicyValueCommonNet,
         reward: CuriosityReward,
-        data_collector: DataCollector,
+        data_collector: DataCollectorsAggregation,
         sleep_action: Tensor,
         logger: Logger,
         device: Union[str, torch.device] = "cpu",
