@@ -23,7 +23,6 @@ class TimeSeriesForwardDynamicsLitModule(LightningModule):
         self.obs_encoder = obs_encoder
         self.forward_dynamics_net = forward_dynamics_net
         self.optimizer = optimizer
-        self.last_hidden = None
         self.current_hidden = None
 
     def configure_optimizers(self) -> Optimizer:
@@ -42,12 +41,11 @@ class TimeSeriesForwardDynamicsLitModule(LightningModule):
 
         return loss
 
-    def on_train_epoch_start(self):
+    def on_train_start(self):
         self.current_hidden = self.forward_dynamics_net.get_hidden()
+
+    def on_train_epoch_start(self):
         self.forward_dynamics_net.reset_hidden()
 
-    def on_train_epoch_end(self):
-        self.forward_dynamics_net.set_hidden(self.current_hidden)
-
     def on_train_end(self):
-        self.last_hidden = self.forward_dynamics_net.get_hidden()
+        self.forward_dynamics_net.set_hidden(self.current_hidden)
