@@ -5,7 +5,7 @@
 defaults:
   - _self_
   - model: inverse_forward_ppo
-  - data_collector: dict_time_dynamics_trajectory
+  - data_collector: dict_dynamics_trajectory
   - trainers_builder: inverse_forward_ppo
   - agent: curiosity_ppo_agent
   - environment: frame_locomotion_sleep
