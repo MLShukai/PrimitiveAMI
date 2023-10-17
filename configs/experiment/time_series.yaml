@@ -1,0 +1,11 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /model: inverse_time_series_forward_ppo
+  - override /data_collector: dict_time_series_dynamics_trajectory
+  - override /trainers_builder: inverse_time_series_forward_ppo
+
+task_name: time_series
