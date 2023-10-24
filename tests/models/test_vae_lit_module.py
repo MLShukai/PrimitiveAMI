@@ -4,7 +4,7 @@ import pytest
 import torch
 from torch.optim import Adam
 
-from src.models.components.observation_encoder.vae import VAE, VAEDecoder, VAEEncoder
+from src.models.components.observation_encoder.vae import VAE, Decoder, Encoder
 from src.models.components.small_conv_net import SmallConvNet
 from src.models.components.small_deconv_net import SmallDeconvNet
 from src.models.vae_lit_module import VAELitModule as cls
@@ -23,12 +23,12 @@ class TestVAELitModule:
     @pytest.fixture
     def encoder(self):
         conv_net = SmallConvNet(self.in_shape[2], self.in_shape[3], self.in_shape[1], 2 * self.out_shape[-1])
-        return VAEEncoder(conv_net)
+        return Encoder(conv_net)
 
     @pytest.fixture
     def decoder(self):
         deconv_net = SmallDeconvNet(self.in_shape[2], self.in_shape[3], self.in_shape[1], self.out_shape[-1])
-        return VAEDecoder(deconv_net)
+        return Decoder(deconv_net)
 
     @pytest.fixture
     def vae_net(self, encoder, decoder):
@@ -53,3 +53,5 @@ class TestVAELitModule:
     def test_training_step(self, batch, lit_module):
         loss = lit_module.training_step(batch, 0)
         assert type(loss) == torch.Tensor
+        assert loss.shape == ()
+        loss.backward()
