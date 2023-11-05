@@ -4,6 +4,7 @@ from pytest_mock import MockerFixture
 from vrchat_io.controller.wrappers.osc import AxesLocomotionWrapper
 
 from src.environment.actuators.locomotion_actuator import (
+    DeadzoneWrapper,
     LocomotionActuator,
     get_sleep_action,
 )
@@ -41,3 +42,16 @@ class TestLocomotionWrapper:
 
 def test_sleep_action():
     assert torch.equal(get_sleep_action(), torch.zeros(3))
+
+
+class TestDeadzoneWrapper:
+    @pytest.fixture
+    def wrapper(self, mocker: MockerFixture) -> DeadzoneWrapper:
+        return DeadzoneWrapper(mocker.Mock(LocomotionActuator), 0.1)
+
+    def test_wrap_action(self, wrapper: DeadzoneWrapper):
+
+        action = torch.tensor([0.05, 0.3, -0.01])
+
+        assert torch.equal(wrapper.wrap_action(action), torch.tensor([0.0, 0.3, 0.0]))
+        assert torch.equal(action, torch.tensor([0.05, 0.3, -0.01]))  # Check not modified original.

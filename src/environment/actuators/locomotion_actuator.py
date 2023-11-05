@@ -4,7 +4,7 @@ from vrchat_io.controller.wrappers.osc import (
     AxesLocomotionWrapper,
 )
 
-from .actuator import Actuator
+from .actuator import Actuator, ActuatorWrapper
 
 
 class LocomotionActuator(Actuator):
@@ -26,3 +26,25 @@ def get_sleep_action() -> torch.Tensor:
         torch.Tensor: sleep action.
     """
     return torch.tensor(AXES_LOCOMOTION_RESET_VALUES, dtype=torch.float).clone()
+
+
+class DeadzoneWrapper(ActuatorWrapper):
+    """Attach deadzone to action."""
+
+    def __init__(self, actuator: LocomotionActuator, zone_range: float = 0.1) -> None:
+        """Construct actuator wrapper.
+
+        Args:
+            actuator: The instance of LocomotionActuator Class.
+            zone_range: The range of deadzone. [-zone_range, zone_range] of action will be 0.0
+                This value is always >= 0.0 .
+        """
+
+        super().__init__(actuator)
+        self.zone_range = abs(zone_range)
+
+    def wrap_action(self, action: torch.Tensor) -> torch.Tensor:
+        """Clip action range with `zone_range`"""
+        clipped = action.clone()
+        clipped[action.abs() < self.zone_range] = 0.0
+        return clipped
