@@ -31,7 +31,7 @@ def get_sleep_action() -> torch.Tensor:
 class DeadzoneWrapper(ActuatorWrapper):
     """Attach deadzone to action."""
 
-    def __init__(self, actuator: LocomotionActuator, zone_range: float = 0.1) -> None:
+    def __init__(self, actuator: LocomotionActuator, zone_range: float) -> None:
         """Construct actuator wrapper.
 
         Args:
