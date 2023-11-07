@@ -15,7 +15,7 @@ class VAEForwardPPO(TrainersBuilder):
     def __init__(
         self,
         vae_trainer: partial[SimplePLTrainer],
-        forward_trainer: partial[ForwardDynamicsTrainer],
+        forward_dynamics_trainer: partial[ForwardDynamicsTrainer],
         ppo_trainer: partial[PPOTrainer],
     ) -> None:
         """Construct his class.
@@ -27,12 +27,12 @@ class VAEForwardPPO(TrainersBuilder):
         """
 
         self.vae_trainer = vae_trainer
-        self.forward_trainer = forward_trainer
+        self.forward_dynamics_trainer = forward_dynamics_trainer
         self.ppo_trainer = ppo_trainer
 
     def build(self, nets: neuralnets.VAEForwardPPO, data_collectors: DictDataCollectors) -> SequentialTrainers:
         return SequentialTrainers(
             self.vae_trainer(nets.vae, data_collectors["observation"]),
-            self.forward_trainer(nets.forward_dynamics, data_collectors["dynamics"]),
+            self.forward_dynamics_trainer(nets.forward_dynamics, data_collectors["dynamics"]),
             self.ppo_trainer(nets.ppo, data_collectors["trajectory"]),
         )
