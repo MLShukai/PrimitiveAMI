@@ -27,9 +27,7 @@ class ObsDataCollector(DataCollector):
         return TensorDataset(observations)
 
     def state_dict(self) -> dict[str, Any]:
-        # NOTE: To Do. 2023/10/03
-        raise NotImplementedError
+        return {"observations": self.observations}
 
     def load_state_dict(self, state_dict: dict[str, Any]) -> None:
-        # NOTE: To Do. 2023/10/03
-        raise NotImplementedError
+        self.observations = state_dict["observations"][: self.max_size]

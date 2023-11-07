@@ -34,3 +34,14 @@ class TestObsDataCollector:
         mod = cls(self.max_size)
         mod.collect(dummy_record)
         assert isinstance(mod.get_data(), torch.utils.data.TensorDataset)
+
+    def test_save_and_load(self, dummy_record, tmp_path):
+        collector = cls(self.max_size)
+        collector.collect(dummy_record)
+
+        # test save
+        dst_path = tmp_path / "observations.pkl"
+        collector.save_to_file(dst_path)
+        assert dst_path.exists()
+
+        collector = cls.load_from_file(dst_path, max_size=self.max_size)
