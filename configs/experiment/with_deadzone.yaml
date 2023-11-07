@@ -1,0 +1,6 @@
+# @package _global_
+
+defaults:
+  - override /environment: frame_locomotion_sleep_with_deadzone
+
+task_name: with_deadzone
