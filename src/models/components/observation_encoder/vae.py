@@ -63,3 +63,15 @@ class VAE(nn.Module):
         z_sampled = z_dist.rsample()
         x_reconstructed = self.decoder(z_sampled)
         return x_reconstructed, z_dist
+
+
+class DeterministicEncoderWrapper(ObservationEncoder):
+    """This class extracts mean from Encoder output, so it is called
+    deterministic sampling."""
+
+    def __init__(self, encoder: Encoder) -> None:
+        super().__init__()
+        self.encoder = encoder
+
+    def forward(self, obs: Tensor) -> Tensor:
+        return self.encoder.forward(obs).mean

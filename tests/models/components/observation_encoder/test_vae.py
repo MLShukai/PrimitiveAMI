@@ -3,7 +3,12 @@ from functools import partial
 import pytest
 import torch
 
-from src.models.components.observation_encoder.vae import VAE, Decoder, Encoder
+from src.models.components.observation_encoder.vae import (
+    VAE,
+    Decoder,
+    DeterministicEncoderWrapper,
+    Encoder,
+)
 from src.models.components.small_conv_net import SmallConvNet
 from src.models.components.small_deconv_net import SmallDeconvNet
 
@@ -69,3 +74,19 @@ class TestVAE:
         x = torch.randn(8, CHANNELS, HEIGHT, WIDTH)
         rec_x, z = mod(x)
         assert z.sample().shape == torch.Size((8, DIM_EMBED))
+
+
+class TestDeterministicEncoderWrapper:
+    @pytest.fixture
+    def encoder(self):
+        encoder = Encoder(SmallConvNet(HEIGHT, WIDTH, CHANNELS, 2 * DIM_EMBED))
+        return encoder
+
+    def test_forward(self, encoder):
+        wrapper = DeterministicEncoderWrapper(encoder)
+
+        x = torch.randn(8, CHANNELS, HEIGHT, WIDTH)
+        out = wrapper(x)
+        assert torch.equal(out, encoder(x).mean)
+
+        assert out.shape == (8, DIM_EMBED)
