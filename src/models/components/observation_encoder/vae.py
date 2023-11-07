@@ -10,7 +10,7 @@ from ..small_deconv_net import SmallDeconvNet
 from .observation_encoder import ObservationEncoder
 
 
-class Encoder(ObservationEncoder):
+class Encoder(nn.Module):
     def __init__(self, base_model: nn.Module, min_stddev=1e-7) -> None:
         """Construct encoder for VAE. output channel size of the `base_model`
         is twice the size of the latent space.
