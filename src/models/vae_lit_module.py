@@ -14,8 +14,7 @@ from .components.observation_encoder.vae import VAE
 class VAELitModule(LightningModule):
     def __init__(self, vae_net: VAE, optimizer: partial[Optimizer], kl_coef: float = 1.0):
         super().__init__()
-        self.save_hyperparameters(logger=False, ignore=["vae_net", "kl_coef"])
-        self.kl_coef = kl_coef
+        self.save_hyperparameters(logger=False, ignore=["vae_net"])
         self.net = vae_net
 
     def configure_optimizers(self) -> Optimizer:
@@ -28,7 +27,7 @@ class VAELitModule(LightningModule):
         kl_loss = kl_divergence(z_dist, Normal(torch.zeros(z_shape), torch.ones(z_shape))).sum(-1).mean(0)
         self.log("training/kl_loss", kl_loss)
         self.log("training/reconstruction_loss", rec_loss)
-        return rec_loss + self.kl_coef * kl_loss
+        return rec_loss + self.hparams.kl_coef * kl_loss
 
     def forward(self, x: Tensor):
         return self.net(x)
