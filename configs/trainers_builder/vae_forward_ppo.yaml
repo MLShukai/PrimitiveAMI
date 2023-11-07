@@ -1,0 +1,70 @@
+_target_: src.trainers.builders.vae_forward_ppo.VAEForwardPPO
+
+vae_trainer:
+  _target_: src.trainers.simple_pl_trainer.SimplePLTrainer
+  _partial_: true
+
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    _partial_: true
+    batch_size: 8 # from large-scale-curiosity run.py#L175
+    shuffle: true
+
+  pl_trainer:
+    _target_: lightning.pytorch.Trainer
+    default_root_dir: ${paths.output_dir}/vae
+    max_epochs: 3 # from large-scale-curiosity run.py#L180
+    accelerator: gpu
+    devices: 1
+    deterministic: false
+    logger:
+      _target_: lightning.pytorch.loggers.TensorBoardLogger
+      save_dir: ${..default_root_dir}/tensorboard
+      name: null
+      version: ""
+
+forward_dynamics_trainer:
+  _target_: src.trainers.forward_dynamics_trainer.ForwardDynamicsTrainer
+  _partial_: true
+
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    _partial_: true
+    batch_size: 8 # from large-scale-curiosity run.py#L175
+    shuffle: true
+
+  pl_trainer:
+    _target_: lightning.pytorch.Trainer
+    default_root_dir: ${paths.output_dir}/forward_dynamics
+    max_epochs: 3 # from large-scale-curiosity run.py#L180
+    accelerator: gpu
+    devices: 1
+    deterministic: False
+    logger:
+      _target_: lightning.pytorch.loggers.TensorBoardLogger
+      save_dir: ${..default_root_dir}/tensorboard
+      name: null
+      version: ""
+
+ppo_trainer:
+  _target_: src.trainers.ppo_trainer.PPOTrainer
+  _partial_: true
+
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    _partial_: true
+    batch_size: 8 # from large-scale-curiosity run.py#L175
+    shuffle: true
+
+  pl_trainer:
+    _target_: lightning.pytorch.Trainer
+    default_root_dir: ${paths.output_dir}/ppo
+    max_epochs: 3 # from large-scale-curiosity run.py#L180
+    accelerator: gpu
+    devices: 1
+    deterministic: False
+    logger:
+      _target_: lightning.pytorch.loggers.TensorBoardLogger
+      save_dir: ${..default_root_dir}/tensorboard
+      name: null
+      version: ""
