@@ -1,0 +1,8 @@
+# @package _global_
+
+defaults:
+  - override /model: vae_forward_ppo
+  - override /data_collector: dict_observation_dynamics_trajectory
+  - override /trainers_builder: vae_forward_ppo
+
+task_name: vae
