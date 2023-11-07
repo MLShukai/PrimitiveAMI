@@ -11,7 +11,7 @@ from ..vae_lit_module import VAELitModule
 from .neural_networks import NeuralNetworks
 
 
-class InverseForwardPPO(NeuralNetworks):
+class VAEForwardPPO(NeuralNetworks):
     """Neural network aggregation class for curiosity ppo agent."""
 
     def __init__(
