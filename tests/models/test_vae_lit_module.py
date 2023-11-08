@@ -17,7 +17,7 @@ class TestVAELitModule:
 
     @pytest.fixture
     def batch(self):
-        batch = torch.randn(self.in_shape, requires_grad=True)
+        batch = (torch.randn(self.in_shape, requires_grad=True),)
         return batch
 
     @pytest.fixture
