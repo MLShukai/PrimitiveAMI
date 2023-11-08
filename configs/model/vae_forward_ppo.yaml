@@ -2,6 +2,7 @@ _target_: src.models.aggregations.vae_forward_ppo.VAEForwardPPO
 
 vae:
   _target_: src.models.vae_lit_module.VAELitModule
+  kl_coef: 0.01
 
   vae_net:
     _target_: src.models.components.observation_encoder.vae.VAE

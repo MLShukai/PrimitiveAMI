@@ -24,9 +24,7 @@ class VAELitModule(LightningModule):
         (x,) = batch
         x_reconstructed, z_dist = self.net(x)
         rec_loss = mse_loss(x, x_reconstructed)
-        kl_loss = (
-            kl_divergence(z_dist, Normal(torch.zeros_like(z_dist.mean), torch.ones_like(z_dist.stddev))).sum(-1).mean(0)
-        )
+        kl_loss = kl_divergence(z_dist, Normal(torch.zeros_like(z_dist.mean), torch.ones_like(z_dist.stddev))).mean()
         self.log("vae/kl_loss", kl_loss, prog_bar=True)
         self.log("vae/reconstruction_loss", rec_loss, prog_bar=True)
         return rec_loss + self.hparams.kl_coef * kl_loss
