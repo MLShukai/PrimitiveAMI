@@ -1,0 +1,86 @@
+_target_: src.models.aggregations.vae_forward_ppo.VAEForwardPPO
+
+vae:
+  _target_: src.models.vae_lit_module.VAELitModule
+  kl_coef: 0.01
+
+  vae_net:
+    _target_: src.models.components.observation_encoder.vae.VAE
+
+    encoder:
+      _target_: src.models.components.observation_encoder.vae.Encoder
+      base_model:
+        _target_: src.models.components.small_conv_net.SmallConvNet
+        height: ${environment.sensor.height}
+        width: ${environment.sensor.width}
+        channels: 3
+        dim_out: 1024 # 512 * 2, mean and std.
+
+    decoder:
+      _target_: src.models.components.observation_encoder.vae.Decoder
+      base_model:
+        _target_: src.models.components.small_deconv_net.SmallDeconvNet
+        height: ${...encoder.base_model.height}
+        width: ${...encoder.base_model.width}
+        channels: ${...encoder.base_model.channels}
+        dim_in: 512
+
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 1e-4 # from large-scale-curiosity
+    betas: [0.9, 0.999]
+
+forward_dynamics:
+  _target_: src.models.time_series_forward_dynamics_lit_module.TimeSeriesForwardDynamicsLitModule
+  _partial_: true
+  forward_dynamics_net:
+    _target_: src.models.components.forward_dynamics.spiral_conv_forward_dynamics.SpiralConvForwardDynamics
+    dim_action: ${...ppo.net.policy.dim_out}
+    dim_embed: ${...vae.vae_net.decoder.base_model.dim_in}
+    depth: 4
+    dim: 512
+    dim_ff_scale: 1
+    dropout: 0.1
+
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 1e-4
+    betas: [0.9, 0.999]
+
+ppo:
+  _target_: src.models.ppo_lit_module.PPOLitModule
+
+  net:
+    _target_: src.models.components.policy_value_common_net.PolicyValueCommonNet
+
+    base_model:
+      _target_: src.utils.model.SequentialModuleList
+      modules:
+        - _target_: src.models.components.small_conv_net.SmallConvNet
+          height: ${environment.sensor.height}
+          width: ${environment.sensor.width}
+          channels: 3
+          dim_out: 512 # from large-scale-curiosity run.py#L51-52
+        - _target_: src.models.components.fully_connected.FullyConnected
+          dim_in: ${..0.dim_out}
+          dim_out: ${..0.dim_out}
+        - _target_: src.models.components.fully_connected.FullyConnected
+          dim_in: ${..0.dim_out}
+          dim_out: ${..0.dim_out}
+
+    policy:
+      _target_: src.models.components.policy.tanh_normal_stochastic_policy.TanhNormalStochasticPolicy
+      dim_input: ${..base_model.modules.0.dim_out}
+      dim_out: 3
+
+    value:
+      _target_: src.models.components.value.fully_connect_value.FullyConnectValue
+      dim_input: ${..base_model.modules.0.dim_out}
+
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 1e-4 # from large-scale-curiosity
+    betas: [0.9, 0.999]
