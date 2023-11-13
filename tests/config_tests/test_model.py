@@ -15,3 +15,15 @@ def test_inverse_forward_ppo():
         cfg.ppo.net.base_model.modules[0].width = width
 
     hydra.utils.instantiate(cfg)
+
+
+def test_vae_forward_ppo():
+    cfg = OmegaConf.load(PROJECT_ROOT / "configs/model/vae_forward_ppo.yaml")
+    with open_dict(cfg):
+        height, width = 256, 256
+        cfg.vae.vae_net.encoder.base_model.height = height
+        cfg.vae.vae_net.encoder.base_model.width = width
+        cfg.ppo.net.base_model.modules[0].height = height
+        cfg.ppo.net.base_model.modules[0].width = width
+
+    hydra.utils.instantiate(cfg)
