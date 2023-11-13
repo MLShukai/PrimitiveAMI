@@ -1,0 +1,15 @@
+_target_: src.data_collectors.aggregations.dict_data_collectors.DictDataCollectors
+
+observation:
+  _target_: src.data_collectors.obs_data_collector.ObsDataCollector
+  max_size: 2048
+
+dynamics:
+  _target_: src.data_collectors.time_series_dynamics_data_collector.TimeSeriesDynamicsDataCollector
+  max_size: 2048
+
+trajectory:
+  _target_: src.data_collectors.trajectory_data_collector.TrajectoryDataCollector
+  max_size: ${interaction.num_steps}
+  gamma: 0.99 # from large-scale-curiosity
+  gae_lambda: 0.95 # from large-scale-curiosity
