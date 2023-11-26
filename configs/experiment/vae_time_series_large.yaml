@@ -12,7 +12,7 @@ trainers_builder:
 
   forward_dynamics_trainer:
     dataloader:
-      batch_size: 32 # x16 from base line.
+      batch_size: 32 # x4 from base line.
     pl_trainer:
       log_every_n_steps: 13
 
@@ -31,6 +31,6 @@ model:
       dim: 2048 # x 4 from base line.
 
     optimizer:
-      lr: 0.0004 # x16 from base line.
+      lr: 0.0004 # x4 from base line.
 
 task_name: vae_time_series_large
