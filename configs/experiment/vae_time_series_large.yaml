@@ -1,0 +1,36 @@
+# @package _global_
+
+defaults:
+  - vae_time_series
+
+trainers_builder:
+  vae_trainer:
+    dataloader:
+      batch_size: 8
+    pl_trainer:
+      log_every_n_steps: 50
+
+  forward_dynamics_trainer:
+    dataloader:
+      batch_size: 32 # x4 from base line.
+    pl_trainer:
+      log_every_n_steps: 13
+
+  ppo_trainer:
+    pl_trainer:
+      log_every_n_steps: 16
+
+model:
+  vae:
+    optimizer:
+      lr: 0.0001
+
+  forward_dynamics:
+    forward_dynamics_net:
+      depth: 16 # x 4 from base line.
+      dim: 2048 # x 4 from base line.
+
+    optimizer:
+      lr: 0.0004 # x4 from base line.
+
+task_name: vae_time_series_large
