@@ -35,7 +35,7 @@ class DiscreteActuator(Actuator):
         self.controller = controller
 
     def operate(self, action: torch.Tensor) -> None:
-        command = self.convert_action_to_command(action.detach().cpu().long().numpy().tolist())
+        command = self.convert_action_to_command(action.long().tolist())
         self.controller.command(command)
 
     def teardown(self) -> None:
