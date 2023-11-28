@@ -19,7 +19,7 @@ class MultiDistributions(Distribution):
 
     arg_constraints = {}
 
-    def __init__(self, distributions=list[Distribution]) -> None:
+    def __init__(self, distributions: list[Distribution]) -> None:
         super().__init__(validate_args=False)
 
         self.dists = distributions
@@ -37,7 +37,7 @@ class MultiDistributions(Distribution):
 class MultiCategoricals(MultiDistributions):
     """Set of same action torch.Size categorical distributions."""
 
-    def __init__(self, distributions=list[Categorical]) -> None:
+    def __init__(self, distributions: list[Categorical]) -> None:
         assert len(distributions) > 0
         first_dist = distributions[0]
         assert all(first_dist.batch_shape == d.batch_shape for d in distributions), "All batch shapes must be same."
