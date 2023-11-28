@@ -6,6 +6,8 @@ from vrchat_io.controller.wrappers.osc import MultiInputWrapper
 
 from .actuator import Actuator
 
+ACTION_CHOICES_PER_CATEGORY = [3, 3, 3, 2, 2]
+
 SLEEP_ACTION = torch.tensor(
     [
         0,  # stop to move vertical.
