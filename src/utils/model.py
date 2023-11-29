@@ -14,26 +14,6 @@ class SequentialModuleList(nn.ModuleList):
         return x
 
 
-class MultiDistributions(Distribution):
-    """Set of distribution classes."""
-
-    arg_constraints = {}
-
-    def __init__(self, distributions: list[Distribution]) -> None:
-        super().__init__(validate_args=False)
-
-        self.dists = distributions
-
-    def sample(self, sample_shape: list[torch.Size] = torch.Size()) -> list[torch.Tensor]:
-        return [d.sample(sample_shape) for d in self.dists]
-
-    def log_prob(self, value: list[torch.Tensor]) -> list[torch.Tensor]:
-        return [d.log_prob(v) for d, v in zip(self.dists, value)]
-
-    def entropy(self) -> list[torch.Tensor]:
-        return [d.entropy() for d in self.dists]
-
-
 class MultiCategoricals(Distribution):
     """Set of same action torch.Size categorical distributions."""
 
