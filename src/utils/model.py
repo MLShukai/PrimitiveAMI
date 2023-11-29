@@ -56,3 +56,36 @@ class MultiCategoricals(Distribution):
     def entropy(self) -> torch.Tensor:
         """Compute entropy for each distribution."""
         return torch.stack([d.entropy() for d in self.dists], dim=-1)
+
+
+class MultiEmbeddings(nn.Module):
+    """Convert discrete actions to embedding vectors."""
+
+    def __init__(self, choices_per_category: list[int], embedding_dim: int) -> None:
+        """Constructs Multi-Embedding class.
+
+        Args:
+            choices_per_category: A list of choice size per category.
+            embedding_dim: The length of embedding vector.
+        """
+        super().__init__()
+
+        self.embeds = nn.ModuleList()
+        for choice in choices_per_category:
+            self.embeds.append(nn.Embedding(choice, embedding_dim))
+
+    @property
+    def choices_per_category(self) -> list[int]:
+        return [e.num_embeddings for e in self.embeds]
+
+    def forward(self, input: torch.Tensor) -> torch.Tensor:
+        """
+        Shape:
+            input: (*, num_category). `num_category` equals to `len(choices_per_category)`.
+            return: (*, num_category, embedding_dim)
+        """
+        output = []
+        for (layer, tensor) in zip(self.embeds, input.movedim(-1, 0)):
+            output.append(layer(tensor))
+
+        return torch.stack(output, dim=-2)

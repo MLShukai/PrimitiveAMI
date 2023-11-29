@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from torch.distributions import Categorical
 
-from src.utils.model import MultiCategoricals, SequentialModuleList
+from src.utils.model import MultiCategoricals, MultiEmbeddings, SequentialModuleList
 
 
 def test_SequentialModuleList():
@@ -35,3 +35,24 @@ class TestMultiCategoricals:
 
     def test_entropy(self, multi_categoricals: MultiCategoricals):
         assert multi_categoricals.entropy().shape == (8, 3)
+
+
+@pytest.mark.parametrize(
+    """
+    choices_per_category,
+    embedding_dim,
+    shape,
+    """,
+    [
+        ([4, 8, 16], 16, (5, 2)),
+        ([1, 2, 3], 128, (3, 32)),
+    ],
+)
+def test_multi_embeddings(choices_per_category, embedding_dim, shape):
+    m = MultiEmbeddings(choices_per_category, embedding_dim)
+    assert m.choices_per_category == choices_per_category
+
+    input = torch.stack([torch.randint(0, i, shape) for i in choices_per_category], dim=-1)
+
+    output = m(input)
+    assert output.shape == (*shape, len(choices_per_category), embedding_dim)
