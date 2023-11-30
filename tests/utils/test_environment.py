@@ -1,10 +1,15 @@
 import numpy as np
 import pytest
 from pytest_mock import MockerFixture
+from vrchat_io.controller.wrappers.osc import MultiInputWrapper
 
 from src.environment.actuators.locomotion_actuator import LocomotionActuator
 from src.environment.sensors.frame_sensor import FrameSensor
-from src.utils.environment import create_frame_sensor, create_locomotion_actuator
+from src.utils.environment import (
+    create_frame_sensor,
+    create_locomotion_actuator,
+    create_multi_input_controller,
+)
 
 
 @pytest.mark.parametrize(
@@ -28,3 +33,11 @@ def test_create_locomotion_actuator(mocker: MockerFixture):
     actuator = create_locomotion_actuator("127.0.0.1", 9000)
 
     assert isinstance(actuator, LocomotionActuator)
+
+
+def test_create_multi_input_controller(mocker: MockerFixture):
+    mock_client = mocker.patch("pythonosc.udp_client.SimpleUDPClient")
+
+    controller = create_multi_input_controller("127.0.0.1", 9000)
+
+    assert isinstance(controller, MultiInputWrapper)
