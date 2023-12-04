@@ -145,7 +145,11 @@ class CuriosityPPOAgent(Agent):
         self._to_device_dtype(self.dynamics)
         self._to_device_dtype(self.policy)
         self._to_device_dtype(self.reward)
-        self.sleep_action = self._to_device_dtype(self.sleep_action)
+        # self.sleep_action = self._to_device_dtype(self.sleep_action)
+        self.sleep_action = self.sleep_action.to(
+            self.device
+        )  # Ignored dtype conversion for discrete action. 2023/12/01.
+
         # Adding batch axis.
         if self.sleep_action.ndim == 1:
             self.sleep_action = self.sleep_action.unsqueeze(0)

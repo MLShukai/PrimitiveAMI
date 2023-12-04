@@ -1,0 +1,18 @@
+_target_: src.environment.periodic_environment.PeriodicEnvironment
+
+sensor:
+  _target_: src.utils.environment.create_frame_sensor
+  camera_index: 0
+  width: 84 # from large-scale-curiosity
+  height: 84 # from large-scale-curiosity
+  base_fps: 60
+
+actuator:
+  _target_: src.environment.actuators.discrete_actuator.DiscreteActuator
+  controller:
+    _target_: src.utils.environment.create_multi_input_controller
+    osc_address: "127.0.0.1"
+
+adjustor:
+  _target_: src.environment.interval_adjustors.sleep_interval_adjustor.SleepIntervalAdjustor
+  interval: 0.1 # 10 fps

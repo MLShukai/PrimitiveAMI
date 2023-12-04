@@ -133,12 +133,10 @@ class TestCuriosityPPOAgent:
     @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is not available")
     def test_setup_models_and_buffers_cuda(self, curiosity_ppo_agent: CuriosityPPOAgent):
         curiosity_ppo_agent.device = torch.device("cuda:0")
-        curiosity_ppo_agent.dtype = torch.float64
 
         curiosity_ppo_agent._setup_models_and_buffers()
 
         assert curiosity_ppo_agent.sleep_action.device == torch.device("cuda:0")
-        assert curiosity_ppo_agent.sleep_action.dtype == torch.float64
 
     def test_embed_observation(self, curiosity_ppo_agent: CuriosityPPOAgent):
         dummy_observation = torch.tensor(1.0)

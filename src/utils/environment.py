@@ -69,3 +69,19 @@ def create_locomotion_actuator(
     actuator = LocomotionActuator(controller)
 
     return actuator
+
+
+def create_multi_input_controller(
+    osc_address: str = "127.0.0.1",
+    osc_sender_port: int = 9000,
+) -> LocomotionActuator:
+    """Create controller wrapped by MultiInputWrapper.
+
+    Args:
+        osc_address (str): IP address of VRChat client.
+        osc_sender_port (int): Port of VRChat client.
+    """
+    controller = InputController(SimpleUDPClient(osc_address, osc_sender_port))
+    controller = MultiInputWrapper(controller)
+
+    return controller

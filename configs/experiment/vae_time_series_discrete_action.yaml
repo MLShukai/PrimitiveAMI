@@ -1,0 +1,15 @@
+# @package _global_
+
+defaults:
+  - override /agent: curiosity_ppo_agent
+  - override /environment: frame_discrete_sleep
+  - override /model: vae_time_series_forward_discrete_action_ppo
+  - override /data_collector: dict_observation_time_series_dynamics_trajectory
+  - override /trainers_builder: vae_time_series_forward_ppo
+
+agent:
+  sleep_action:
+    _target_: hydra.utils.get_object
+    path: src.environment.actuators.discrete_actuator.SLEEP_ACTION
+
+task_name: vae_time_series_discrete_action
