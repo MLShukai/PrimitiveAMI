@@ -75,6 +75,7 @@ class TestForwardDynamicsTrainer:
     @pytest.fixture
     def pl_trainer(self, logger) -> pl.Trainer:
         return pl.Trainer(
+            devices=1,
             max_steps=10,
             max_epochs=1,
             logger=logger,
