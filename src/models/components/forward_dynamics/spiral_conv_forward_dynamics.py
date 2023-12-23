@@ -17,7 +17,7 @@ class SpiralConvForwardDynamics(TimeSeriesForwardDynamics):
     def forward(self, prev_action: Tensor, embed: Tensor, action: Tensor) -> Tensor:
         x = torch.concat([embed, action], dim=-1).unsqueeze(0)
         x = self.fc_in(x)
-        x = self.spiral_conv(x)
+        x, _ = self.spiral_conv(x)
         x = self.fc_out(x)
         return x.squeeze(0)
 

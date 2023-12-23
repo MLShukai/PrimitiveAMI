@@ -27,8 +27,8 @@ class SpiralConv(nn.Module):
         self.phazor_init = nn.Parameter(torch.randn(dim, dtype=torch.cfloat))  # log(-log(gamma))
         self.phazor = nn.Parameter(torch.exp(2.0j * np.pi * torch.arange(dim) / dim) * torch.abs(torch.randn(dim)))
 
-    # (batch, len, dim) -> (batch, len, dim)
-    def forward(self, x: Tensor, hidden: Tensor) -> Tensor:
+    # ((batch, len, dim),(batch, dim)) -> ((batch, len, dim), (batch, len, dim))
+    def forward(self, x: Tensor, hidden: Tensor) -> tuple[Tensor, Tensor]:
         batch = x.shape[0]
         len = x.shape[1]
         phazor = self.phazor / self.phazor.abs() * torch.exp(-self.phazor.abs())
@@ -43,7 +43,7 @@ class SpiralConv(nn.Module):
             0
         ) * phazor.unsqueeze(0).unsqueeze(0)
 
-        return conv_with_past.real, conv_with_past[:, -1, :]
+        return conv_with_past.real, conv_with_past
 
 
 class ArchitectureBlock(nn.Module):
@@ -56,7 +56,7 @@ class ArchitectureBlock(nn.Module):
         self.fc = nn.Linear(dim, dim)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x: Tensor, hidden: Tensor) -> Tensor:
+    def forward(self, x: Tensor, hidden: Tensor) -> tuple[Tensor, Tensor]:
         x_ = x
         y = x
         x = self.layer_norm(x)
