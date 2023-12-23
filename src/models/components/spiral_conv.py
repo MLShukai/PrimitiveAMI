@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn as nn
 from torch import Tensor
@@ -23,8 +24,8 @@ class SpiralConv(nn.Module):
     def __init__(self, dim: int):
         super().__init__()
         self.dim = dim
-        self.phazor = nn.Parameter(torch.randn(dim, dtype=torch.cfloat))  # log(-log(gamma))
         self.phazor_init = nn.Parameter(torch.randn(dim, dtype=torch.cfloat))  # log(-log(gamma))
+        self.phazor = nn.Parameter(torch.exp(2.0j * np.pi * torch.arange(dim) / dim) * torch.abs(torch.randn(dim)))
         self.last_conv = None  # (batch, dim)
         self.last_conv_init = nn.Parameter(torch.randn(dim, dtype=torch.cfloat))  # (dim)
         self.is_refresh = True
@@ -54,9 +55,6 @@ class SpiralConv(nn.Module):
     def reset_hidden(self):
         self.last_conv = None
 
-    def randomize_init(self):
-        self.last_conv_init.value = torch.randn(self.dim, dtype=torch.cfloat)
-
     def set_is_refresh(self, is_refresh: bool):
         self.is_refresh = is_refresh
 
@@ -70,19 +68,21 @@ class SpiralConv(nn.Module):
 class ArchitectureBlock(nn.Module):
     def __init__(self, dim: int, dim_ff_scale: float, dropout: float):
         super().__init__()
-        self.spiral_conv_1 = SpiralConv(dim)
-        self.spiral_conv_2 = SpiralConv(dim)
+        self.spiral_conv = SpiralConv(dim)
         self.ffn = FFN(dim, dim_ff_scale, dropout)
         self.layer_norm = nn.LayerNorm(dim)
         self.silu = nn.SiLU()
+        self.fc = nn.Linear(dim, dim)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: Tensor) -> Tensor:
         x_ = x
+        y = x
         x = self.layer_norm(x)
-        x = self.spiral_conv_1(x)
-        x = self.silu(x)
-        x = self.spiral_conv_2(x)
+        x = self.spiral_conv(x)
+        y = self.fc(y)
+        y = self.silu(y)
+        x = x * y
         x = self.dropout(x)
         x = x + x_
 
@@ -94,24 +94,16 @@ class ArchitectureBlock(nn.Module):
         return x
 
     def reset_hidden(self):
-        self.spiral_conv_1.reset_hidden()
-        self.spiral_conv_2.reset_hidden()
-
-    def randomize_init(self):
-        self.spiral_conv_1.randomize_init()
-        self.spiral_conv_2.randomize_init()
+        self.spiral_conv.reset_hidden()
 
     def set_is_refresh(self, is_refresh: bool):
-        self.spiral_conv_1.set_is_refresh(is_refresh)
-        self.spiral_conv_2.set_is_refresh(is_refresh)
+        self.spiral_conv.set_is_refresh(is_refresh)
 
-    def get_hidden(self) -> tuple[Tensor, Tensor]:
-        return (self.spiral_conv_1.get_hidden(), self.spiral_conv_2.get_hidden())
+    def get_hidden(self) -> Tensor:
+        return self.spiral_conv.get_hidden()
 
-    def set_hidden(self, hidden: tuple[Tensor, Tensor]):
-        hidden_1, hidden_2 = hidden
-        self.spiral_conv_1.set_hidden(hidden_1)
-        self.spiral_conv_2.set_hidden(hidden_2)
+    def set_hidden(self, hidden: Tensor):
+        self.spiral_conv.set_hidden(hidden)
 
 
 class Architecture(nn.Module):
@@ -127,10 +119,6 @@ class Architecture(nn.Module):
     def reset_hidden(self):
         for block in self.block_list:
             block.reset_hidden()
-
-    def randomize_init(self):
-        for block in self.block_list:
-            block.randomize_init()
 
     def set_is_refresh(self, is_refresh: bool):
         for block in self.block_list:
