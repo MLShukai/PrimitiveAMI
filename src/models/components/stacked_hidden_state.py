@@ -11,7 +11,7 @@ class HiddenState(nn.Module):
 
     def forward(self, x: Tensor):
         if self.hidden is None:
-            self.hidden = self.hidden_init
+            self.hidden = self.hidden_init.unsqueeze(0).expand(x.shape[0], -1)
 
         x, hidden = self.module(x, self.hidden)
         self.hidden = hidden
@@ -28,7 +28,8 @@ class HiddenState(nn.Module):
 
 
 class StackedHiddenState(nn.Module):
-    def __init__(self, module_list: [nn.Module], hidden_init_list: [Tensor]):
+    def __init__(self, module_list: nn.ModuleList, hidden_init_list: [Tensor]):
+        super().__init__()
         self.module_list = nn.ModuleList(
             [HiddenState(module_list[i], hidden_init_list[i]) for i in range(len(module_list))]
         )
