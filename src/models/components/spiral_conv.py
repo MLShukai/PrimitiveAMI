@@ -31,7 +31,8 @@ class SpiralConv(nn.Module):
     def forward(self, x: Tensor, hidden: Tensor) -> tuple[Tensor, Tensor]:
         batch = x.shape[0]
         len = x.shape[1]
-        phazor = self.phazor / self.phazor.abs() * torch.exp(-self.phazor.abs())
+        phazor = self.phazor
+        phazor = torch.exp(-phazor.real * phazor.real - phazor.imag * phazor.imag) * torch.exp(1.0j * phazor.angle())
         phazor_progression = torch.pow(
             phazor.unsqueeze(0), torch.arange(len, device=x.device).unsqueeze(1)
         )  # (len, dim)
