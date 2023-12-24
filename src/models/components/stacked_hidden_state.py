@@ -3,7 +3,7 @@ from torch import Tensor
 
 
 class HiddenState(nn.Module):
-    def __init__(self, module: nn.Module, hidden_init: Tensor):
+    def __init__(self, module: nn.Module, hidden_init: nn.Parameter):
         super().__init__()
         self.module = module
         self.hidden = None
@@ -28,7 +28,7 @@ class HiddenState(nn.Module):
 
 
 class StackedHiddenState(nn.Module):
-    def __init__(self, module_list: nn.ModuleList, hidden_init_list: list[Tensor]):
+    def __init__(self, module_list: nn.ModuleList, hidden_init_list: list[nn.Parameter]):
         super().__init__()
         self.module_list = nn.ModuleList(
             [HiddenState(module_list[i], hidden_init_list[i]) for i in range(len(module_list))]
