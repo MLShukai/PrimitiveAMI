@@ -21,5 +21,8 @@ class TestSpiralConv:
     def test_spiral_conv(self, depth, dim, dim_ff_scale, dropout, batch, length):
         model = Architecture(depth, dim, dim_ff_scale, dropout)
         x = torch.randn(batch, length, dim)
-        x = model(x)
+        x, hidden_list = model(x)
         assert x.size() == (batch, length, dim)
+        assert len(hidden_list) == depth
+        for hidden in hidden_list:
+            assert hidden.size() == (batch, length, dim)
