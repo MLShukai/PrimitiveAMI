@@ -24,19 +24,21 @@ class SpiralConv(nn.Module):
     def __init__(self, dim: int):
         super().__init__()
         self.dim = dim
-        self.phazor_init = nn.Parameter(torch.randn(dim, dtype=torch.cfloat))  # log(-log(gamma))
-        self.phazor = nn.Parameter(torch.exp(2.0j * np.pi * torch.arange(dim) / dim) * torch.abs(torch.randn(dim)))
+        self.phazor_init = nn.Parameter(torch.view_as_real(torch.randn(dim, dtype=torch.cfloat)))  # log(-log(gamma))
+        self.phazor = nn.Parameter(
+            torch.view_as_real(torch.exp(2.0j * np.pi * torch.arange(dim) / dim) * torch.abs(torch.randn(dim)))
+        )
 
     # ((batch, len, dim),(batch, dim)) -> ((batch, len, dim), (batch, len, dim))
     def forward(self, x: Tensor, hidden: Tensor) -> tuple[Tensor, Tensor]:
         batch = x.shape[0]
         len = x.shape[1]
-        phazor = self.phazor
+        phazor = torch.view_as_complex(self.phazor)
         phazor = torch.exp(-phazor.real * phazor.real - phazor.imag * phazor.imag) * torch.exp(1.0j * phazor.angle())
         phazor_progression = torch.pow(
             phazor.unsqueeze(0), torch.arange(len, device=x.device).unsqueeze(1)
         )  # (len, dim)
-        filter = phazor_progression * self.phazor_init.unsqueeze(0)
+        filter = phazor_progression * torch.view_as_complex(self.phazor_init).unsqueeze(0)
         filter_fft = torch.fft.fft(filter, n=len * 2, dim=0)  # (len*2, dim)
         x_fft = torch.fft.fft(x, n=len * 2, dim=1)  # (batch, len*2, dim)
         conv_filter_x = torch.fft.ifft(filter_fft.unsqueeze(0) * x_fft, dim=1).narrow(1, 0, len)  # (batch, len, dim)
