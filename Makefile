@@ -21,3 +21,15 @@ test: ## Run not slow tests
 
 test-full: ## Run all tests and coverage.
 	poetry run pytest -v --slow --cov=src
+
+docker-build: ## Build docker image.
+	docker build -t pami --no-cache .
+
+docker-run: ## Run built docker image.
+	docker run -it --gpus all \
+	--mount type=volume,source=pami,target=/workspace \
+	--mount type=bind,source=`pwd`/logs,target=/workspace/logs \
+	--mount type=bind,source=`pwd`/data,target=/workspace/data \
+	--device `v4l2-ctl --list-devices | grep -A 1 'OBS Virtual Camera' | grep -oP '\t\K/dev.*'`:/dev/video0:mwr \
+	--net host \
+	pami
