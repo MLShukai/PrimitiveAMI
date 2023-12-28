@@ -47,6 +47,29 @@ VRChat上における好奇心ベースの原始自律機械知能の実装で�
 
   NOTE: 事前にカメラデバイスのindexをメモしておく。
 
+### docker
+
+Dockerイメージをビルドして環境を構築する。
+
+事前に必要な依存関係
+
+- `docker`
+- `make`
+- `v4l-utils`
+
+**NOTE: dockerイメージを起動する前にOBSを起動し、仮想カメラを有効化すること**
+
+Dockerイメージをビルドし、起動する。
+
+```sh
+make docker-build
+make docker-run
+```
+
+Dockerの起動時にOBSの仮想カメラを自動的に選択し、イメージ内で`/dev/video0`に接続している。(OpenCVのVideoCaptureのdevice indexが0になるように。)
+
+Dockerはホストとネットワークを共有する、ホストモードで起動する。(VRChatのOSC APIを叩くため。) そのためネットワークポートの競合に注意が必要である。
+
 # その他情報
 
 - [VRChat自律機械知能プロジェクト中間発表その1](https://youtu.be/hwiJwuvRy9I)
