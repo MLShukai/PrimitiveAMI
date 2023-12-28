@@ -66,7 +66,7 @@ make docker-build
 make docker-run
 ```
 
-Dockerの起動時にOBSの仮想カメラを自動的に選択し、イメージ内で`/dev/video0`に接続している。(OpenCVのVideoCaptureのdevice indexが0になるように。)
+Dockerの起動時にOBSの仮想カメラを自動的に選択し、イメージ内の`/dev/video0`に接続している。(OpenCVのVideoCaptureのdevice indexが0になるように。)
 
 Dockerはホストとネットワークを共有する、ホストモードで起動する。(VRChatのOSC APIを叩くため。) そのためネットワークポートの競合に注意が必要である。
 
